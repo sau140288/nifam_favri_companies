@@ -169,7 +169,7 @@ plot_cashflow(mcSimulation_object = company_results,
 # PLS
 source("functions/pls_model.R")
 pls_result <- pls_model(object = company_results,
-                                resultName = names(company_results)[1], 
+                                resultName = names(company_results$y)[3], 
                                 ncomp = 1)
 
 input_table <- read.csv("company_input.csv")
@@ -184,10 +184,10 @@ source("functions/multi_EVPI.R")
 mcSimulation_table <- data.frame(company_results$x, 
                                  company_results$y[1:3])
 
-evpi <- multi_EVPI(mc = mcSimulation_table, first_out_var = "NPV_mobile_sales")
+evpi <- multi_EVPI(mc = mcSimulation_table, first_out_var = "NPV_company_sales")
 
 source("functions/plot_evpi.R")
-plot_evpi(evpi, decision_vars = "NPV_mobile_sales")
+plot_evpi(evpi, decision_vars = "NPV_company_sales")
 plot_evpi(evpi, decision_vars = "decision")
 
 # Get summary statistics
