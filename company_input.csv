@@ -1,13 +1,13 @@
 variable,lower ,median,upper,distribution,label
-number_of_years,5,,5,const,Number of years for garden simulation
+number_of_years,5,,5,const,Number of years for model simulation
 discount_rate,5,,8,posnorm,Discounting factor
 ,,,,,
-CV_value,0.1,,0.4,tnorm_0_1,Coefficient of variation for our school garden intervention (%)
-inflation_rate,1,,5,posnorm,Inflation rate (%)
+CV_value,0.1,,0.4,tnorm_0_1,Coefficient of variation for company intervention (%)
+inflation_rate,3,,7,posnorm,Inflation rate (%)
 cost_of_establishment_meetings,1,,3,posnorm,cost of establishment meetings (million VND)
 cost_of_promotion,1,,5,posnorm,Establishment costs of marketing (million VND)
 ,,,,,
-cost_of_space_opportunity_cost,3,,12,posnorm,the annual cost of renting space (million VND/year)
+cost_of_space_opportunity_cost,3,,12,posnorm,the annual opportunity cost of space (million VND/year)
 cost_of_regular_meetings,0.3,,3,posnorm,the annual cost of meetings (million VND/year)
 cost_of_cleaning_event,2,,4,posnorm,the annual cost of cleaning space for veg sell (million VND/year)
 cost_of_communication,1,,5,posnorm,the annual cost of communcation (million VND/year)
@@ -16,16 +16,16 @@ diverse_veg_benefit,1,,10,posnorm,the annual Government benefit of saving on hea
 knowledge_exchange_benefit,1,,5,posnorm,savings on community outreach program (million VND/year)
 reputation_benefit,2,,8,posnorm,added economic benefit of reputation gains (million VND/year)
 environmental_benefit,3,,9,posnorm,saving on enviroment program (million VND/year)
-percentage_of_sales,10,,50,posnorm,Women's Union revenue from farmer's sales (million VND/year)
+percentage_of_sales,10,,50,posnorm,company revenue from farmer's sales (million VND/year)
 ,,,,,
 if_accessible,0.4,,0.85,tnorm_0_1,general chance that veg are accessible (%) 
 taste_reduced,0.1,,0.5,tnorm_0_1,chance that veg taste is reduced (%)
 family_does_not_like,0.05,,0.1,tnorm_0_1,chance that family does not like that veg (%)
 undesirable_change_of_veg,0.1,,0.6,tnorm_0_1,chance of undersirable change of veg (%)
 dont_care,0.05,,0.1,tnorm_0_1,chance of people do not care about the veg (%)
-dont_know,0.1,,0.4,tnorm_0_1,chance of people do not know about the veg (%)
+dont_know,0.05,,0.2,tnorm_0_1,chance of people do not know about the veg (%)
 change_of_veg_source_undesirable,0.1,,0.5,tnorm_0_1,chance of people do not know about the veg (%)
-already_have_other_source,0.05,,0.2,tnorm_0_1,chance of people already have other source (%)
+already_have_other_source,0.05,,0.3,tnorm_0_1,chance of people already have other source (%)
 negative_rumors,0.05,,0.1,tnorm_0_1,chance of negative rumors (%)
 conflict_farmer_buyer,0.05,,0.15,tnorm_0_1,chance of conflict between famer and buyer (%) 
 conflict_farmer_company,0.02,,0.1,tnorm_0_1,chance of conflict between famer and company (%) 
@@ -33,12 +33,12 @@ family_cannot_afford,0.1,,0.5,tnorm_0_1,chance of family cannot afford (%)
 access_threshold,0.6,,0.9,tnorm_0_1,threshold for chance of accesiblilty issue (%)
 access_reduction,0.05,,0.5,tnorm_0_1,amount of reduction in access to safe veg (%)
 ,,,,,
-poor_organization,0.05,,0.5,tnorm_0_1,prob. of poor organization (%)
+poor_organization,0.05,,0.4,tnorm_0_1,prob. of poor organization (%)
 poor_management,0.05,,0.5,tnorm_0_1,prob. of poor management (%)
 inconvenient,0.05,,0.5,tnorm_0_1,prob. that urban poor will find the access inconvienient (%)
 ,,,,,
 family_cannot_wait,0.05,,0.5,tnorm_0_1,prob. that urban poor will not be able to wait for the sale day (%)
-unsuitable_day_of_sale,0.05,,0.5,tnorm_0_1,prob. that urban poor will not be able to make  the day of sale (%)
+unsuitable_day_of_sale,0.05,,0.3,tnorm_0_1,prob. that urban poor will not be able to make  the day of sale (%)
 ,,,,,
 percent_veg_benefit_no_intervention,0.1,,0.5,tnorm_0_1,Relative percent vegetable benefits if only connect farmers and consumers (%)
 percent_meetings_no_intervention,0.2,,0.4,tnorm_0_1,Relative percent meetings required if only connect farmers and consumers (%)
