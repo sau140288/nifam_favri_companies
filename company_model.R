@@ -18,14 +18,14 @@ source("functions/discount.R")
 
 # Model ####
 # set.seed(1234) # to keep the same collection of results each time
-women_assoc_function <- function(x, varnames){
+company_function <- function(x, varnames){
   
   # Cost####
   
   one_time_establishment_costs <- cost_of_establishment_meetings + 
     cost_of_promotion
   
-  annual_running_costs <- cost_of_space_rent + 
+  annual_running_costs <- cost_of_space_opportunity_cost + 
     cost_of_regular_meetings +
     cost_of_cleaning_event + 
     cost_of_communication
@@ -44,6 +44,7 @@ women_assoc_function <- function(x, varnames){
   # Add more information about accessibility
   # Is the organization of the intervention aligned with 
   # what people need? 
+
   
   # Risks ###
   if(poor_organization >= access_threshold | 
@@ -52,6 +53,9 @@ women_assoc_function <- function(x, varnames){
      family_cannot_travel_too_far >= access_threshold |
      family_cannot_wait >= access_threshold |
      unsuitable_day_of_sale >= access_threshold |
+     conflict_farmer_buyer>= access_threshold |
+     conflict_farmer_company>= access_threshold |
+     
      
      # Do people go and get and also eat the veggies?
      
@@ -125,50 +129,50 @@ women_assoc_function <- function(x, varnames){
   # Beware, if you do not name your outputs (left-hand side of the equal sign) in the return section, 
   # the variables will be called output_1, _2, etc.
   
-  return(list(NPV_mobile_sales = NPV_interv,
+  return(list(NPV_company_sales = NPV_interv,
               NPV_no_interv = NPV_no_interv,
               decision = NPV_interv - NPV_no_interv, #the decision is in the trade off
-              Cashflow_mobile_sales = sales_intervention_result))
+              Cashflow_company_sales = sales_intervention_result))
 }
 
 # Monte Carlo simulation 
 source("functions/mcSimulation.R")
 
-women_assoc_results <- mcSimulation(
-  estimate = estimate_read_csv("inputs_women_assoc.csv"),
-  model_function = women_assoc_function,
+company_results <- mcSimulation(
+  estimate = estimate_read_csv("company_input.csv"),
+  model_function = company_function,
   numberOfModelRuns = 1e3, #run 1,000 times
   functionSyntax = "plainNames"
 )
 
 # plot distributions for the two options
 source("functions/plot_distributions.R")
-plot_distributions(mcSimulation_object = women_assoc_results, 
-                   vars = c("NPV_mobile_sales","NPV_no_interv"),
+plot_distributions(mcSimulation_object = company_results, 
+                   vars = c("NPV_company_sales","NPV_no_interv"),
                    method = 'smooth_simple_overlay', 
                    base_size = 7)
 
-plot_distributions(mcSimulation_object = women_assoc_results, 
-                   vars = c("NPV_mobile_sales","NPV_no_interv"),
+plot_distributions(mcSimulation_object = company_results, 
+                   vars = c("NPV_company_sales","NPV_no_interv"),
                    method = 'boxplot')
 
-plot_distributions(mcSimulation_object = women_assoc_results, 
+plot_distributions(mcSimulation_object = company_results, 
                    vars = "decision",
                    method = 'smooth_simple_overlay', 
                    base_size = 7)
 
 # Cashflow of the mobile sales option
 source("functions/plot_cashflow.R")
-plot_cashflow(mcSimulation_object = women_assoc_results, 
-              cashflow_var_name = "Cashflow_mobile_sales")
+plot_cashflow(mcSimulation_object = company_results, 
+              cashflow_var_name = "Cashflow_company_sales")
 
 # PLS
 source("functions/pls_model.R")
-pls_result <- plsr.mcSimulation(object = women_assoc_results,
-                                resultName = names(women_assoc_results$y)[1], 
+pls_result <- pls_model(object = company_results,
+                                resultName = names(company_results)[1], 
                                 ncomp = 1)
 
-input_table <- read.csv("inputs_women_assoc.csv")
+input_table <- read.csv("company_input.csv")
 source("functions/plot_pls.R")
 plot_pls(pls_result, input_table = input_table, threshold = 0)
 
@@ -177,8 +181,8 @@ source("functions/multi_EVPI.R")
 #here we subset the outputs from the mcSimulation function (y) 
 # by selecting the correct variables
 # be sure to run the multi_EVPI only on the variables that the we want
-mcSimulation_table <- data.frame(women_assoc_results$x, 
-                                 women_assoc_results$y[1:3])
+mcSimulation_table <- data.frame(company_results$x, 
+                                 company_results$y[1:3])
 
 evpi <- multi_EVPI(mc = mcSimulation_table, first_out_var = "NPV_mobile_sales")
 
@@ -187,5 +191,5 @@ plot_evpi(evpi, decision_vars = "NPV_mobile_sales")
 plot_evpi(evpi, decision_vars = "decision")
 
 # Get summary statistics
-summary(women_assoc_results$y$decision)
+summary(company_results$y$decision)
 
