@@ -2,6 +2,7 @@
 # selling pointpoint of safe vegetable
 
 # test model with a function to do one random draw of the model
+# make sure to clear in Enviroment
 source("functions/make_variables.R")
 source("functions/estimate_read_csv.R")
 make_variables(estimate_read_csv(paste("company_input.csv", sep="")))
@@ -50,7 +51,6 @@ company_function <- function(x, varnames){
   if(poor_organization >= access_threshold | 
      poor_management >= access_threshold |  
      inconvenient >= access_threshold | 
-     family_cannot_travel_too_far >= access_threshold |
      family_cannot_wait >= access_threshold |
      unsuitable_day_of_sale >= access_threshold |
      conflict_farmer_buyer>= access_threshold |
@@ -87,7 +87,7 @@ company_function <- function(x, varnames){
   
   healthy_veggies_benefit <- diverse_veg_benefit +  # savings on programs for fresh veggies
     knowledge_exchange_benefit + # savings on community outreach program
-    gender_equality_benefit + # savings on the costs of gender programs
+  
     reputation_benefit + # added economic benefit of reputation gains
     environmental_benefit # savings on environmental programs
   
