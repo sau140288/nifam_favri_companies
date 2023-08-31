@@ -1,5 +1,5 @@
 # FAVRI and the companies
-# selling pointpoint of safe vegetable
+# selling point of safe vegetable
 
 # test model with a function to do one random draw of the model
 # make sure to clear in Enviroment
@@ -101,7 +101,7 @@ company_function <- function(x, varnames){
   sales_intervention_result <- total_benefits - total_costs
   
   # Alternative ####
-  # what might the companycompany do instead 
+  # what might the company do instead 
   # with the same kinds of outcomes in mind
   # what action would they take to address health, gender etc.?
   # i.e. just connect farmers and consumers and allow them to handle logistics
@@ -161,7 +161,7 @@ plot_distributions(mcSimulation_object = company_results,
                    method = 'smooth_simple_overlay', 
                    base_size = 7)
 
-# Cashflow of the mobile sales option
+# Cashflow of the company option
 source("functions/plot_cashflow.R")
 plot_cashflow(mcSimulation_object = company_results, 
               cashflow_var_name = "Cashflow_company_sales")
