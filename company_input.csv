@@ -16,7 +16,7 @@ diverse_veg_benefit,1,,10,posnorm,the annual Government benefit of saving on hea
 knowledge_exchange_benefit,1,,5,posnorm,savings on community outreach program (million VND/year)
 reputation_benefit,2,,8,posnorm,added economic benefit of reputation gains (million VND/year)
 environmental_benefit,3,,9,posnorm,saving on enviroment program (million VND/year)
-percentage_of_sales,10,,50,posnorm,company revenue from farmer's sales (million VND/year)
+percentage_of_sales,10,,30,posnorm,company revenue from farmer's sales (million VND/year)
 ,,,,,
 if_accessible,0.4,,0.85,tnorm_0_1,general chance that veg are accessible (%) 
 taste_reduced,0.1,,0.5,tnorm_0_1,chance that veg taste is reduced (%)
