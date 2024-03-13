@@ -39,7 +39,8 @@ company_function <- function(x, varnames){
   #assumning that in the first year we establishment costs and running costs
   total_costs[1]<-total_costs[1]+one_time_establishment_costs
   
-  summary(total_costs)
+  
+  
   
   # Benefits ####
   
