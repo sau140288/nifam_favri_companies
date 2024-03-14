@@ -1,5 +1,6 @@
 # nifam_favri_companies
 2nd intervention selected from the July Workshop
+
 Should the company in urban Hanoi invests time and resources in having a safe vegetable selling point at the company's campus?
 
 Graphical model
