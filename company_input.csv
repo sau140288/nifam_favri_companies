@@ -17,14 +17,14 @@ cost_establishment_equipments,5,,15,posnorm,cost of establishment equipments (mi
 ,,,,,
 ,,,,,
 ,,,,,
+cost_of_maintaining_monitoring_and_evaluation,3,,10,posnorm,Maintaining costs of monitoring and evaluation (million VND)
+cost_of_maintaining_depreciation_of_equipments,3,,15,posnorm,Maintaining costs of depreciation of equipments (million VND)
+cost_of_maintaining_capital,3,,12,posnorm,Maintaining costs of capital (million VND)
+cost_of_maintaining_cleaning,3,,10,posnorm,Maintaining costs of cleaning  (million VND)
+cost_of_maintaining_human_resource,4,,15,posnorm,Maintaining costs of human resource (million VND)
+cost_of_maintaining_time,1,,6,posnorm,Maintaining costs of time (million VND)
+cost_of_maintaining_promotion,1,,5,posnorm,Maintaining costs of promotion (million VND)
 ,,,,,
-,,,,,
-cost_of_promotion,1,,5,posnorm,Establishment costs of marketing (million VND)
-,,,,,
-cost_of_space_opportunity_cost,3,,12,posnorm,the annual opportunity cost of space (million VND/year)
-cost_of_regular_meetings,0.3,,3,posnorm,the annual cost of meetings (million VND/year)
-cost_of_cleaning_event,2,,4,posnorm,the annual cost of cleaning space for veg sell (million VND/year)
-cost_of_communication,1,,5,posnorm,the annual cost of communcation (million VND/year)
 ,,,,,
 diverse_veg_benefit,1,,10,posnorm,the annual Government benefit of saving on health expense (million VND/year)
 knowledge_exchange_benefit,1,,5,posnorm,savings on community outreach program (million VND/year)
