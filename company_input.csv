@@ -33,6 +33,8 @@ family_cannot_afford,0.1,,0.5,tnorm_0_1,chance of family cannot afford (%)
 access_threshold,0.6,,0.9,tnorm_0_1,threshold for chance of accesiblilty issue (%)
 access_reduction,0.05,,0.5,tnorm_0_1,amount of reduction in access to safe veg (%)
 ,,,,,
+chance_of_disease_outbreak,0.001,,0.007,tnorm_0_1,chance of a disease outbreak totally removing access to the farm stand (i.e. COVID) (%)
+,,,,,
 poor_organization,0.05,,0.4,tnorm_0_1,prob. of poor organization (%)
 poor_management,0.05,,0.5,tnorm_0_1,prob. of poor management (%)
 inconvenient,0.05,,0.5,tnorm_0_1,prob. that urban poor will find the access inconvienient (%)
