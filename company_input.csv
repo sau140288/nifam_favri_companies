@@ -16,7 +16,6 @@ cost_establishment_overhead_cost,1,,7,posnorm,cost of establishment overhead cos
 cost_establishment_equipments,5,,15,posnorm,cost of establishment equipments (million VND)
 ,,,,,
 ,,,,,
-,,,,,
 cost_of_maintaining_monitoring_and_evaluation,3,,10,posnorm,Maintaining costs of monitoring and evaluation (million VND)
 cost_of_maintaining_depreciation_of_equipments,3,,15,posnorm,Maintaining costs of depreciation of equipments (million VND)
 cost_of_maintaining_capital,3,,12,posnorm,Maintaining costs of capital (million VND)
@@ -26,11 +25,16 @@ cost_of_maintaining_time,1,,6,posnorm,Maintaining costs of time (million VND)
 cost_of_maintaining_promotion,1,,5,posnorm,Maintaining costs of promotion (million VND)
 ,,,,,
 ,,,,,
-diverse_veg_benefit,1,,10,posnorm,the annual Government benefit of saving on health expense (million VND/year)
-knowledge_exchange_benefit,1,,5,posnorm,savings on community outreach program (million VND/year)
-reputation_benefit,2,,8,posnorm,added economic benefit of reputation gains (million VND/year)
-environmental_benefit,3,,9,posnorm,saving on enviroment program (million VND/year)
-percentage_of_sales,10,,30,posnorm,company revenue from farmer's sales (million VND/year)
+benefit_company_revenue,1,,10,posnorm,the revenue of the company (million VND/year)
+benefit_heath_care_cost,1,,5,posnorm,savings on worker's heath care cost (million VND/year)
+benefit_worker_time,2,,8,posnorm,worker's time spent to access healthy and safe food (million VND/year)
+benefit_nutrition,3,,9,posnorm,saving on enviroment program (million VND/year)
+benefit_farmer_reputation,10,,30,posnorm,company revenue from farmer's sales (million VND/year)
+benefit_factory_reputation_,,,,,
+benefit_food_prep_cooking_and_food_waste,,,,,
+benefit_company_revenue,,,,,
+benefit_enviroment_on_campus,,,,,
+,,,,,
 ,,,,,
 if_accessible,0.4,,0.85,tnorm_0_1,general chance that veg are accessible (%) 
 taste_reduced,0.1,,0.5,tnorm_0_1,chance that veg taste is reduced (%)
