@@ -23,10 +23,27 @@ company_function <- function(x, varnames){
   
   # Cost####
   
-  one_time_establishment_costs <- cost_of_establishment_meetings + 
+ # establishment costs
+  
+  cost_of_establishment_capital
+  cost_establishment_cleaning_establishment
+  cost_establishment_human_resource
+  cost_establishment_time
+  cost_establishment_promotion
+  cost_establishment_stakeholder_engagement
+  cost_establishment_communication
+  cost_establishment_legal_permission
+  cost_establishment_overhead_cost
+  cost_establishment_equipments
+  
+  
+  
+   one_time_establishment_costs <- cost_of_establishment_meetings + 
     cost_of_promotion
   
-  annual_running_costs <- cost_of_space_opportunity_cost + 
+ # maintaining costs
+   
+    annual_running_costs <- cost_of_space_opportunity_cost + 
     cost_of_regular_meetings +
     cost_of_cleaning_event + 
     cost_of_communication
@@ -122,7 +139,7 @@ company_function <- function(x, varnames){
   # comparative NPV here, just discount the intervention result
   NPV_interv <-
     discount(sales_intervention_result, 
-             discount_rate, calculate_NPV = TRUE)
+             discount_rate, calculate_NPV = TRUE) #consider inflation rate???
   
   NPV_no_interv <-
     discount(no_intervention_result, 
