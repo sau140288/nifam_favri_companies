@@ -25,28 +25,29 @@ company_function <- function(x, varnames){
   
  # establishment costs
   
-  cost_of_establishment_capital
-  cost_establishment_cleaning_establishment
-  cost_establishment_human_resource
-  cost_establishment_time
-  cost_establishment_promotion
-  cost_establishment_stakeholder_engagement
-  cost_establishment_communication
-  cost_establishment_legal_permission
-  cost_establishment_overhead_cost
-  cost_establishment_equipments
   
-  
-  
-   one_time_establishment_costs <- cost_of_establishment_meetings + 
-    cost_of_promotion
-  
+   one_time_establishment_costs <- cost_of_establishment_capital+
+                       cost_establishment_cleaning_establishment+
+                       cost_establishment_human_resource+
+                       cost_establishment_time+
+                       cost_establishment_promotion+
+                       cost_establishment_stakeholder_engagement+
+                       cost_establishment_communication+
+                       cost_establishment_legal_permission+
+                       cost_establishment_overhead_cost+
+                       cost_establishment_equipments
+                       
+                       
  # maintaining costs
    
-    annual_running_costs <- cost_of_space_opportunity_cost + 
-    cost_of_regular_meetings +
-    cost_of_cleaning_event + 
-    cost_of_communication
+    annual_running_costs <- cost_of_maintaining_monitoring_and_evaluation+
+               cost_of_maintaining_depreciation_of_equipments+
+               cost_of_maintaining_capital+
+               cost_of_maintaining_cleaning+
+               cost_of_maintaining_human_resource+
+               cost_of_maintaining_time+
+               cost_of_maintaining_promotion
+    
   
   # costs over five years
   total_costs <-  vv(annual_running_costs, var_CV = CV_value, 
@@ -144,6 +145,15 @@ company_function <- function(x, varnames){
   
   # The difference is inherent in our calculation so we do not need the 
   # comparative NPV here, just discount the intervention result
+  # # = (1 + Real Discount Rate)(1 + Inflation Rate) – 1 ≈ Real Discount Rate + Inflation Rate
+  # Real Discount Rate ≈ Nominal Discount Rate - Inflation Rate
+  # Nominal discount rate is often considered as nominal bank interest rate. If we have already considered inflation in the cost and benefit calculation, then for calculating NPV, we should consider
+  # 
+  # Nominal interest rate
+  # Company's choice of nominal interest rate (or nominal discount rate).
+  # We suggest the discount rate from 3-15%  
+
+  
   NPV_interv <-
     discount(sales_intervention_result, 
              discount_rate, calculate_NPV = TRUE) #consider inflation rate???
