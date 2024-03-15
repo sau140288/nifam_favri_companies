@@ -54,7 +54,7 @@ company_function <- function(x, varnames){
                      n = number_of_years)
   
   #assumning that in the first year we establishment costs and running costs
-  total_costs[1]<-total_costs[1]+one_time_establishment_costs
+  total_costs[1] <- total_costs[1] + one_time_establishment_costs
   
   
   
@@ -97,13 +97,6 @@ company_function <- function(x, varnames){
     
   }
   
-  # here we need to think slightly differently about benefits
-  # These are related to the savings in programs ... perhaps, 
-  # although that is slightly low in the urban areas
-  # because the people of Hanoi are relatively richer than other parts of Vietnam
-  # the savings will not be much, the government is busy taking care of very poor people
-  # in other areas of Vietnam
-  
   healthy_veggies_benefit <- diverse_veg_benefit +  # savings on programs for fresh veggies
     knowledge_exchange_benefit + # savings on community outreach program
   
@@ -116,6 +109,20 @@ company_function <- function(x, varnames){
                         n = number_of_years, 
                         relative_trend = inflation_rate) * if_accessible #conditional on access
   
+  # disease outbreak risk (cf. COVID)
+  shut_down_for_disease_control <- chance_event(chance_of_disease_outbreak)
+  
+  # no benefits if disease outbreak
+  if(shut_down_for_disease_control == 1) {
+    total_benefits <- 0
+  } else {
+    total_benefits }
+  
+  # still have establishment costs
+  if(shut_down_for_disease_control == 1) {
+    total_costs <- total_costs[2:number_of_years]<-0
+  } else {
+    total_costs <- total_costs }
   
   sales_intervention_result <- total_benefits - total_costs
   
