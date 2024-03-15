@@ -1,4 +1,4 @@
-# nifam_favri_companies
+# NIFAM and FAVRI model about companies decision
 
 2nd intervention selected from a July 2023 Workshop
 
