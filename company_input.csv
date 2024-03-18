@@ -36,32 +36,40 @@ benefit_enviroment_on_campus,3,,8,posnorm,having green and clean space for selli
 benefit_work_efficiency,10,,35,posnorm,company revenue from farmer's working more efficiency (million VND/year)
 benefit_safety_of_food,3,,12,posnorm,savings on worker's health care cost (million VND/year)
 ,,,,,
+if_relationship,0.3,,0.85,tnorm_0_1,general chance that relationship change (%) 
+conflict_farmer_buyer,0.05,,0.15,tnorm_0_1,chance of conflict between famer and buyer (%) 
+conflict_farmer_company,0.02,,0.2,tnorm_0_1,chance of conflict between famer and company (%) 
+negative_rumors,0.05,,0.1,tnorm_0_1,chance of negative rumors (%)
 ,,,,,
+access_threshold,0.2,,0.8,tnorm_0_1,threshold for chance of accesiblilty issue (%)
+access_reduction,0.05,,0.5,tnorm_0_1,amount of reduction in access to safe veg (%)
 ,,,,,
 ,,,,,
 if_accessible,0.4,,0.85,tnorm_0_1,general chance that veg are accessible (%) 
+disease_outbreak,0.001,,0.007,tnorm_0_1,chance of a disease outbreak totally removing access to the farm stand (i.e. COVID) (%)
 taste_reduced,0.1,,0.5,tnorm_0_1,chance that veg taste is reduced (%)
 family_does_not_like,0.05,,0.1,tnorm_0_1,chance that family does not like that veg (%)
-undesirable_change_of_veg,0.1,,0.6,tnorm_0_1,chance of undersirable change of veg (%)
-dont_care,0.05,,0.3,tnorm_0_1,chance of people do not care about the veg (%)
-dont_know,0.05,,0.2,tnorm_0_1,chance of people do not know about the veg (%)
-change_of_veg_source_undesirable,0.1,,0.5,tnorm_0_1,chance of people do not know about the veg (%)
-already_have_other_source,0.05,,0.4,tnorm_0_1,chance of people already have other source (%)
-negative_rumors,0.05,,0.1,tnorm_0_1,chance of negative rumors (%)
-conflict_farmer_buyer,0.05,,0.15,tnorm_0_1,chance of conflict between famer and buyer (%) 
-conflict_farmer_company,0.02,,0.2,tnorm_0_1,chance of conflict between famer and company (%) 
-family_cannot_afford,0.1,,0.5,tnorm_0_1,chance of family cannot afford (%)
-access_threshold,0.6,,0.9,tnorm_0_1,threshold for chance of accesiblilty issue (%)
+change_of_source_undesirable,0.1,,0.6,tnorm_0_1,chance of undersirable change of veg (%)
+affordability,,,,,
+organization,0.05,,0.4,tnorm_0_1,prob. of poor organization/management (%)
+inconvenient,0.05,,0.3,tnorm_0_1,prob. that urban workers will not be able to make  the day of sale or inconvenient time (%)
+unsuitable_day_of_sale,0.05,,0.3,tnorm_0_1,prob. that urban poor will not be able to make  the day of sale (%)
+taste_and_taboo,0.1,,0.5,tnorm_0_1,chance that veg is reduced due to taste and taboo(%)
+cultural,0.1,,0.5,tnorm_0_1,chance that veg is reduced due to cultural(%)
+reliance_supply,0.1,,0.5,tnorm_0_1,chance that veg is reduced due to reliance on only one supplier(%)
+monopoly,0.05,,0.1,tnorm_0_1,chance of monopoly (%)
+,,,,,
+access_threshold,0.2,,0.8,tnorm_0_1,threshold for chance of accesiblilty issue (%)
 access_reduction,0.05,,0.5,tnorm_0_1,amount of reduction in access to safe veg (%)
 ,,,,,
-chance_of_disease_outbreak,0.001,,0.007,tnorm_0_1,chance of a disease outbreak totally removing access to the farm stand (i.e. COVID) (%)
 ,,,,,
-poor_organization,0.05,,0.4,tnorm_0_1,prob. of poor organization (%)
-poor_management,0.05,,0.5,tnorm_0_1,prob. of poor management (%)
-inconvenient,0.05,,0.5,tnorm_0_1,prob. that urban poor will find the access inconvienient (%)
+if_nutrition,0.3,,0.85,tnorm_0_1,general chance that nutrition is change (%) 
+vegetable_quality,0.001,,0.007,tnorm_0_1,chance of vegetable quality is reduced (i.e. COVID) (%)
+diversity,0.1,,0.5,tnorm_0_1,chance that veg diversity is reduced (%)
 ,,,,,
-family_cannot_wait,0.05,,0.5,tnorm_0_1,prob. that urban poor will not be able to wait for the sale day (%)
-unsuitable_day_of_sale,0.05,,0.3,tnorm_0_1,prob. that urban poor will not be able to make  the day of sale (%)
+access_threshold,0.2,,0.8,tnorm_0_1,threshold for chance of accesiblilty issue (%)
+access_reduction,0.05,,0.5,tnorm_0_1,amount of reduction in access to safe veg (%)
+,,,,,
 ,,,,,
 percent_veg_benefit_no_intervention,0.2,,0.7,tnorm_0_1,Relative percent vegetable benefits if only connect farmers and consumers (%)
 percent_meetings_no_intervention,0.2,,0.4,tnorm_0_1,Relative percent meetings required if only connect farmers and consumers (%)
