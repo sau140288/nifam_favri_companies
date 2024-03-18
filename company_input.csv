@@ -1,13 +1,13 @@
 variable,lower ,median,upper,distribution,label
 number_of_years,5,,5,const,Number of years for model simulation
-discount_rate,5,,8,posnorm,Discounting factor
+discount_rate,3,,15,posnorm,Discounting factor
 ,,,,,
 CV_value,0.1,,0.4,tnorm_0_1,Coefficient of variation for company intervention (%)
 inflation_rate,3,,7,posnorm,Inflation rate (%)
 cost_of_establishment_capital,1,,4,posnorm,cost of establishment capital (million VND)
 cost_establishment_cleaning_establishment,2,,3,posnorm,cost of cleaning establishment (million VND)
-cost_establishment_human_resource,1,,5,posnorm,cost of establishment human resource (million VND)
-cost_establishment_time,2,,8,posnorm,cost of establishment time (million VND)
+cost_establishment_human_resource,1,,5,posnorm,labor cost of the core team to support establishment (million VND)
+cost_establishment_allowance_extended_participants,2,,8,posnorm,allowance for extended participants during establishment time (million VND)
 cost_establishment_promotion,5,,14,posnorm,cost of establishment promotion (million VND)
 cost_establishment_stakeholder_engagement,2,,8,posnorm,cost of establishment stakeholder engagement (million VND)
 cost_establishment_communication,4,,9,posnorm,cost of establishment communication (million VND)
@@ -16,24 +16,27 @@ cost_establishment_overhead_cost,1,,7,posnorm,cost of establishment overhead cos
 cost_establishment_equipments,5,,15,posnorm,cost of establishment equipments (million VND)
 ,,,,,
 ,,,,,
-cost_of_maintaining_monitoring_and_evaluation,3,,10,posnorm,Maintaining costs of monitoring and evaluation (million VND)
-cost_of_maintaining_depreciation_of_equipments,3,,15,posnorm,Maintaining costs of depreciation of equipments (million VND)
-cost_of_maintaining_capital,3,,12,posnorm,Maintaining costs of capital (million VND)
-cost_of_maintaining_cleaning,3,,10,posnorm,Maintaining costs of cleaning  (million VND)
-cost_of_maintaining_human_resource,4,,15,posnorm,Maintaining costs of human resource (million VND)
-cost_of_maintaining_time,1,,6,posnorm,Maintaining costs of time (million VND)
-cost_of_maintaining_promotion,1,,5,posnorm,Maintaining costs of promotion (million VND)
+cost_of_maintaining_monitoring_and_evaluation,3,,10,posnorm,"annual maintaining costs of monitoring and evaluation e.g. project visits, market surveillance (million VND)"
+cost_of_maintaining_depreciation_of_equipments,1,,3,posnorm,annual maintaining costs of depreciation of equipments (million VND)
+cost_of_maintaining_capital,3,,12,posnorm,annual maintaining costs of capital to support staff involvement in the intervention (million VND)
+cost_of_maintaining_cleaning,3,,10,posnorm,annual maintaining costs of cleaning  (million VND)
+cost_of_maintaining_human_resource,4,,15,posnorm,annual maintaining labor costs for the core team (million VND)
+cost_of_maintaining_allowance_extended_partipants,1,,6,posnorm,allowance for extended participants involved in annual maintaining (million VND)
+cost_of_maintaining_promotion,1,,5,posnorm,annual maintaining costs of promotion (million VND)
 ,,,,,
 ,,,,,
 benefit_company_revenue,1,,10,posnorm,the revenue of the company (million VND/year)
-benefit_heath_care_cost,1,,5,posnorm,savings on worker's heath care cost (million VND/year)
-benefit_worker_time,2,,8,posnorm,worker's time spent to access healthy and safe food (million VND/year)
-benefit_nutrition,3,,9,posnorm,saving on enviroment program (million VND/year)
-benefit_farmer_reputation,10,,30,posnorm,company revenue from farmer's sales (million VND/year)
-benefit_factory_reputation_,,,,,
-benefit_food_prep_cooking_and_food_waste,,,,,
-benefit_company_revenue,,,,,
-benefit_enviroment_on_campus,,,,,
+benefit_heath_care_cost,1,,5,posnorm,savings on worker's health care cost (million VND/year)
+benefit_worker_time,1,,4,posnorm,worker's time spent to access healthy and safe food (million VND/year)
+benefit_nutrition,3,,9,posnorm,saving on nutrition and health care program (million VND/year)
+benefit_farmer_reputation,5,,20,posnorm,farmer' revenue increasing due to increasing farmer's reputation (million VND/year)
+benefit_factory_reputation,3,,15,posnorm,farmer' revenue increasing due to increasing farmer's reputation (million VND/year)
+benefit_food_prep_cooking_and_food_waste,1,,4,posnorm,saving monney due to reducing food waste (million VND/year)
+benefit_enviroment_on_campus,3,,8,posnorm,having green and clean space for selling point instead of grass or dirty (million VND/year)
+benefit_work_efficiency,10,,35,posnorm,company revenue from farmer's working more efficiency (million VND/year)
+benefit_safety_of_food,3,,12,posnorm,savings on worker's health care cost (million VND/year)
+,,,,,
+,,,,,
 ,,,,,
 ,,,,,
 if_accessible,0.4,,0.85,tnorm_0_1,general chance that veg are accessible (%) 
