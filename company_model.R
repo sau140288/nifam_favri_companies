@@ -62,43 +62,61 @@ company_function <- function(x, varnames){
   
   # Benefits ####
   
-  # Add more information about accessibility
-  # Is the organization of the intervention aligned with 
-  # what people need? 
-
+ 
+ benefits<- benefit_company_revenue+
+                  benefit_heath_care_cost+
+                  benefit_worker_time+
+                  benefit_nutrition+
+                  benefit_farmer_reputation+
+                  benefit_factory_reputation+
+                  benefit_food_prep_cooking_and_food_waste+
+                  benefit_enviroment_on_campus+
+                  benefit_work_efficiency+
+                  benefit_safety_of_food
+  
+  
+  
+  
+  
   
   # Risks ###
-  if(poor_organization >= access_threshold | 
-     poor_management >= access_threshold |  
-     inconvenient >= access_threshold | 
-     family_cannot_wait >= access_threshold |
-     unsuitable_day_of_sale >= access_threshold |
-     conflict_farmer_buyer>= access_threshold |
-     conflict_farmer_company>= access_threshold |
-     
-     
-     # Do people go and get and also eat the veggies?
-     
-     taste_reduced >= access_threshold | 
-     family_does_not_like >= access_threshold |  
-     family_cannot_afford >= access_threshold | 
-     undesirable_change_of_veg >= access_threshold |
-     family_cannot_wait >= access_threshold |
-     dont_care >= access_threshold |
-     dont_know >= access_threshold | 
-     change_of_veg_source_undesirable >= access_threshold | 
-     already_have_other_source >= access_threshold | 
-     negative_rumors >= access_threshold){
-    
-    if_accessible <- if_accessible - access_reduction
-    
-  } else {
-    
-    if_accessible
-    
-  }
+ 
+  ## if_accessible   ????
+
+ 
   
-  healthy_veggies_benefit <- diverse_veg_benefit +  # savings on programs for fresh veggies
+    if(  disease_outbreak >= access_threshold | 
+        taste_reduced >= access_threshold |  
+        family_does_not_like >= access_threshold | 
+        change_of_source_undesirable >= access_threshold |
+        affordability>= access_threshold |
+        organization>= access_threshold |
+        inconvenient>= access_threshold |
+        unsuitable_day_of_sale>= access_threshold |
+        taste_and_taboo>= access_threshold |
+        cultural>= access_threshold |
+        reliance_supply>= access_threshold |
+        monopoly>= access_threshold |) {
+      
+     } else {
+    
+       if_accessible <- if_accessible - access_reduction
+      
+     }
+  
+ 
+  if_accessible
+  
+  
+  ## if_nutrition
+
+  
+  
+  
+  ## if_relationship
+
+  
+  ììhealthy_veggies_benefit <- diverse_veg_benefit +  # savings on programs for fresh veggies
     knowledge_exchange_benefit + # savings on community outreach program
   
     reputation_benefit + # added economic benefit of reputation gains
