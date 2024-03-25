@@ -7,5 +7,5 @@ Should the company in urban Hanoi invests time and resources in having a safe ve
 Graphical model
 
 =======
-![NIFAM -Conceptual model-Sau drawio (2)](https://github.com/sau140288/nifam_favri_companies/assets/19190662/9ec191e3-cfd5-4df0-8a2a-bd36d8631db6)
->>>>>>> fea557637b8454d895f0342a24be86f2df784f34
+
+![NIFAM -Conceptual model-Sau drawio (1)](https://github.com/sau140288/nifam_favri_companies/assets/125959163/3801c042-7193-4b8e-b596-e7e7556a4a4f)
