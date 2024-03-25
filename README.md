@@ -5,12 +5,7 @@
 Should the company in urban Hanoi invests time and resources in having a safe vegetable selling point at the company's campus?
 
 Graphical model
-[NIFAM -Conceptual model-Sau (15 03 2024).drawio.pdf](https://github.com/sau140288/nifam_favri_companies/files/14603352/NIFAM.-Conceptual.model-Sau.15.03.2024.drawio.pdf)
-
-
-<<<<<<< HEAD
-![Nutrition model-Page-1 drawio](https://github.com/sau140288/nifam_favri_companies/assets/19190662/28e99797-7474-43d3-b708-b9ca5df046a5)
 
 =======
-![NIFAM -Conceptual model-Sau drawio (2)](https://github.com/sau140288/nifam_favri_companies/assets/19190662/9ec191e3-cfd5-4df0-8a2a-bd36d8631db6)
->>>>>>> fea557637b8454d895f0342a24be86f2df784f34
+
+![NIFAM -Conceptual model-Sau drawio (1)](https://github.com/sau140288/nifam_favri_companies/assets/125959163/9ac6f55a-76b6-4caf-82af-ea8c17ee1ba4)
