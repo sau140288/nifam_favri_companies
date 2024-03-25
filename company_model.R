@@ -81,40 +81,177 @@ company_function <- function(x, varnames){
   
   # Risks ###
  
-  ## if_accessible   ????
+  ## if_accessible  
 
  
   
-    if(  disease_outbreak >= access_threshold | 
-        taste_reduced >= access_threshold |  
-        family_does_not_like >= access_threshold | 
-        change_of_source_undesirable >= access_threshold |
-        affordability>= access_threshold |
-        organization>= access_threshold |
-        inconvenient>= access_threshold |
-        unsuitable_day_of_sale>= access_threshold |
-        taste_and_taboo>= access_threshold |
-        cultural>= access_threshold |
-        reliance_supply>= access_threshold |
-        monopoly>= access_threshold |) {
-      
-     } else {
-    
-       if_accessible <- if_accessible - access_reduction
-      
-     }
+   ### if(  disease_outbreak >= access_threshold | 
+     #   taste_reduced >= access_threshold |  
+      #  family_does_not_like >= access_threshold | 
+       # change_of_source_undesirable >= access_threshold |
+       # affordability>= access_threshold |
+       # organization>= access_threshold |
+       # inconvenient>= access_threshold |
+       # unsuitable_day_of_sale>= access_threshold |
+       #taste_and_taboo>= access_threshold |
+       # cultural>= access_threshold |
+       # reliance_supply>= access_threshold |
+       # monopoly>= access_threshold |  )  {
+         
+       #if_accessible <- if_accessible - access_reduction
+           } else {
+          if_accessible
+           }
   
  
-  if_accessible
+
+  disease_outbreak <-chance event(disease_outbreak,value_if=1,
+                                  value_if_not=0)
+  
+  taste_reduced <-chance event(taste_reduced,value_if=1,
+                                  value_if_not=0)
+  
+  family_does_not_like <-chance event( family_does_not_like,value_if=1,
+                                  value_if_not=0)
+  
+  change_of_source_undesirable <-chance event(change_of_source_undesirable,
+                                              value_if=1,value_if_not=0)
+                                    
+  
+  affordability <-chance event(affordability,value_if=1,
+                                       value_if_not=0)
+  
+  organization <-chance event(organization,value_if=1,
+                                       value_if_not=0)
+  
+  inconvenient <-chance event(inconvenient,value_if=1,
+                                       value_if_not=0)
+ 
+  unsuitable_day_of_sale <-chance event(unsuitable_day_of_sale,value_if=1,
+                              value_if_not=0)
+  
+  inconvenient <-chance event(inconvenient,value_if=1,
+                              value_if_not=0)
+  
+  taste_and_taboo <-chance event( taste_and_taboo,value_if=1,
+                              value_if_not=0)
+  
+  cultural <-chance event(cultural,value_if=1,
+                              value_if_not=0)
+  
+  reliance_supply <-chance event(reliance_supply,value_if=1,
+                              value_if_not=0)
   
   
-  ## if_nutrition
+  monopoly <-chance event(monopoly,value_if=1,
+                                       value_if_not=0)
+ 
+
+  if( disease_outbreak == 1|
+      taste_reduced == 1|
+      family_does_not_like == 1|
+      change_of_source_undesirable== 1|
+      affordability== 1|
+      organization== 1|
+      inconvenient== 1|
+      unsuitable_day_of_sale== 1|
+      taste_and_taboo== 1|
+      cultural== 1|
+      reliance_supply== 1|
+      monopoly== 1|)
+  
+  {if_accessible <- if_accessible - access_reduction} else {if_accessible}
+ 
+  
+  
+  
+    ## if_nutrition
+
+ 
+  monopoly <-chance event(monopoly,value_if=1,
+                          value_if_not=0)
+  
+  diversity <-chance event( diversity,value_if=1,
+                          value_if_not=0)
+  
+  vegetable_quality <-chance event(vegetable_quality,value_if=1,
+                          value_if_not=0)
+  
+  
+  if(monopoly == 1|
+     diversity == 1|
+    vegetable_quality == 1|)
+ 
+  {if_nutrition<- if_nutrition - nutrition_reduction} else {if_nutrition}
+
+
 
   
   
   
   ## if_relationship
 
+ 
+  conflict_farmer_buyer <-chance event(conflict_farmer_buyer,value_if=1,
+                          value_if_not=0)
+  
+  conflict_farmer_company <-chance event(conflict_farmer_company,value_if=1,
+                            value_if_not=0)
+  
+  rumor <-chance event(rumor,value_if=1,
+                                   value_if_not=0)
+  
+  
+  if(conflict_farmer_buyer == 1|
+     conflict_farmer_company == 1|
+     rumor == 1|)
+    
+  {if_relationship<- if_relationship - relationship_reduction} else {if_relationship}
+  
+  
+  ## if_safety_of_food
+
+  
+  vegetable_quality <-chance event(vegetable_quality,value_if=1,
+                                       value_if_not=0)
+  
+  monopoly <-chance event(monopoly,value_if=1,
+                                         value_if_not=0)
+  
+
+  if(vegetable_quality == 1|
+     monopoly == 1|
+   
+    
+     {if_safety_of_food<- if_safety_of_food - safety_of_food_reduction
+} else {if_safety_of_food}
+  
+  
+## if_benefit_farmer_revenue
+
+
+competition_other_farmer<-chance event(competition_other_farmer
+,value_if=1, value_if_not=0)
+
+
+if(vegetable_quality == 1|
+     {if_benefit_farmer_revenue<- if_benefit_farmer_revenue - if_benefit_farmer_revenue_reduction
+   } else {if_benefit_farmer_revenue}
+   
+### total_risks
+total_risks<-if_accessible+
+             if_nutrition+
+             if_relationship+
+             if_safety_of_food+
+             if_benefit_farmer_revenue
+   
+  
+  
+  
+  
+  
+  
+  
   
   ììhealthy_veggies_benefit <- diverse_veg_benefit +  # savings on programs for fresh veggies
     knowledge_exchange_benefit + # savings on community outreach program
