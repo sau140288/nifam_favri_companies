@@ -8,4 +8,4 @@ Graphical model
 
 =======
 
-![NIFAM -Conceptual model-Sau drawio (1)](https://github.com/sau140288/nifam_favri_companies/assets/125959163/3801c042-7193-4b8e-b596-e7e7556a4a4f)
+![NIFAM -Conceptual model-Sau drawio (1)](https://github.com/sau140288/nifam_favri_companies/assets/125959163/9ac6f55a-76b6-4caf-82af-ea8c17ee1ba4)
