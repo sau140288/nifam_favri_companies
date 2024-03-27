@@ -19,7 +19,7 @@ source("functions/discount.R")
 
 # Model ####
 # set.seed(1234) # to keep the same collection of results each time
-company_function <- function(x, varnames){
+# company_function <- function(x, varnames){
   
   # Cost####
   
@@ -28,22 +28,23 @@ company_function <- function(x, varnames){
   
    one_time_establishment_costs <- cost_of_establishment_capital+
                        cost_establishment_cleaning_establishment+
-                       cost_establishment_human_resource+
+                       cost_establishment_human_resource_staff+
                        cost_establishment_promotion+
                        cost_establishment_stakeholder_engagement+
                        cost_establishment_communication+
                        cost_establishment_legal_permission+
                        cost_establishment_overhead_cost+
-                       cost_establishment_equipments
+                       cost_establishment_equipment
                        
                        
  # maintaining costs
    
     annual_running_costs <- cost_of_maintaining_monitoring_and_evaluation+
-               cost_of_maintaining_depreciation_of_equipments+
+               cost_of_maintaining_depreciation_of_equipment+
                cost_of_maintaining_capital+
                cost_of_maintaining_cleaning+
-               cost_of_maintaining_human_resource+
+               cost_of_maintaining_human_resource_staff+
+               cost_of_maintaining_allowance_extended_partipants+
                cost_of_maintaining_promotion
     
   
@@ -55,160 +56,156 @@ company_function <- function(x, varnames){
   #assumning that in the first year we establishment costs and running costs
   total_costs[1] <- total_costs[1] + one_time_establishment_costs
   
-  
-  
-  
   # Benefits ####
   
- 
- benefits<- benefit_company_revenue+
-                  benefit_heath_care_cost+
-                  benefit_worker_time+
-                  benefit_nutrition+
-                  benefit_farmer_reputation+
-                  benefit_factory_reputation+
-                  benefit_food_prep_cooking_and_food_waste+
-                  benefit_enviroment_on_campus+
-                  benefit_work_efficiency+
-                  benefit_safety_of_food
-  
-  
-  
-  
-  
-  
-  # Risks ###
- 
+  # Risks to access ####
   ## if_accessible  
-
- 
   
-   ### if(  disease_outbreak >= access_threshold | 
-     #   taste_reduced >= access_threshold |  
-      #  family_does_not_like >= access_threshold | 
-       # change_of_source_undesirable >= access_threshold |
-       # affordability>= access_threshold |
-       # organization>= access_threshold |
-       # inconvenient>= access_threshold |
-       # unsuitable_day_of_sale>= access_threshold |
-       #taste_and_taboo>= access_threshold |
-       # cultural>= access_threshold |
-       # reliance_supply>= access_threshold |
-       # monopoly>= access_threshold |  )  {
-         
-       #if_accessible <- if_accessible - access_reduction
-           } else {
-          if_accessible
-           }
-  
- 
-
   disease_outbreak <-chance_event(disease_outbreak,value_if=1,
                                   value_if_not=0)
   
-  taste_reduced <-chance_event(taste_reduced,value_if=1,
-                                  value_if_not=0)
+  if( disease_outbreak == 1) {
+    if_accessible <- if_accessible - access_reduction_disease
+  } else {
+    if_accessible <- if_accessible}
   
-  family_does_not_like <-chance_event( family_does_not_like,value_if=1,
-                                  value_if_not=0)
   
   change_of_source_undesirable <-chance_event(change_of_source_undesirable,
                                               value_if=1,value_if_not=0)
-                                    
   
-  affordability <-chance_event(affordability,value_if=1,
-                                       value_if_not=0)
+  if( change_of_source_undesirable == 1) {
+    if_accessible <- if_accessible - access_reduction_change_of_source
+  } else {
+    if_accessible <- if_accessible}
   
-  organization <-chance_event(organization,value_if=1,
-                                       value_if_not=0)
+  
+  affordability_low <-chance_event(affordability,value_if=1,
+                                   value_if_not=0)
+  
+  if( affordability_low == 1) {
+    if_accessible <- if_accessible - access_reduction_affordability
+  } else {
+    if_accessible <- if_accessible}
+  
+  organization_poor <-chance_event(organization,value_if=1,
+                                   value_if_not=0)
   
   inconvenient <-chance_event(inconvenient,value_if=1,
-                                       value_if_not=0)
- 
-  unsuitable_day_of_sale <-chance_event(unsuitable_day_of_sale,value_if=1,
                               value_if_not=0)
   
-  inconvenient <-chance_event(inconvenient,value_if=1,
-                              value_if_not=0)
-  
-  taste_and_taboo <-chance_event( taste_and_taboo,value_if=1,
-                              value_if_not=0)
-  
-  cultural_accessible <-chance_event(cultural,value_if=1,
-                              value_if_not=0)
-  
- 
-  monopoly_reliance_supply_accessible<-chance_event(monopoly_reliance_supply,
-                                         value_if=1,
-                                       value_if_not=0)
- 
-
-  if( disease_outbreak == 1|
-      taste_reduced == 1|
-      family_does_not_like == 1|
-      change_of_source_undesirable== 1|
-      affordability== 1|
-      organization== 1|
-      inconvenient== 1|
-      unsuitable_day_of_sale== 1|
-      taste_and_taboo== 1|
-      cultural== 1|
-      monopoly_reliance_supply== 1|)
-  
-  {if_accessible <- if_accessible - access_reduction} else {if_accessible}
- 
+  if(organization_poor == 1 | inconvenient == 1) {
+    if_accessible <- if_accessible - access_reduction_organization_inconvenient
+  } else {
+    if_accessible <- if_accessible}
   
   
-  
-    ## if_nutrition
-
- 
-  monopoly_reliance_supply_nutrition <-chance_event(monopoly_reliance_supply,value_if=1,
-                          value_if_not=0)
-  
-  diversity <-chance_event( diversity,value_if=1,
-                          value_if_not=0)
-  
-  vegetable_quality <-chance_event(vegetable_quality,value_if=1,
-                          value_if_not=0)
+  not_preferred <-chance_event(chance_not_meet_preference,value_if=1,
+                               value_if_not=0)
   
   
-  if(monopoly == 1|
-     diversity == 1|
-    vegetable_quality == 1|)
- 
-  {if_nutrition<- if_nutrition - nutrition_reduction} else {if_nutrition}
-
-
-
+  if(not_preferred == 1) {
+    if_accessible <- if_accessible - access_reduction_preference
+  } else {
+    if_accessible <- if_accessible}
   
+  # change negative values to zero
+  # we do not expect a negative effect on accessibility
+  if_accessible[if_accessible<0]<-0
   
+  # benefits from nutrition
   
+  #monopoly effects on quality
+  monopoly_low_quality <-chance_event(chance_monopoly_reliance_supply)
+  
+  if(monopol_low_quality == 1){
+    vegetable_quality <- vegetable_quality - 
+      reduction_in_veg_quality_if_monopoly # percent reduction of quality
+    # if there is a monopoly there is a chance that the quality goes down
+  } else {
+    vegetable_quality <- vegetable_quality}
+  
+  # farmer knowledge and preferences will drive this up
+  # farming practice ####
+  
+  #monopoly effects on quality
+  good_farm_practice <-chance_event(farming_practice)
+  
+  if(good_farm_practice == 1){
+    vegetable_quality <- vegetable_quality + farming_practice_increase_quality + farming_practice_increase_diversity
+ # percent increase of quality
+    # if there is a monopoly there is a chance that the quality goes down
+  } else {
+    vegetable_quality <- vegetable_quality}
+  
+  diversity_risk <-chance_event( diversity)
+  
+  vegetable_quality_risk <-chance_event(vegetable_quality)
+  
+  if(diversity_risk ==1 | vegetable_quality_risk == 1){
+    worker_health_benefits_from_nutrition <- worker_health_benefits_from_nutrition * 
+      reduction_nutrition_low_diverse_and_quality
+  }else{
+    worker_health_benefits_from_nutrition <- worker_health_benefits_from_nutrition
+  }
+  
+   
+  # benefits to workers healths ####
+  benefit_worker_health <- (worker_health_benefits_from_accessibility + 
+                              worker_health_benefits_from_food_prep + 
+                              worker_health_benefits_from_safety_of_food + 
+                              worker_health_benefits_from_nutrition) * if_accessible
+  
+  # Risk of poor relationship ####
   ## if_relationship
-
- 
-  conflict_farmer_buyer <-chance_event(conflict_farmer_buyer,value_if=1,
-                          value_if_not=0)
-  
-  conflict_farmer_company <-chance_event(conflict_farmer_company,
-                            value_if=1,
-                            value_if_not=0)
-  
-  rumor <-chance_event(rumor,value_if=1,
-                             value_if_not=0)
   
   
+  conflict_farmer_buyer <-chance_event(chance_conflict_farmer_buyer,value_if=1,
+                                       value_if_not=0)
+  
+  conflict_farmer_company <-chance_event(chance_conflict_farmer_company,
+                                         value_if=1,
+                                         value_if_not=0)
+  
+  rumor <-chance_event(chance_rumor,value_if=1,
+                       value_if_not=0)
+  
+  # if factory has a good reputation then work ethic goes up a bit
+  # if not it goes down a bit
+  # this is the
   if(conflict_farmer_buyer == 1|
      conflict_farmer_company == 1|
-     rumor == 1|)
-    
-  {if_relationship<- if_relationship - relationship_reduction} else {if_relationship}
+     rumor == 1) {
+    factory_reputation <- factory_reputation - relationship_reduction
+  } else {
+    factory_reputation <- factory_reputation}
   
+  # calculate the work efficiency effect of the safe vegetables
+   benefit_work_efficiency <- (benefit_worker_health +
+    (worker_time_savings * # 1-2 hours a week saved on shopping (max)
+                            if_accessible)) * factory_reputation
+  
+   # calculate company revenue
+  company_revenue_through_intervention <- 
+    benefit_work_efficiency +
+    benefit_work_quality +
+    benefit_farmer_revenue #shared with company
+  
+  conflicting_interest <- chance_event(conflicting_business_interests)
+  
+  if(conflicting_interest == 1) {
+    company_revenue_through_intervention <- company_revenue_through_intervention - 
+      revenue_reduction_if_conflicting_interest
+  }else{
+    company_revenue_through_intervention <- company_revenue_through_intervention 
+  }
+  
+  longterm_benefits <- company_revenue_through_intervention + environment_on_campus
+ 
   
   ## if_safety_of_food
 
   
-  vegetable_quality <-chance event(vegetable_quality,value_if=1,
+  vegetable_quality <-chance_event(vegetable_quality,value_if=1,
                                        value_if_not=0)
   
   monopoly_reliance_supply_safety <-chance_event(monopoly_reliance_supply,
@@ -253,7 +250,6 @@ total_risks<-if_accessible+
   ììhealthy_veggies_benefit <- diverse_veg_benefit +  # savings on programs for fresh veggies
     knowledge_exchange_benefit + # savings on community outreach program
   
-    reputation_benefit + # added economic benefit of reputation gains
     environmental_benefit # savings on environmental programs
   
   total_benefits <-  vv(healthy_veggies_benefit + # savings on health related expenses
