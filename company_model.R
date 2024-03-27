@@ -44,7 +44,6 @@ company_function <- function(x, varnames){
                cost_of_maintaining_capital+
                cost_of_maintaining_cleaning+
                cost_of_maintaining_human_resource+
-               cost_of_maintaining_time+
                cost_of_maintaining_promotion
     
   
