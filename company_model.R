@@ -29,7 +29,6 @@ company_function <- function(x, varnames){
    one_time_establishment_costs <- cost_of_establishment_capital+
                        cost_establishment_cleaning_establishment+
                        cost_establishment_human_resource+
-                       cost_establishment_time+
                        cost_establishment_promotion+
                        cost_establishment_stakeholder_engagement+
                        cost_establishment_communication+
