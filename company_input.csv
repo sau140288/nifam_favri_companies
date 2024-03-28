@@ -85,7 +85,7 @@ revenue_reduction_if_conflicting_interest,0.05,,0.2,tnorm_0_1,revenue reduction 
 ,,,,,
 ,,,,,
 ,,,,,
-environment_on_campus,100,,300,posnorm,value of the contribution of farm stand to the environment on campus (million VND)
+environment_on_campus,3,,10,posnorm,value of the contribution of farm stand to the environment on campus (million VND/yr)
 ,,,,,
 ,,,,,
 ,,,,,

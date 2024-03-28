@@ -19,21 +19,22 @@ source("functions/discount.R")
 
 # Model ####
 # set.seed(1234) # to keep the same collection of results each time
-# company_function <- function(x, varnames){
+company_function <- function(x, varnames){
   
   # Cost####
+
   
  # establishment costs
   
   
-   one_time_establishment_costs <- cost_of_establishment_capital+
-                       cost_establishment_cleaning_establishment+
-                       cost_establishment_human_resource_staff+
-                       cost_establishment_promotion+
-                       cost_establishment_stakeholder_engagement+
-                       cost_establishment_communication+
-                       cost_establishment_legal_permission+
-                       cost_establishment_overhead_cost+
+   one_time_establishment_costs <- cost_of_establishment_capital +
+                       cost_establishment_cleaning_establishment +
+                       cost_establishment_human_resource_staff +
+                       cost_establishment_promotion +
+                       cost_establishment_stakeholder_engagement +
+                       cost_establishment_communication +
+                       cost_establishment_legal_permission +
+                       cost_establishment_overhead_cost +
                        cost_establishment_equipment
                        
                        
@@ -59,6 +60,7 @@ source("functions/discount.R")
   # Benefits ####
   
   # Risks to access ####
+  
   ## if_accessible  
   
   disease_outbreak <-chance_event(disease_outbreak,value_if=1,
@@ -112,39 +114,47 @@ source("functions/discount.R")
   # we do not expect a negative effect on accessibility
   if_accessible[if_accessible<0]<-0
   
-  # benefits from nutrition
+  # benefits from nutrition####
+  # TEMP remmve ######
+ #  #monopoly effects on quality
+ #  monopoly_low_quality <-chance_event(chance_monopoly_reliance_supply)
+ #  
+ #  if(monopoly_low_quality == 1){
+ #    vegetable_quality <- vegetable_quality - 
+ #      reduction_in_veg_quality_if_monopoly # percent reduction of quality
+ #    # if there is a monopoly there is a chance that the quality goes down
+ #  } else {
+ #    vegetable_quality <- vegetable_quality}
+ #  
+ #  # farmer knowledge and preferences will drive this up
+ #  # farming practice ####
+ #  
+ #  #monopoly effects on quality
+ #  good_farm_practice <-chance_event(farming_practice)
+ #  
+ #  if(good_farm_practice == 1){
+ #    vegetable_quality <- vegetable_quality + farming_practice_increase_quality + farming_practice_increase_diversity
+ # # percent increase of quality
+ #    # if there is a monopoly there is a chance that the quality goes down
+ #  } else {
+ #    vegetable_quality <- vegetable_quality
+ #    }
   
-  #monopoly effects on quality
-  monopoly_low_quality <-chance_event(chance_monopoly_reliance_supply)
+  diversity_risk <-chance_event(diversity)
   
-  if(monopol_low_quality == 1){
-    vegetable_quality <- vegetable_quality - 
-      reduction_in_veg_quality_if_monopoly # percent reduction of quality
-    # if there is a monopoly there is a chance that the quality goes down
+  vegetable_quality_risk <- chance_event(vegetable_quality)
+  
+  if(diversity_risk == 1){
+    worker_health_benefits_from_nutrition <- worker_health_benefits_from_nutrition * #VND value
+      (1 - reduction_nutrition_low_diverse_and_quality) #reduction percentage
   } else {
-    vegetable_quality <- vegetable_quality}
-  
-  # farmer knowledge and preferences will drive this up
-  # farming practice ####
-  
-  #monopoly effects on quality
-  good_farm_practice <-chance_event(farming_practice)
-  
-  if(good_farm_practice == 1){
-    vegetable_quality <- vegetable_quality + farming_practice_increase_quality + farming_practice_increase_diversity
- # percent increase of quality
-    # if there is a monopoly there is a chance that the quality goes down
+    worker_health_benefits_from_nutrition <- worker_health_benefits_from_nutrition
+  }
+  # double discounting for now #####
+  if(vegetable_quality_risk == 1){
+    worker_health_benefits_from_nutrition <- worker_health_benefits_from_nutrition * #VND value
+      (1 - reduction_nutrition_low_diverse_and_quality) #reduction percentage
   } else {
-    vegetable_quality <- vegetable_quality}
-  
-  diversity_risk <-chance_event( diversity)
-  
-  vegetable_quality_risk <-chance_event(vegetable_quality)
-  
-  if(diversity_risk ==1 | vegetable_quality_risk == 1){
-    worker_health_benefits_from_nutrition <- worker_health_benefits_from_nutrition * 
-      reduction_nutrition_low_diverse_and_quality
-  }else{
     worker_health_benefits_from_nutrition <- worker_health_benefits_from_nutrition
   }
   
@@ -179,18 +189,22 @@ source("functions/discount.R")
   } else {
     factory_reputation <- factory_reputation}
   
-  # calculate the work efficiency effect of the safe vegetables
+  # calculate the work efficiency effect of the safe vegetables####
    benefit_work_efficiency <- (benefit_worker_health +
     (worker_time_savings * # 1-2 hours a week saved on shopping (max)
                             if_accessible)) * factory_reputation
   
-   # calculate company revenue
-  company_revenue_through_intervention <- 
+   # calculate company revenue####
+  company_revenue_annual <- 
     benefit_work_efficiency +
     benefit_work_quality +
     benefit_farmer_revenue #shared with company
   
-  conflicting_interest <- chance_event(conflicting_business_interests)
+  company_revenue_through_intervention <- vv(company_revenue_annual, 
+                                             var_CV = CV_value, 
+                                             n = number_of_years)
+  
+  conflicting_interest <- chance_event(conflicting_business_interests) 
   
   if(conflicting_interest == 1) {
     company_revenue_through_intervention <- company_revenue_through_intervention - 
@@ -199,81 +213,9 @@ source("functions/discount.R")
     company_revenue_through_intervention <- company_revenue_through_intervention 
   }
   
-  longterm_benefits <- company_revenue_through_intervention + environment_on_campus
+  longterm_benefits_farmstand <- company_revenue_through_intervention + 
+    environment_on_campus
  
-  
-  ## if_safety_of_food
-
-  
-  vegetable_quality <-chance_event(vegetable_quality,value_if=1,
-                                       value_if_not=0)
-  
-  monopoly_reliance_supply_safety <-chance_event(monopoly_reliance_supply,
-                                         value_if=1,
-                                         value_if_not=0)
-  
-
-  if(vegetable_quality == 1|
-     monopoly == 1|
-   
-    
-     {if_safety_of_food<- if_safety_of_food - safety_of_food_reduction
-} else {if_safety_of_food}
-  
-  
-## if_benefit_farmer_revenue
-
-
-competition_other_farmer<-chance event(competition_other_farmer
-,value_if=1, value_if_not=0)
-
-
-if(vegetable_quality == 1|
-     {if_benefit_farmer_revenue<- if_benefit_farmer_revenue - if_benefit_farmer_revenue_reduction
-   } else {if_benefit_farmer_revenue}
-   
-### total_risks
-total_risks<-if_accessible+
-             if_nutrition+
-             if_relationship+
-             if_safety_of_food+
-             if_benefit_farmer_revenue
-   
-  
-  
-  
-  
-  
-  
-  
-  
-  ììhealthy_veggies_benefit <- diverse_veg_benefit +  # savings on programs for fresh veggies
-    knowledge_exchange_benefit + # savings on community outreach program
-  
-    environmental_benefit # savings on environmental programs
-  
-  total_benefits <-  vv(healthy_veggies_benefit + # savings on health related expenses
-                          percentage_of_sales, # revenue from farmer's sales
-                        var_CV = CV_value, 
-                        n = number_of_years, 
-                        relative_trend = inflation_rate) * if_accessible #conditional on access
-  
-  # disease outbreak risk (cf. COVID)
-  shut_down_for_disease_control <- chance_event(chance_of_disease_outbreak)
-  
-  # no benefits if disease outbreak
-  if(shut_down_for_disease_control == 1) {
-    total_benefits <- 0
-  } else {
-    total_benefits }
-  
-  # still have establishment costs
-  if(shut_down_for_disease_control == 1) {
-    total_costs <- total_costs[2:number_of_years]<-0
-  } else {
-    total_costs <- total_costs }
-  
-  sales_intervention_result <- total_benefits - total_costs
   
   # Alternative ####
   # what might the company do instead 
@@ -281,13 +223,9 @@ total_risks<-if_accessible+
   # what action would they take to address health, gender etc.?
   # i.e. just connect farmers and consumers and allow them to handle logistics
   
-  expected_cost_of_altervative <- vv(cost_of_establishment_meetings * percent_meetings_no_intervention, # ten percent of the meetings, but each year
-                                     var_CV = CV_value, n = number_of_years, 
-                                     relative_trend = inflation_rate)  
+  expected_cost_of_altervative <- 1000
   
-  expected_benefit_of_altervative <- vv(diverse_veg_benefit * percent_veg_benefit_no_intervention,
-                                        var_CV = CV_value, n = number_of_years, 
-                                        relative_trend = inflation_rate)  
+  expected_benefit_of_altervative <- 2000
   
   no_intervention_result <- expected_benefit_of_altervative - expected_cost_of_altervative
   
@@ -302,8 +240,8 @@ total_risks<-if_accessible+
   # We suggest the discount rate from 3-15%  
 
   
-  NPV_interv <-
-    discount(sales_intervention_result, 
+  NPV_farmstand <-
+    discount(longterm_benefits_farmstand, 
              discount_rate, calculate_NPV = TRUE) #consider inflation rate???
   
   NPV_no_interv <-
@@ -313,10 +251,10 @@ total_risks<-if_accessible+
   # Beware, if you do not name your outputs (left-hand side of the equal sign) in the return section, 
   # the variables will be called output_1, _2, etc.
   
-  return(list(NPV_company_sales = NPV_interv,
+  return(list(NPV_farmstand = NPV_farmstand,
               NPV_no_interv = NPV_no_interv,
-              decision = NPV_interv - NPV_no_interv, #the decision is in the trade off
-              Cashflow_company_sales = sales_intervention_result))
+              decision = NPV_farmstand - NPV_no_interv, #the decision is in the trade off
+              cashflow_farmstand = longterm_benefits_farmstand))
 }
 
 # Monte Carlo simulation 
@@ -332,12 +270,12 @@ company_results <- mcSimulation(
 # plot distributions for the two options
 source("functions/plot_distributions.R")
 plot_distributions(mcSimulation_object = company_results, 
-                   vars = c("NPV_company_sales","NPV_no_interv"),
+                   vars = c("NPV_farmstand","NPV_no_interv"),
                    method = 'smooth_simple_overlay', 
                    base_size = 7)
 
 plot_distributions(mcSimulation_object = company_results, 
-                   vars = c("NPV_company_sales","NPV_no_interv"),
+                   vars = c("NPV_farmstand","NPV_no_interv"),
                    method = 'boxplot')
 
 plot_distributions(mcSimulation_object = company_results, 
@@ -348,7 +286,7 @@ plot_distributions(mcSimulation_object = company_results,
 # Cashflow of the company option
 source("functions/plot_cashflow.R")
 plot_cashflow(mcSimulation_object = company_results, 
-              cashflow_var_name = "Cashflow_company_sales")
+              cashflow_var_name = "cashflow_farmstand")
 
 # PLS
 source("functions/pls_model.R")
@@ -365,15 +303,93 @@ source("functions/multi_EVPI.R")
 #here we subset the outputs from the mcSimulation function (y) 
 # by selecting the correct variables
 # be sure to run the multi_EVPI only on the variables that the we want
+# check names
+names(company_results$x) #input table
+names(company_results$y) #return
 mcSimulation_table <- data.frame(company_results$x, 
-                                 company_results$y[1:3])
+                                 company_results$y[1:3]) #choose NPV only
 
-evpi <- multi_EVPI(mc = mcSimulation_table, first_out_var = "NPV_company_sales")
+evpi <- multi_EVPI(mc = mcSimulation_table, first_out_var = "NPV_farmstand")
 
 source("functions/plot_evpi.R")
-plot_evpi(evpi, decision_vars = "NPV_company_sales")
 plot_evpi(evpi, decision_vars = "decision")
 
 # Get summary statistics
 summary(company_results$y$decision)
 
+
+# #################### ADD LATER ##################
+# 
+# 
+# ## if_safety_of_food
+# 
+# 
+# vegetable_quality <-chance_event(vegetable_quality,value_if=1,
+#                                  value_if_not=0)
+# 
+# monopoly_reliance_supply_safety <-chance_event(monopoly_reliance_supply,
+#                                                value_if=1,
+#                                                value_if_not=0)
+# 
+# 
+# if(vegetable_quality == 1|
+#    monopoly == 1|
+# 
+# 
+#    {if_safety_of_food<- if_safety_of_food - safety_of_food_reduction
+#    } else {if_safety_of_food}
+# 
+# 
+#    ## if_benefit_farmer_revenue
+# 
+# 
+#    competition_other_farmer<-chance event(competition_other_farmer,
+#                                           value_if=1, value_if_not=0)
+# 
+# 
+#    if(vegetable_quality == 1|
+#       {if_benefit_farmer_revenue<- if_benefit_farmer_revenue - if_benefit_farmer_revenue_reduction
+#       } else {if_benefit_farmer_revenue}
+# 
+#       ### total_risks
+#       total_risks<-if_accessible+
+#         if_nutrition+
+#         if_relationship+
+#         if_safety_of_food+
+#         if_benefit_farmer_revenue
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+#       ììhealthy_veggies_benefit <- diverse_veg_benefit +  # savings on programs for fresh veggies
+#         knowledge_exchange_benefit + # savings on community outreach program
+# 
+#         environmental_benefit # savings on environmental programs
+# 
+#       total_benefits <-  vv(healthy_veggies_benefit + # savings on health related expenses
+#                             percentage_of_sales, # revenue from farmer's sales
+#                             var_CV = CV_value,
+#                             n = number_of_years,
+#                             relative_trend = inflation_rate) * if_accessible #conditional on access
+# 
+#       # disease outbreak risk (cf. COVID)
+#       shut_down_for_disease_control <- chance_event(chance_of_disease_outbreak)
+# 
+#       # no benefits if disease outbreak
+#       if(shut_down_for_disease_control == 1) {
+#         total_benefits <- 0
+#       } else {
+#         total_benefits }
+# 
+#       # still have establishment costs
+#       if(shut_down_for_disease_control == 1) {
+#         total_costs <- total_costs[2:number_of_years]<-0
+#       } else {
+#         total_costs <- total_costs }
+# 
+#       sales_intervention_result <- total_benefits - total_costs
