@@ -30,6 +30,7 @@ company_function <- function(x, varnames){
    one_time_establishment_costs <- cost_of_establishment_capital +
                        cost_establishment_cleaning_establishment +
                        cost_establishment_human_resource_staff +
+                       cost_establishment_allowance_extended_participants+
                        cost_establishment_promotion +
                        cost_establishment_stakeholder_engagement +
                        cost_establishment_communication +
@@ -185,19 +186,18 @@ company_function <- function(x, varnames){
   if(conflict_farmer_buyer == 1|
      conflict_farmer_company == 1|
      rumor == 1) {
-    factory_reputation <- factory_reputation - relationship_reduction
+    factory_reputation <- benefit_factory_reputation - relationship_reduction
   } else {
-    factory_reputation <- factory_reputation}
+    factory_reputation <- benefit_factory_reputation}
   
   # calculate the work efficiency effect of the safe vegetables####
    benefit_work_efficiency <- (benefit_worker_health +
-    (worker_time_savings * # 1-2 hours a week saved on shopping (max)
+    (benefit_worker_time_savings * # 1-2 hours a week saved on shopping (max)
                             if_accessible)) * factory_reputation
   
    # calculate company revenue####
   company_revenue_annual <- 
     benefit_work_efficiency +
-    benefit_work_quality +
     benefit_farmer_revenue #shared with company
   
   company_revenue_through_intervention <- vv(company_revenue_annual, 
@@ -219,14 +219,24 @@ company_function <- function(x, varnames){
   
   # Alternative ####
   # what might the company do instead 
-  # with the same kinds of outcomes in mind
-  # what action would they take to address health, gender etc.?
-  # i.e. just connect farmers and consumers and allow them to handle logistics
+    # i.e. just connect farmers and consumers and allow them to handle logistics
   
   expected_cost_of_altervative <- 1000
   
   expected_benefit_of_altervative <- 2000
   
+  
+  expected_cost_of_altervative <- vv(cost_establishment_human_resource_staff * 
+                                  percent_meetings_no_intervention, # ten percent of the meetings, but each year
+                                  var_CV = CV_value, 
+                                  n = number_of_years)
+  
+  expected_benefit_of_altervative <- vv(longterm_benefits_farmstand,
+                                        var_CV = CV_value, 
+                                        n = number_of_years)
+                                  
+                                  
+                                  
   no_intervention_result <- expected_benefit_of_altervative - expected_cost_of_altervative
   
   # The difference is inherent in our calculation so we do not need the 
