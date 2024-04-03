@@ -6,9 +6,9 @@ inflation_rate,3,,7,posnorm,Inflation rate (%)
 ,,,,,
 ,,,,,
 cost_of_establishment_capital,1,,7,posnorm,cost of establishment capital (million VND)
-cost_establishment_cleaning_establishment,0.5,,3,posnorm,cost of cleaning establishment (million VND)
-cost_establishment_human_resource_staff,1.5,,5,posnorm,labor cost of the core team to support establishment (million VND)
-cost_establishment_allowance_extended_participants,0.5,,8,posnorm,allowance for extended participants during establishment time (million VND)
+cost_establishment_cleaning_establishment,0.5,,4,posnorm,cost of cleaning establishment (million VND)
+cost_establishment_human_resource_staff,2,,5,posnorm,labor cost of the core team to support establishment (million VND)
+cost_establishment_allowance_extended_participants,2,,8,posnorm,allowance for extended participants during establishment time (million VND)
 cost_establishment_promotion,3,,14,posnorm,cost of establishment promotion (million VND)
 cost_establishment_stakeholder_engagement,2,,8,posnorm,cost of establishment stakeholder engagement (million VND)
 cost_establishment_communication,3,,9,posnorm,cost of establishment communication (million VND)
@@ -17,43 +17,39 @@ cost_establishment_overhead_cost,1,,7,posnorm,cost of establishment overhead cos
 cost_establishment_equipment,5,,15,posnorm,cost of establishment equipments (million VND)
 ,,,,,
 ,,,,,
-cost_of_maintaining_monitoring_and_evaluation,3,,15,posnorm,"annual maintaining costs of monitoring and evaluation e.g. project visits, market surveillance (million VND)"
+cost_of_maintaining_monitoring_and_evaluation,3,,20,posnorm,"annual maintaining costs of monitoring and evaluation e.g. project visits, market surveillance (million VND)"
 cost_of_maintaining_depreciation_of_equipment,1,,3,posnorm,annual maintaining costs of depreciation of equipments (million VND)
 cost_of_maintaining_capital,3,,12,posnorm,annual maintaining costs of capital to support staff involvement in the intervention (million VND)
-cost_of_maintaining_cleaning,3,,10,posnorm,annual maintaining costs of cleaning  (million VND)
-cost_of_maintaining_human_resource_staff,4,,15,posnorm,annual maintaining labor costs for the core team (million VND)
-cost_of_maintaining_allowance_extended_partipants,1,,6,posnorm,allowance for extended participants involved in annual maintaining (million VND)
-cost_of_maintaining_promotion,1,,5,posnorm,annual maintaining costs of promotion (million VND)
-,,,,,
+cost_of_maintaining_cleaning,5,,25,posnorm,annual maintaining costs of cleaning  (million VND)
+cost_of_maintaining_human_resource_staff,6,,28,posnorm,annual maintaining labor costs for the core team (million VND)
+cost_of_maintaining_allowance_extended_partipants,5,,15,posnorm,allowance for extended participants involved in annual maintaining (million VND)
+cost_of_maintaining_promotion,3,,20,posnorm,annual maintaining costs of promotion (million VND)
 ,,,,,
 ,,,,,
 benefit_farmer_reputation,5,,20,posnorm,farmer' revenue increasing due to increasing farmer's reputation (million VND/year)
-factory_reputation,0.05,,0.98,posnorm,prob. of factory having good reputation (%)
-benefit_food_prep_cooking_and_food_waste,1,,4,posnorm,saving monney due to reducing food waste (million VND/year)
+benefit_factory_reputation,0.05,,0.85,posnorm,prob. of factory having good reputation (%)
+benefit_food_prep_cooking_and_food_waste,1,,6,posnorm,saving monney due to reducing food waste (million VND/year)
 benefit_enviroment_on_campus,3,,8,posnorm,having green and clean space for selling point instead of grass or dirty (million VND/year)
-benefit_work_efficiency,10,,35,posnorm,company revenue from farmer's working more efficiency (million VND/year)
+benefit_work_efficiency,10,,150,posnorm,company revenue from farmer's working more efficiency (million VND/year)
 benefit_safety_of_food,3,,12,posnorm,savings on worker's health care cost (million VND/year)
-benefit_farmer_revenue,10,,150,posnorm,the revenue of the farmer shared with company (million VND/year)
+,,,,,
 benefit_work_quality,10,,150,posnorm,the revenue of the farmer (million VND/year)
 if_relationship,0.3,,0.85,tnorm_0_1,general chance that relationship change (%) 
 chance_conflict_farmer_buyer,0.05,,0.15,tnorm_0_1,chance of conflict between famer and buyer (%) 
 chance_conflict_farmer_company,0.02,,0.2,tnorm_0_1,chance of conflict between famer and company (%) 
 chance_rumor,0.05,,0.2,tnorm_0_1,chance of negative rumors (%)
 relationship_reduction,0.05,,0.5,tnorm_0_1,amount of reduction in relationship (%)
-worker_time_savings,0.5,,2,posnorm,value of workers time saved that is then applied to work (million VND/yr)
+benefit_worker_time_savings,0.5,,2,posnorm,value of workers time saved that is then applied to work (million VND/yr)
 ,,,,,
-environment_on_campus,3,,10,posnorm,value of the contribution of farm stand to the environment on campus (million VND/yr)
+,,,,,
 ,,,,,
 if_accessible,0.4,,0.85,tnorm_0_1,general chance that veg are accessible (%) 
 disease_outbreak,0.001,,0.007,tnorm_0_1,chance of a disease outbreak totally removing access to the farm stand (i.e. COVID) (%)
-taste_reduced,0.1,,0.5,tnorm_0_1,chance that veg taste is reduced (%)
-family_does_not_like,0.05,,0.1,tnorm_0_1,chance that family does not like that veg (%)
 change_of_source_undesirable,0.1,,0.6,tnorm_0_1,chance of undersirable change of veg (%)
 affordability,0.1,,0.65,tnorm_0_1,chance of affordability change of veg (%)
 organization,0.05,,0.4,tnorm_0_1,prob. of poor organization/management (%)
 inconvenient,0.05,,0.3,tnorm_0_1,prob. that urban workers will not be able to make  the day of sale or inconvenient time (%)
 chance_not_meet_preference,0.1,,0.5,tnorm_0_1,chance that veg is reduced due to cultural(%)
-chance_monopoly_reliance_supply,0.05,,0.1,tnorm_0_1,chance of monopoly (%)
 ,,,,,
 ,,,,,
 if_nutrition,0.3,,0.85,tnorm_0_1,general chance that nutrition is change (%) 
@@ -64,6 +60,7 @@ nutrition_reduction,0.05,,0.5,tnorm_0_1,amount of reduction in nutrition (%)
 if_safety_of_food,0.3,,0.75,tnorm_0_1,general chance that safety of food is change (%) 
 safety_of_food_reduction,0.05,,0.5,tnorm_0_1,amount of reduction in safety of food (%)
 ,,,,,
+benefit_farmer_revenue,10,,150,posnorm,the revenue of the farmer shared with company (million VND/year)
 if_benefit_farmer_revenue,0.3,,0.75,tnorm_0_1,general chance that farmer's revenue is change (%) 
 competition_other_farmer,0.05,,0.4,tnorm_0_1,prob. of competion with other farmers (%)
 if_benefit_farmer_revenue_reduction,0.05,,0.5,tnorm_0_1,amount of reduction in safety of food (%)
@@ -75,9 +72,9 @@ percent_veg_benefit_no_intervention,0.2,,0.7,tnorm_0_1,Relative percent vegetabl
 percent_meetings_no_intervention,0.2,,0.4,tnorm_0_1,Relative percent meetings required if only connect farmers and consumers (%)
 ,,,,,
 worker_health_benefits_from_accessibility,100,,300,posnorm,value of the contribution of worker health from accessibility (million VND)
-worker_health_benefits_from_food_prep,3,,9,posnorm,value of the contribution of worker health from food prep (million VND)
-worker_health_benefits_from_safety_of_food,3,,9,posnorm,value of the contribution of worker health from safety fo food (million VND)
-worker_health_benefits_from_nutrition,3,,9,posnorm,value of the contribution of worker health from nutritious food (million VND)
+worker_health_benefits_from_food_prep,3,,12,posnorm,value of the contribution of worker health from food prep (million VND)
+worker_health_benefits_from_safety_of_food,3,,15,posnorm,value of the contribution of worker health from safety fo food (million VND)
+worker_health_benefits_from_nutrition,3,,15,posnorm,value of the contribution of worker health from nutritious food (million VND)
 ,,,,,
 ,,,,,
 access_reduction_disease,0.05,,0.5,tnorm_0_1,amount of reduction in access to safe veg if disease (%)
@@ -90,7 +87,7 @@ reduction_in_veg_quality_if_monopoly,0.05,,0.5,tnorm_0_1,amount of reduction in 
 farming_practice,0.05,,0.5,tnorm_0_1,chance of good farming practice driving veg quality and diversity (%)
 farming_practice_increase_quality,0.05,,0.5,tnorm_0_1,increase in veg quality if good farmer knowledge and practice (%)
 farming_practice_increase_diversity,0.05,,0.5,tnorm_0_1,increase in veg diversity if good farmer knowledge and practice (%)
-,,,,,
+chance_monopoly_reliance_supply,0.05,,0.1,tnorm_0_1,chance of monopoly (%)
 ,,,,,
 ,,,,,
 ,,,,,
