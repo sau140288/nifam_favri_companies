@@ -24,7 +24,7 @@ company_function <- function(x, varnames){
   # Cost####
 
   
- # establishment costs
+ # establishment costs####
   
   
    one_time_establishment_costs <- cost_of_establishment_capital +
@@ -39,7 +39,7 @@ company_function <- function(x, varnames){
                        cost_establishment_equipment
                        
                        
- # maintaining costs
+ # maintaining costs####
    
     annual_running_costs <- cost_of_maintaining_monitoring_and_evaluation+
                cost_of_maintaining_depreciation_of_equipment+
@@ -50,7 +50,7 @@ company_function <- function(x, varnames){
                cost_of_maintaining_promotion
     
   
-  # costs over five years
+  # costs over five years####
   total_costs <-  vv(annual_running_costs, var_CV = CV_value, 
                      relative_trend = inflation_rate,
                      n = number_of_years)
@@ -145,16 +145,18 @@ company_function <- function(x, varnames){
   
   vegetable_quality_risk <- chance_event(vegetable_quality)
   
+  
   if(diversity_risk == 1){
     worker_health_benefits_from_nutrition <- worker_health_benefits_from_nutrition * #VND value
       (1 - reduction_nutrition_low_diverse_and_quality) #reduction percentage
   } else {
     worker_health_benefits_from_nutrition <- worker_health_benefits_from_nutrition
   }
-  # double discounting for now #####
-  if(vegetable_quality_risk == 1){
+
+
+    if(vegetable_quality_risk == 1){
     worker_health_benefits_from_nutrition <- worker_health_benefits_from_nutrition * #VND value
-      (1 - reduction_nutrition_low_diverse_and_quality) #reduction percentage
+      (1 - reduction_in_veg_quality_if_monopoly) #reduction percentage
   } else {
     worker_health_benefits_from_nutrition <- worker_health_benefits_from_nutrition
   }
@@ -220,19 +222,16 @@ company_function <- function(x, varnames){
   
   # Alternative ####
   # what might the company do instead 
-    # i.e. just connect farmers and consumers and allow them to handle logistics
+  # just connect farmers and consumers and allow them to handle logistics
   
-  expected_cost_of_altervative <- 1000
-  
-  expected_benefit_of_altervative <- 2000
-  
-  
+ 
   expected_cost_of_altervative <- vv(cost_establishment_human_resource_staff * 
                                   percent_meetings_no_intervention, # ten percent of the meetings, but each year
                                   var_CV = CV_value, 
                                   n = number_of_years)
   
-  expected_benefit_of_altervative <- vv(longterm_benefits_farmstand,
+  expected_benefit_of_altervative <- vv(longterm_benefits_farmstand*
+                                        percent_veg_benefit_no_intervention,
                                         var_CV = CV_value, 
                                         n = number_of_years)
                                   
@@ -259,6 +258,7 @@ company_function <- function(x, varnames){
     discount(no_intervention_result, 
              discount_rate, calculate_NPV = TRUE)
   
+ 
   # Beware, if you do not name your outputs (left-hand side of the equal sign) in the return section, 
   # the variables will be called output_1, _2, etc.
   
@@ -274,7 +274,7 @@ source("functions/mcSimulation.R")
 company_results <- mcSimulation(
   estimate = estimate_read_csv("company_input.csv"),
   model_function = company_function,
-  numberOfModelRuns = 1e3, #run 1,000 times
+  numberOfModelRuns = 1000, #run 1,000 times
   functionSyntax = "plainNames"
 )
 
@@ -327,6 +327,9 @@ plot_evpi(evpi, decision_vars = "decision")
 
 # Get summary statistics
 summary(company_results$y$decision)
+
+
+
 
 
 # #################### ADD LATER ##################
