@@ -214,7 +214,8 @@ company_function <- function(x, varnames){
   }
   
   longterm_benefits_farmstand <- company_revenue_through_intervention + 
-    environment_on_campus
+    benefit_enviroment_on_campus
+  
  
   
   # Alternative ####

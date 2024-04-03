@@ -68,7 +68,7 @@ if_benefit_farmer_revenue_reduction,0.05,,0.5,tnorm_0_1,amount of reduction in s
 conflicting_business_interests,0.001,,0.01,tnorm_0_1,chance if conflicting business interests (i.e. already sell veggies) (%)
 revenue_reduction_if_conflicting_interest,0.05,,0.2,tnorm_0_1,revenue reduction if conflicting business interests (i.e. already sell veggies) (%)
 ,,,,,
-percent_veg_benefit_no_intervention,0.2,,0.7,tnorm_0_1,Relative percent vegetable benefits if only connect farmers and consumers (%)
+percent_veg_benefit_no_intervention,0.05,,0.5,tnorm_0_1,Relative percent vegetable benefits if only connect farmers and consumers (%)
 percent_meetings_no_intervention,0.2,,0.4,tnorm_0_1,Relative percent meetings required if only connect farmers and consumers (%)
 ,,,,,
 worker_health_benefits_from_accessibility,100,,300,posnorm,value of the contribution of worker health from accessibility (million VND)
