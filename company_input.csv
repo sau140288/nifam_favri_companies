@@ -58,7 +58,7 @@ diversity,0.1,,0.5,tnorm_0_1,chance that veg diversity is reduced (%)
 nutrition_reduction,0.05,,0.5,tnorm_0_1,amount of reduction in nutrition (%)
 ,,,,,
 if_safety_of_food,0.3,,0.75,tnorm_0_1,general chance that safety of food is change (%) 
-safety_of_food_reduction,0.05,,0.5,tnorm_0_1,amount of reduction in safety of food (%)
+safety_of_food_reduction_veg_quality,0.05,,0.5,tnorm_0_1,amount of reduction in safety of food (%)
 ,,,,,
 benefit_farmer_revenue,10,,150,posnorm,the revenue of the farmer shared with company (million VND/year)
 if_benefit_farmer_revenue,0.3,,0.75,tnorm_0_1,general chance that farmer's revenue is change (%) 
@@ -71,7 +71,7 @@ revenue_reduction_if_conflicting_interest,0.05,,0.2,tnorm_0_1,revenue reduction 
 percent_veg_benefit_no_intervention,0.05,,0.5,tnorm_0_1,Relative percent vegetable benefits if only connect farmers and consumers (%)
 percent_meetings_no_intervention,0.2,,0.4,tnorm_0_1,Relative percent meetings required if only connect farmers and consumers (%)
 ,,,,,
-worker_health_benefits_from_accessibility,100,,300,posnorm,value of the contribution of worker health from accessibility (million VND)
+worker_health_benefits_from_accessibility,2,,8,posnorm,value of the contribution of worker health from accessibility (million VND)
 worker_health_benefits_from_food_prep,3,,12,posnorm,value of the contribution of worker health from food prep (million VND)
 worker_health_benefits_from_safety_of_food,3,,15,posnorm,value of the contribution of worker health from safety fo food (million VND)
 worker_health_benefits_from_nutrition,3,,15,posnorm,value of the contribution of worker health from nutritious food (million VND)
@@ -83,6 +83,7 @@ access_reduction_affordability,0.05,,0.5,tnorm_0_1,amount of reduction in access
 access_reduction_organization_inconvenient,0.05,,0.5,tnorm_0_1,amount of reduction in access to safe ve if poor organization or inconvenient (%)
 access_reduction_preference,0.05,,0.5,tnorm_0_1,amount of reduction in access to safe veg if veg not meeting preference (%)
 reduction_nutrition_low_diverse_and_quality,0.05,,0.5,tnorm_0_1,amount of reduction in worker nutrition benefit if low low diversity or low quality (%)
+vegetable_quality_nutrition,0.05,,0.5,tnorm_0_1,amount of reduction in worker nutrition benefit if low quality (%)
 reduction_in_veg_quality_if_monopoly,0.05,,0.5,tnorm_0_1,amount of reduction in vegetable quality under monopoly (%)
 farming_practice,0.05,,0.5,tnorm_0_1,chance of good farming practice driving veg quality and diversity (%)
 farming_practice_increase_quality,0.05,,0.5,tnorm_0_1,increase in veg quality if good farmer knowledge and practice (%)

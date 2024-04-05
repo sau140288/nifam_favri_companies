@@ -55,6 +55,7 @@ company_function <- function(x, varnames){
                      relative_trend = inflation_rate,
                      n = number_of_years)
   
+  
   #assumning that in the first year we establishment costs and running costs
   total_costs[1] <- total_costs[1] + one_time_establishment_costs
   
@@ -141,9 +142,15 @@ company_function <- function(x, varnames){
  #    vegetable_quality <- vegetable_quality
  #    }
   
-  diversity_risk <-chance_event(diversity)
+ 
   
-  vegetable_quality_risk <- chance_event(vegetable_quality)
+  # worker's health benefit from nutrition
+  
+   diversity_risk <-chance_event(diversity,value_if=1,
+                                value_if_not=0)
+  
+  vegetable_quality_risk <- chance_event(vegetable_quality,value_if=1,
+                                         value_if_not=0)
   
   
   if(diversity_risk == 1){
@@ -153,20 +160,21 @@ company_function <- function(x, varnames){
     worker_health_benefits_from_nutrition <- worker_health_benefits_from_nutrition
   }
 
+  
+  
+  
+  # benefit safety_of_food
 
-    if(vegetable_quality_risk == 1){
-    worker_health_benefits_from_nutrition <- worker_health_benefits_from_nutrition * #VND value
-      (1 - reduction_in_veg_quality_if_monopoly) #reduction percentage
-  } else {
-    worker_health_benefits_from_nutrition <- worker_health_benefits_from_nutrition
-  }
+  worker_health_benefits_from_safety_of_food <-benefit_safety_of_food *
+                                              (1-reduction_in_veg_quality_if_monopoly)*
+                                              (1+ farming_practice_increase_quality)
   
    
   # benefits to workers healths ####
-  benefit_worker_health <- (worker_health_benefits_from_accessibility + 
+  benefit_worker_health <-(worker_health_benefits_from_accessibility + 
                               worker_health_benefits_from_food_prep + 
                               worker_health_benefits_from_safety_of_food + 
-                              worker_health_benefits_from_nutrition) * if_accessible
+                              worker_health_benefits_from_nutrition) *if_accessible
   
   # Risk of poor relationship ####
   ## if_relationship
@@ -195,7 +203,8 @@ company_function <- function(x, varnames){
   # calculate the work efficiency effect of the safe vegetables####
    benefit_work_efficiency <- (benefit_worker_health +
     (benefit_worker_time_savings * # 1-2 hours a week saved on shopping (max)
-                            if_accessible)) * factory_reputation
+                            if_accessible)) * benefit_factory_reputation
+
   
    # calculate company revenue####
   company_revenue_annual <- 
@@ -204,7 +213,10 @@ company_function <- function(x, varnames){
   
   company_revenue_through_intervention <- vv(company_revenue_annual, 
                                              var_CV = CV_value, 
+                                             relative_trend = inflation_rate,
                                              n = number_of_years)
+  
+
   
   conflicting_interest <- chance_event(conflicting_business_interests) 
   
