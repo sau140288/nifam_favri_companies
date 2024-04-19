@@ -249,7 +249,7 @@ company_function <- function(x, varnames){
                                   
                                   
                                   
-  no_intervention_result <- expected_benefit_of_altervative - expected_cost_of_altervative
+  connectFarm_result <- expected_benefit_of_altervative - expected_cost_of_altervative
   
   # The difference is inherent in our calculation so we do not need the 
   # comparative NPV here, just discount the intervention result
@@ -266,8 +266,8 @@ company_function <- function(x, varnames){
     discount(longterm_benefits_farmstand, 
              discount_rate, calculate_NPV = TRUE) #consider inflation rate???
   
-  NPV_no_interv <-
-    discount(no_intervention_result, 
+ NPV_connectFarm <-
+    discount(connectFarm_result, 
              discount_rate, calculate_NPV = TRUE)
   
  
@@ -275,16 +275,16 @@ company_function <- function(x, varnames){
   # the variables will be called output_1, _2, etc.
   
   return(list(NPV_farmstand = NPV_farmstand,
-              NPV_no_interv = NPV_no_interv,
-              decision = NPV_farmstand - NPV_no_interv, #the decision is in the trade off
+              NPV_connectFarm = NPV_connectFarm,
+              decision = NPV_farmstand - NPV_connectFarm, #the decision is in the trade off
               cashflow_farmstand = longterm_benefits_farmstand))
 }
+
 
 # Monte Carlo simulation 
 source("functions/mcSimulation.R")
 
-company_results <- mcSimulation(
-  estimate = estimate_read_csv("company_input.csv"),
+company_results <- mcSimulation(estimate = estimate_read_csv("company_input.csv"),
   model_function = company_function,
   numberOfModelRuns = 1000, #run 1,000 times
   functionSyntax = "plainNames"
@@ -293,12 +293,12 @@ company_results <- mcSimulation(
 # plot distributions for the two options
 source("functions/plot_distributions.R")
 plot_distributions(mcSimulation_object = company_results, 
-                   vars = c("NPV_farmstand","NPV_no_interv"),
+                   vars = c("NPV_farmstand","NPV_connectFarm"),
                    method = 'smooth_simple_overlay', 
                    base_size = 7)
 
 plot_distributions(mcSimulation_object = company_results, 
-                   vars = c("NPV_farmstand","NPV_no_interv"),
+                   vars = c("NPV_farmstand","NPV_connectFarm"),
                    method = 'boxplot')
 
 plot_distributions(mcSimulation_object = company_results, 
