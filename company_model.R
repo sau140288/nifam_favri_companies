@@ -116,8 +116,8 @@ company_function <- function(x, varnames){
   # we do not expect a negative effect on accessibility
   if_accessible[if_accessible<0]<-0
   
-  # benefits from nutrition####
-  # TEMP remmve ######
+ # benefits from nutrition
+ # TEMP remmve 
  #  #monopoly effects on quality
  #  monopoly_low_quality <-chance_event(chance_monopoly_reliance_supply)
  #  
@@ -419,3 +419,4 @@ summary(company_results$y$decision)
 #         total_costs <- total_costs }
 # 
 #       sales_intervention_result <- total_benefits - total_costs
+
