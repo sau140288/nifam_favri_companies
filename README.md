@@ -14,3 +14,6 @@ https://app.diagrams.net/#G1iobStrW_KP6Dpmh1JJy7CChhD-h5g6p7#%7B%22pageId%22%3A%
 
 
 
+2nd version on 1st July 2024
+
+![NIFAM -Conceptual model-Sau (2024 07 01)](https://github.com/sau140288/nifam_favri_companies/assets/125959163/d75252c9-aec9-4901-9309-c3535e5054b7)
