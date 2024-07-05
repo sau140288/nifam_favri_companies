@@ -33,7 +33,7 @@ benefit_nutrition,3,,15,posnorm,value of the contribution of worker health from 
 benefit_consumption,3,,15,posnorm,value of the contribution of nutritious food from consumption safe food (million VND)
 conflicting_business_interests,0.001,,0.01,tnorm_0_1,chance if conflicting business interests (i.e. already sell veggies) (%)
 revenue_reduction_if_conflicting_interest,0.05,,0.2,tnorm_0_1,revenue reduction if conflicting business interests (i.e. already sell veggies) (%)
-trust,0.01,,0.85,tnorm_0_1,chance if lost the trust on the factory's reputation (%)
+trust,0.1,,0.85,tnorm_0_1,chance if lost the trust on the factory's reputation (%)
 factory_reputation_reduction_if_trust,0.3,,0.9,tnorm_0_1,factory's reputation reduction if loss their reputation due to the bad vegetable selling (%)
 if_relationship,0.3,,0.85,tnorm_0_1,general chance that relationship change (%) 
 chance_conflict_farmer_buyer,0.05,,0.15,tnorm_0_1,chance of conflict between famer and buyer (%) 
