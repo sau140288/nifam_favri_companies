@@ -65,10 +65,10 @@ company_function <- function(x, varnames){
   
   ## if_accessible  
   
-  disease_outbreak <-chance_event(disease_outbreak,value_if=1,
+  chance_disease_outbreak <-chance_event(disease_outbreak,value_if=1,
                                   value_if_not=0)
   
-  if( disease_outbreak == 1) {
+  if( chance_disease_outbreak == 1) {
     if_accessible <- if_accessible - access_reduction_disease
   } else {
     if_accessible <- if_accessible}
@@ -83,21 +83,19 @@ company_function <- function(x, varnames){
     if_accessible <- if_accessible}
   
   
-  affordability_low <-chance_event(affordability,value_if=1,
+  chance_affordability_low <-chance_event(affordability,value_if=1,
                                    value_if_not=0)
   
-  if( affordability_low == 1) {
+  if( chance_affordability_low == 1) {
     if_accessible <- if_accessible - access_reduction_affordability
   } else {
     if_accessible <- if_accessible}
   
-  organization_poor <-chance_event(organization,value_if=1,
+  chance_organization_inconvenient <-chance_event(organization_inconvenient,value_if=1,
                                    value_if_not=0)
   
-  inconvenient <-chance_event(inconvenient,value_if=1,
-                              value_if_not=0)
-  
-  if(organization_poor == 1 | inconvenient == 1) {
+ 
+  if(chance_organization_inconvenient== 1 | organization_inconvenient == 1) {
     if_accessible <- if_accessible - access_reduction_organization_inconvenient
   } else {
     if_accessible <- if_accessible}
@@ -144,37 +142,55 @@ company_function <- function(x, varnames){
   
  
   
-  # worker's health benefit from nutrition
+  # worker's health benefit
+ 
+
+  # benefit safety_of_food 
   
-   diversity_risk <-chance_event(diversity,value_if=1,
+  benefit_safety_of_food_risk <-benefit_safety_of_food *
+                                (1-reduction_in_veg_quality_if_monopoly)*
+                                (1+ farming_practice_increase_quality)
+  # nutrition risk 
+  
+  nutrition_diversity_risk <-chance_event(diversity,value_if=1,
                                 value_if_not=0)
   
-  vegetable_quality_risk <- chance_event(vegetable_quality,value_if=1,
+   if(nutrition_diversity_risk == 1){
+    nutrition_diversity_risk <- benefit_nutrition * #VND value
+      (1 - reduction_nutrition_low_diverse)*
+      (1+  farming_practice_increase_diversity)
+  } else {
+    nutrition_diversity_risk <- benefit_nutrition
+  }
+  
+  
+nutrition_quality_risk <- chance_event(vegetable_quality_nutrition,value_if=1,
                                          value_if_not=0)
   
-  
-  if(diversity_risk == 1){
-    worker_health_benefits_from_nutrition <- worker_health_benefits_from_nutrition * #VND value
-      (1 - reduction_nutrition_low_diverse_and_quality) #reduction percentage
+  if(nutrition_quality_risk == 1){
+    nutrition_quality_risk <- benefit_nutrition * #VND value
+      (1 - reduction_nutrition_low_quality)*
+      (1+  farming_practice_increase_quality)
   } else {
-    worker_health_benefits_from_nutrition <- worker_health_benefits_from_nutrition
+    nutrition_quality_risk  <- benefit_nutrition
   }
-
+   
+ 
+  total_nutrition_risk <- nutrition_diversity_risk+
+                          nutrition_quality_risk
+                          
   
   
   
-  # benefit safety_of_food
-
-  worker_health_benefits_from_safety_of_food <-benefit_safety_of_food *
-                                              (1-reduction_in_veg_quality_if_monopoly)*
-                                              (1+ farming_practice_increase_quality)
+    
+  total_worker_health_benefit <-  (benefit_nutrition * total_nutrition_risk)+
+                                  benefit_consumption+
+                                  benefit_safety_of_food_risk+
+                                  benefit_food_prep_cooking_and_food_waste
   
    
-  # benefits to workers healths ####
-  benefit_worker_health <-(worker_health_benefits_from_accessibility + 
-                              worker_health_benefits_from_food_prep + 
-                              worker_health_benefits_from_safety_of_food + 
-                              worker_health_benefits_from_nutrition) *if_accessible
+  # benefits to worker's time ####
+  total_benefit_worker_time_savings <-benefit_worker_time_savings * if_accessible
   
   # Risk of poor relationship ####
   ## if_relationship
