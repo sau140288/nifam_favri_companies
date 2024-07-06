@@ -21,7 +21,7 @@ source("functions/discount.R")
 # set.seed(1234) # to keep the same collection of results each time
 company_function <- function(x, varnames){
   
-  # Cost####
+     # Cost####
 
   
  # establishment costs####
@@ -114,84 +114,52 @@ company_function <- function(x, varnames){
   # we do not expect a negative effect on accessibility
   if_accessible[if_accessible<0]<-0
   
-  # benefits from nutrition####
-  # TEMP remmve ######
- #  #monopoly effects on quality
- #  monopoly_low_quality <-chance_event(chance_monopoly_reliance_supply)
- #  
- #  if(monopoly_low_quality == 1){
- #    vegetable_quality <- vegetable_quality - 
- #      reduction_in_veg_quality_if_monopoly # percent reduction of quality
- #    # if there is a monopoly there is a chance that the quality goes down
- #  } else {
- #    vegetable_quality <- vegetable_quality}
- #  
- #  # farmer knowledge and preferences will drive this up
- #  # farming practice ####
- #  
- #  #monopoly effects on quality
- #  good_farm_practice <-chance_event(farming_practice)
- #  
- #  if(good_farm_practice == 1){
- #    vegetable_quality <- vegetable_quality + farming_practice_increase_quality + farming_practice_increase_diversity
- # # percent increase of quality
- #    # if there is a monopoly there is a chance that the quality goes down
- #  } else {
- #    vegetable_quality <- vegetable_quality
- #    }
   
- 
-  
-  # worker's health benefit
+  # worker's health benefit ####
  
 
   # benefit safety_of_food 
   
-  benefit_safety_of_food_risk <-benefit_safety_of_food *
+  benefit_safety_of_food_risk <- (benefit_safety_of_food *
                                 (1-reduction_in_veg_quality_if_monopoly)*
-                                (1+ farming_practice_increase_quality)
-  # nutrition risk 
+                                (1+ farming_practice_increase_quality))*if_accessible
+ 
+  ## if_nutrition
+  
+  # calculate if_nutrition with risk from diversity
   
   nutrition_diversity_risk <-chance_event(diversity,value_if=1,
                                 value_if_not=0)
   
    if(nutrition_diversity_risk == 1){
-    nutrition_diversity_risk <- benefit_nutrition * #VND value
-      (1 - reduction_nutrition_low_diverse)*
-      (1+  farming_practice_increase_diversity)
+    if_nutrition <- if_nutrition *
+                    (1 - reduction_nutrition_low_diverse)*
+                    (1+  farming_practice_increase_diversity)
   } else {
-    nutrition_diversity_risk <- benefit_nutrition
+    if_nutrition <- if_nutrition
   }
   
+  # calculate if_nutrition with risk from vegetable quality
   
 nutrition_quality_risk <- chance_event(vegetable_quality_nutrition,value_if=1,
                                          value_if_not=0)
   
   if(nutrition_quality_risk == 1){
-    nutrition_quality_risk <- benefit_nutrition * #VND value
+    if_nutrition <- if_nutrition *
       (1 - reduction_nutrition_low_quality)*
       (1+  farming_practice_increase_quality)
   } else {
-    nutrition_quality_risk  <- benefit_nutrition
+    if_nutrition  <- if_nutrition
   }
    
- 
-  total_nutrition_risk <- nutrition_diversity_risk+
-                          nutrition_quality_risk
-                          
-  
-  
-  
-    
-  total_worker_health_benefit <-  (benefit_nutrition * total_nutrition_risk)+
+ # calculate total worker health
+
+  total_worker_health_benefit <- (benefit_worker_health * if_nutrition)+
                                   benefit_consumption+
                                   benefit_safety_of_food_risk+
                                   benefit_food_prep_cooking_and_food_waste
   
    
-  # benefits to worker's time ####
-  total_benefit_worker_time_savings <-benefit_worker_time_savings * if_accessible
-  
   # Risk of poor relationship ####
   ## if_relationship
   
@@ -216,10 +184,10 @@ nutrition_quality_risk <- chance_event(vegetable_quality_nutrition,value_if=1,
   } else {
     factory_reputation <- benefit_factory_reputation}
   
-  # calculate the work efficiency effect of the safe vegetables####
-   benefit_work_efficiency <- (benefit_worker_health +
-    (benefit_worker_time_savings * # 1-2 hours a week saved on shopping (max)
-                            if_accessible)) * benefit_factory_reputation
+  # calculate the work efficiency ####
+   benefit_work_efficiency <- total_worker_health_benefit +
+                            (benefit_worker_time_savings * if_accessible)+ # 1-2 hours a week saved on shopping (max)
+                            benefit_factory_reputation
 
   
    # calculate company revenue####
@@ -232,7 +200,8 @@ nutrition_quality_risk <- chance_event(vegetable_quality_nutrition,value_if=1,
                                              relative_trend = inflation_rate,
                                              n = number_of_years)
   
-
+  #  calculate conflicting business interests risk effects on company revenue annual
+  
   
   conflicting_interest <- chance_event(conflicting_business_interests) 
   
@@ -358,80 +327,3 @@ summary(company_results$y$decision)
 
 
 
-
-
-# #################### ADD LATER ##################
-# 
-# 
-# ## if_safety_of_food
-# 
-# 
-# vegetable_quality <-chance_event(vegetable_quality,value_if=1,
-#                                  value_if_not=0)
-# 
-# monopoly_reliance_supply_safety <-chance_event(monopoly_reliance_supply,
-#                                                value_if=1,
-#                                                value_if_not=0)
-# 
-# 
-# if(vegetable_quality == 1|
-#    monopoly == 1|
-# 
-# 
-#    {if_safety_of_food<- if_safety_of_food - safety_of_food_reduction
-#    } else {if_safety_of_food}
-# 
-# 
-#    ## if_benefit_farmer_revenue
-# 
-# 
-#    competition_other_farmer<-chance event(competition_other_farmer,
-#                                           value_if=1, value_if_not=0)
-# 
-# 
-#    if(vegetable_quality == 1|
-#       {if_benefit_farmer_revenue<- if_benefit_farmer_revenue - if_benefit_farmer_revenue_reduction
-#       } else {if_benefit_farmer_revenue}
-# 
-#       ### total_risks
-#       total_risks<-if_accessible+
-#         if_nutrition+
-#         if_relationship+
-#         if_safety_of_food+
-#         if_benefit_farmer_revenue
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-#       ììhealthy_veggies_benefit <- diverse_veg_benefit +  # savings on programs for fresh veggies
-#         knowledge_exchange_benefit + # savings on community outreach program
-# 
-#         environmental_benefit # savings on environmental programs
-# 
-#       total_benefits <-  vv(healthy_veggies_benefit + # savings on health related expenses
-#                             percentage_of_sales, # revenue from farmer's sales
-#                             var_CV = CV_value,
-#                             n = number_of_years,
-#                             relative_trend = inflation_rate) * if_accessible #conditional on access
-# 
-#       # disease outbreak risk (cf. COVID)
-#       shut_down_for_disease_control <- chance_event(chance_of_disease_outbreak)
-# 
-#       # no benefits if disease outbreak
-#       if(shut_down_for_disease_control == 1) {
-#         total_benefits <- 0
-#       } else {
-#         total_benefits }
-# 
-#       # still have establishment costs
-#       if(shut_down_for_disease_control == 1) {
-#         total_costs <- total_costs[2:number_of_years]<-0
-#       } else {
-#         total_costs <- total_costs }
-# 
-#       sales_intervention_result <- total_benefits - total_costs
