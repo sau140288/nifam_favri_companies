@@ -5,6 +5,7 @@
 Should the company in urban Hanoi invests time and resources in having a safe vegetable selling point at the company's campus?
 
 Graphical model
+1st graphical model (March 2024)
 
 =======
 
@@ -14,7 +15,7 @@ https://app.diagrams.net/#G1iobStrW_KP6Dpmh1JJy7CChhD-h5g6p7#%7B%22pageId%22%3A%
 
 
 
-2nd version on 4th July 2024
+2nd version of graphical model (revised on 4th July 2024)
 
 
 
