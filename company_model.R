@@ -231,8 +231,7 @@ nutrition_quality_risk <- chance_event(vegetable_quality_nutrition,value_if=1,
                                         percent_veg_benefit_no_intervention,
                                         var_CV = CV_value, 
                                         n = number_of_years)
-                                  
-                                  
+                             
                                   
   connectFarm_result <- expected_benefit_of_altervative - expected_cost_of_altervative
   
