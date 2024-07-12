@@ -120,9 +120,9 @@ company_function <- function(x, varnames){
 
   # benefit safety_of_food 
   
-  benefit_safety_of_food_risk <- (benefit_safety_of_food *
+  benefit_safety_of_food_risk <- ((benefit_safety_of_food * total_worker_company) *
                                 (1-reduction_in_veg_quality_if_monopoly)*
-                                (1+ farming_practice_increase_quality))*if_accessible
+                                (1+ farming_practice_increase_quality))* if_accessible
  
   ## if_nutrition
   
@@ -154,10 +154,9 @@ nutrition_quality_risk <- chance_event(vegetable_quality_nutrition,value_if=1,
    
  # calculate total worker health
 
-  total_worker_health_benefit <- (benefit_worker_health * if_nutrition)+
-                                  benefit_consumption+
+  total_worker_health_benefit <- (benefit_nutrition *if_accessible* if_nutrition* total_worker_company)+
                                   benefit_safety_of_food_risk+
-                                  benefit_food_prep_cooking_and_food_waste
+                                  (benefit_food_prep_cooking_and_food_waste *if_accessible*total_worker_company)
   
    
   # Risk of poor relationship ####
@@ -185,15 +184,14 @@ nutrition_quality_risk <- chance_event(vegetable_quality_nutrition,value_if=1,
     factory_reputation <- benefit_factory_reputation}
   
   # calculate the work efficiency ####
-   benefit_work_efficiency <- total_worker_health_benefit +
-                            (benefit_worker_time_savings * if_accessible)+ # 1-2 hours a week saved on shopping (max)
-                            benefit_factory_reputation
+   benefit_work_efficiency <- (benefit_worker_time_savings * total_worker_company * if_accessible)+ # 1-2 hours a week saved on shopping (max)
+                              total_worker_health_benefit +                        
+                              benefit_factory_reputation
 
   
    # calculate company revenue####
-  company_revenue_annual <- 
-    benefit_work_efficiency +
-    benefit_farmer_revenue #shared with company
+  company_revenue_annual <- (benefit_work_efficiency + 
+                             benefit_farmer_revenue) #shared with company
   
   company_revenue_through_intervention <- vv(company_revenue_annual, 
                                              var_CV = CV_value, 
