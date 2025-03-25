@@ -24,13 +24,12 @@ source("functions/chance_event.R")
 # discount values for NPV (time value for money)
 source("functions/discount.R")
 
-# Model ####
 # set.seed(1234) # to keep the same collection of results each time
 # company_function <- function(x, varnames){
   
-  # Cost####
+  # Costs of the farmstand ####
   
- # establishment costs####
+ # establishment costs ####
 
    one_time_establishment_costs <- cost_of_establishment_capital +
                        cost_establishment_cleaning_establishment +
@@ -55,7 +54,7 @@ source("functions/discount.R")
                cost_of_maintaining_promotion
     
   
-  # costs over five years####
+  # annual costs ####
   total_costs <-  vv(annual_running_costs, var_CV = CV_value, 
                      relative_trend = inflation_rate,
                      n = number_of_years)
@@ -66,7 +65,7 @@ source("functions/discount.R")
   
   # Benefits ####
   
-  baseline_health_conditions <- 100 # vulnerable urban communities have underlying health effects
+  # vulnerable urban communities have underlying health effects
   
   # By the beginning of 2020, according to central standards,
   # Hanoi city has 4,112 poor households, accounting for 0.2% and 3,939
@@ -88,53 +87,36 @@ source("functions/discount.R")
   
   ## if_accessible  
   
-  disease_outbreak <-chance_event(disease_outbreak,value_if=1,
-                                  value_if_not=0)
+  # Keep the probabilities in a separate list
+  access_risk_probs <- list(
+    disease_outbreak = disease_outbreak,
+    change_of_source_undesirable = change_of_source_undesirable,
+    chance_low_affordability = chance_low_affordability,
+    chance_poorly_organized_inconvenient = chance_poorly_organized_inconvenient,
+    chance_not_meet_preference = chance_not_meet_preference
+  )
   
-  if( disease_outbreak == 1) {
-    if_accessible <- if_accessible - access_reduction_disease
-  } else {
-    if_accessible <- if_accessible}
+  access_risk_reductions <- list(
+    disease_outbreak = access_reduction_disease,
+    change_of_source_undesirable = access_reduction_change_of_source,
+    chance_low_affordability = access_reduction_affordability,
+    chance_poorly_organized = access_reduction_organization_inconvenient,
+    chance_farmstand_inconvenient = access_reduction_organization_inconvenient,
+    chance_not_meet_preference = access_reduction_preference
+  )
   
-  change_of_source_undesirable <-chance_event(change_of_source_undesirable,
-                                              value_if=1,value_if_not=0)
+  # Now apply the loop
+  if_accessible <- 1  # Start at full accessibility
   
-  if( change_of_source_undesirable == 1) {
-    if_accessible <- if_accessible - access_reduction_change_of_source
-  } else {
-    if_accessible <- if_accessible}
+  for (event in names(access_risk_probs)) {
+    happened <- chance_event(access_risk_probs[[event]], value_if = 1, value_if_not = 0)
+    if (happened == 1) {
+      if_accessible <- if_accessible - access_risk_reductions[[event]]
+    }
+  }
   
-  affordability_low <-chance_event(chance_low_affordability,value_if=1,
-                                   value_if_not=0)
-
-  if( affordability_low == 1) {
-    if_accessible <- if_accessible - access_reduction_affordability
-  } else {
-    if_accessible <- if_accessible}
-  
-  organization_poor <-chance_event(chance_poorly_organized,value_if=1,
-                                   value_if_not=0)
-  
-  inconvenient <-chance_event(chance_farmstand_inconvenient,value_if=1,
-                              value_if_not=0)
-  
-  if(organization_poor == 1 | inconvenient == 1) {
-    if_accessible <- if_accessible - access_reduction_organization_inconvenient
-  } else {
-    if_accessible <- if_accessible}
-  
-  
-  not_preferred <-chance_event(chance_not_meet_preference,value_if=1,
-                               value_if_not=0)
-  
-  if(not_preferred == 1) {
-    if_accessible <- if_accessible - access_reduction_preference
-  } else {
-    if_accessible <- if_accessible}
-  
-  # change negative values to zero
-  # we do not expect a negative effect on accessibility
-  if_accessible[if_accessible<0]<-0
+  # Bound it to 0
+  if_accessible <- max(if_accessible, 0)
   
   # benefits from nutrition####
  
@@ -145,86 +127,105 @@ source("functions/discount.R")
   
   # benefit safety_of_food
   
-  work_benefits_from_safety_of_food <-benefit_safety_of_food *
-                                              (1-reduction_in_veg_quality_if_monopoly)*
-                                              (1+ farming_practice_increase_quality)
+  # CW NOTES We are mixing together:
+  # Intrinsic food environment attributes (access, prep, safety, nutrition)
+  # Modifiers like quality loss due to monopoly and quality gain from farming
+  # Then multiplying all of that by if_accessible again at the end
+  # So if_accessible is kind of double counted, both in
+  # work_benefits_from_accessibility and again in benefit_worker_health.
   
-  # CW NEED TO WORK HERE ####
-  work_benefits_from_accessibility <-benefit_accessibility_of_food*if_accessible*
-                                              (1-reduction_in_veg_quality_if_monopoly)*
-                                              (1+ farming_practice_increase_quality)
-  # CW NEED TO WORK HERE ####
-  work_benefits_from_food_prep <-benefit_prep_of_food *
-    (1-reduction_in_veg_quality_if_monopoly)*
-    (1+ farming_practice_increase_quality)
+  # Food environment ####
   
-  # CW NEED TO WORK HERE ####
-  work_benefits_from_nutrition <-benefit_nutrition_of_food *
-                                           (1-reduction_in_veg_quality_if_monopoly)*
-                                           (1+ farming_practice_increase_quality)
+  # Food Environement #### Problem: Food environment effects on workers are
+  # implied (accessibility, nutrition, etc.) but not clearly modeled or linked
+  # to actual outcomes like diet quality, health status, productivity, or
+  # satisfaction.
+  # Effect: The core intended benefit—improved food environment—is not
+  # transparently evaluated.
   
-  # benefits to workers health ####
-  benefit_worker_health <-(work_benefits_from_accessibility + 
-                              work_benefits_from_food_prep + 
-                              work_benefits_from_safety_of_food + 
-                              work_benefits_from_nutrition) *if_accessible
+  # Clarify and Expand Food Environment Outcomes Use the five food environment
+  # domains as dimensions:
+  # Availability (e.g., number of fresh veg stalls)
+  # Affordability (prices vs worker income)
+  # Accessibility (distance/time)
+  # Desirability (preference match)
+  # Quality/Safety (hygiene, freshness)
   
-  # Risk of poor relationship ####
-  ## if_relationship
+  # Simulate diversity and quality risks
+  diversity_risk <- chance_event(chance_vegetable_diversity, value_if = 1, value_if_not = 0)
+  vegetable_quality_risk <- chance_event(chance_vegetable_quality, value_if = 1, value_if_not = 0)
   
-  conflict_farmer_buyer <-chance_event(chance_conflict_farmer_buyer,value_if=1,
-                                       value_if_not=0)
+  # Base food environment components
+  food_env_access <- benefit_accessibility_of_food * if_accessible
+  food_env_prep <- benefit_prep_of_food
+  food_env_safety <- benefit_safety_of_food
+  food_env_nutrition <- benefit_nutrition_of_food
   
-  conflict_farmer_company <-chance_event(chance_conflict_farmer_company,
-                                         value_if=1,
-                                         value_if_not=0)
+  # Adjust for supply monopoly and farming practice effects
+  quality_multiplier <- (1 - reduction_in_veg_quality_if_monopoly) * (1 + farming_practice_increase_quality)
   
-  rumor <-chance_event(chance_rumor,value_if=1,
-                       value_if_not=0)
-  
-  # if factory has a good reputation then work ethic goes up a bit
-  # if not it goes down a bit
-  if(conflict_farmer_buyer == 1|
-     conflict_farmer_company == 1|
-     rumor == 1) {
-    factory_reputation <- benefit_factory_reputation - relationship_reduction
+  # Adjust for quality/diversity risks
+  if (diversity_risk == 1 | vegetable_quality_risk == 1) {
+    nutrition_multiplier <- quality_multiplier * (1 - reduction_nutrition_low_diverse_and_quality)
   } else {
-    factory_reputation <- benefit_factory_reputation}
-  
-  # calculate the work efficiency effect of the safe vegetables####
-   benefit_work_efficiency <- (benefit_worker_health +
-    (benefit_worker_time_savings * # 1-2 hours a week saved on shopping (max)
-                            if_accessible)) * benefit_factory_reputation
-
- 
-  diversity_risk <-chance_event(chance_vegetable_diversity,value_if=1,
-                                value_if_not=0)
-  
-  vegetable_quality_risk <- chance_event(chance_vegetable_quality,value_if=1,
-                                         value_if_not=0)
-  
-  
-  if(diversity_risk == 1| vegetable_quality_risk == 1){
-    work_benefits_from_nutrition <- work_benefits_from_nutrition * #VND value
-      (1 - reduction_nutrition_low_diverse_and_quality) #reduction percentage
-  } else {
-    work_benefits_from_nutrition <- work_benefits_from_nutrition
+    nutrition_multiplier <- quality_multiplier
   }
   
+  # Final adjusted components
+  food_env_components <- list(
+    accessibility = food_env_access * quality_multiplier,
+    prep = food_env_prep * quality_multiplier,
+    safety = food_env_safety * quality_multiplier,
+    nutrition = food_env_nutrition * nutrition_multiplier
+  )
   
+  # Composite food environment score
+  food_env_score <- sum(unlist(food_env_components))
   
-   # calculate company revenue####
-  company_revenue_annual <- 
+  # Impact on worker health and factory productivity
+  benefit_worker_health <- food_env_score * health_response_to_food_env
+  
+  benefit_work_efficiency <- (benefit_worker_health + benefit_worker_time_savings * if_accessible) *
+    factory_reputation  
+  
+# CW NOTE The benefit_worker_health includes multiple benefit terms (access,
+# prep, safety, nutrition), then this was again multiplied by if_accessible and
+# also added to benefit_work_efficiency, which is again part of revenue. That
+# may result in inflated impact estimates. 
+
+# Risk of poor relationship ####
+# if_relationship doing three things:
+  # Modeling trust/reputation risks based on conflict and rumors
+  # Adjusting reputation-dependent effects on productivity
+  # Applying nutrition risk due to diversity/quality issues
+  
+  # Define trust-breaking events
+  reputation_risks <- c(
+    chance_conflict_farmer_buyer,
+    chance_conflict_farmer_company,
+    chance_rumor
+  )
+  
+  # Simulate whether any trust-breaking event occurred
+  reputation_events <- sapply(reputation_risks, function(prob) chance_event(prob, 1, 0))
+  
+  # If any happened, reduce factory reputation
+  if (any(reputation_events == 1)) {
+    factory_reputation <- benefit_factory_reputation - relationship_reduction
+  } else {
+    factory_reputation <- benefit_factory_reputation
+  }
+  
+   # calculate company revenue ####
+  added_company_revenue_annual <- 
     benefit_work_efficiency +
     #shared with company, increased due to better farm reputation
     benefit_farmer_revenue* 1-(prob_increased_farmer_reputation) 
   
-  company_revenue_through_intervention <- vv(company_revenue_annual, 
+  company_revenue_through_intervention <- vv(added_company_revenue_annual, 
                                              var_CV = CV_value, 
                                              relative_trend = inflation_rate,
                                              n = number_of_years)
-  
-
   
   conflicting_interest <- chance_event(conflicting_business_interests) 
   
@@ -235,24 +236,90 @@ source("functions/discount.R")
     company_revenue_through_intervention <- company_revenue_through_intervention 
   }
   
-  longterm_benefits_farmstand <- company_revenue_through_intervention + 
-    benefit_enviroment_on_campus
+  company_revenue_through_intervention <- company_revenue_through_intervention + 
+    benefit_enviroment_on_campus # quality of factory campus improved
   
-  # Alternative ####
-  # what might the company do instead 
-  # just connect farmers and consumers and allow them to handle logistics
- 
+  # ConnectFarm Intervention ####
+  
+  # Costs: Simplified recurring human resources and outreach efforts
+  connectFarm_costs_annual <- cost_establishment_human_resource_staff * connectFarm_meeting_fraction +
+    cost_of_maintaining_promotion * connectFarm_promo_fraction
+  
+  expected_cost_of_connectFarm <- vv(connectFarm_costs_annual,
+                                     var_CV = CV_value,
+                                     n = number_of_years)
+  
+  # Accessibility effect: less structured, less reliable
+  connect_if_accessible <- if_accessible * connectFarm_accessibility_multiplier  
+  
+  # Food environment benefits: scaled-down effects
+  connect_quality_multiplier <- (1 - reduction_in_veg_quality_if_monopoly * 1.5) * 
+    (1 + farming_practice_increase_quality * 0.5)
+  
+  # Quality and diversity risk adjustment
+  diversity_risk_connect <- chance_event(chance_vegetable_diversity, 1, 0)
+  veg_quality_risk_connect <- chance_event(chance_vegetable_quality, 1, 0)
+  
+  if (diversity_risk_connect == 1 | veg_quality_risk_connect == 1) {
+    connect_nutrition_multiplier <- connect_quality_multiplier * 
+      (1 - reduction_nutrition_low_diverse_and_quality * 1.5)
+  } else {
+    connect_nutrition_multiplier <- connect_quality_multiplier
+  }
+  
+  # Components of the food environment
+  connect_food_env_components <- list(
+    accessibility = benefit_accessibility_of_food * connect_if_accessible * connect_quality_multiplier,
+    prep = benefit_prep_of_food * connect_quality_multiplier * 0.8,
+    safety = benefit_safety_of_food * connect_quality_multiplier * 0.8,
+    nutrition = benefit_nutrition_of_food * connect_nutrition_multiplier
+  )
+  
+  connect_food_env_score <- sum(unlist(connect_food_env_components))
+  
+  # Worker health and productivity
+  connect_worker_health <- connect_food_env_score * health_response_to_food_env
+  connect_work_efficiency <- (connect_worker_health +
+                                benefit_worker_time_savings * connect_if_accessible) 
+  
+  # Revenue pathway
+  connect_company_revenue_annual <- connect_work_efficiency 
+  
+  expected_benefit_of_connectFarm <- vv(connect_company_revenue_annual,
+                                        var_CV = CV_value,
+                                        relative_trend = inflation_rate,
+                                        n = number_of_years)
+  
+  # Final result
+  connectFarm_result <- expected_benefit_of_connectFarm - expected_cost_of_connectFarm
+  
+  
+ #CW NOTE add detailed logic of
+ #farmstand intervention has. It's too abstract and leans on a few vague
+ #multipliers instead of modeling the mechanisms that matter — especially food
+ #environment effects, reputation risks, and cost structures.
+  # ✅ Costs are flat and based only on a % of meetings — no breakdown of effort, personnel, or engagement level.
+  #
+  # ❌ Benefits are treated as a vague percentage of another scenario’s benefits.
+  # This erases the chance to understand why this option might be good (or not).
+  # ❌ There’s no connection to:
+  # Accessibility
+  # Food quality or diversity
+  # Worker health or factory reputation
+  # ❌ The NPV outcome is always slightly worse — because the logic is built to
+  # make it worse.
+  
+  
   expected_cost_of_connectFarm <- vv(cost_establishment_human_resource_staff * 
                                   percent_meetings_no_intervention, # ten percent of the meetings, but each year
                                   var_CV = CV_value, 
                                   n = number_of_years)
   
-  expected_benefit_of_connectFarm <- vv(longterm_benefits_farmstand*
+  # CW CHECK THIS A VERY WEAK ARGUENT THAT ALWAYS MAKES THIS OPTION SLIGHTLY WORSE 
+  expected_benefit_of_connectFarm <- vv(company_revenue_through_intervention*
                                         percent_veg_benefit_no_intervention,
                                         var_CV = CV_value, 
                                         n = number_of_years)
-                                  
-                                  
                                   
   connectFarm_result <- expected_benefit_of_connectFarm - expected_cost_of_connectFarm
   
@@ -261,25 +328,37 @@ source("functions/discount.R")
   # # = (1 + Real Discount Rate)(1 + Inflation Rate) – 1 ≈ Real Discount Rate + Inflation Rate
   # Real Discount Rate ≈ Nominal Discount Rate - Inflation Rate
   # Nominal discount rate is often considered as nominal bank interest rate. If we have already considered inflation in the cost and benefit calculation, then for calculating NPV, we should consider
-  # 
+
+  do_nothing_costs <- rep(0, number_of_years)
+  do_nothing_benefits <- rep(0, number_of_years)
+  NPV_do_nothing <- discount(do_nothing_benefits, discount_rate, TRUE)
+  
+# Missing Baseline Scenario Problem: we are comparing connectFarm to farmstand,
+# but there's no baseline (“do nothing”) scenario.
+# Effect: Without a baseline, it's impossible to say if either intervention
+# improves conditions or how much better one is relative to inaction.
+# Implication: Decision-makers can’t see the full trade-off space.
+  
   # Nominal interest rate
   # Company's choice of nominal interest rate (or nominal discount rate).
 
   NPV_farmstand <-
-    discount(longterm_benefits_farmstand, 
+    discount(company_revenue_through_intervention, 
              discount_rate, calculate_NPV = TRUE) #consider inflation rate???
   
  NPV_connectFarm <-
     discount(connectFarm_result, 
              discount_rate, calculate_NPV = TRUE)
-  
-  # Beware, if you do not name your outputs (left-hand side of the equal sign) in the return section, 
-  # the variables will be called output_1, _2, etc.
+
+ 
+  # name outputs (left-hand side of the equal sign) in the return section, 
+  # or the variables will be called output_1, _2, etc.
 #   
-#   return(list(NPV_farmstand = NPV_farmstand,
-#               NPV_connectFarm = NPV_connectFarm,
-#               NPV_decision = NPV_farmstand - NPV_connectFarm, #the decision
-#               cashflow_farmstand = longterm_benefits_farmstand))
+#   return(list(decision_farmstand = NPV_farmstand - NPV_do_nothing,
+             #   cashflow_farmstand = connectFarm_result,
+                
+#               decision_connectFarm = NPV_connectFarm - NPV_do_nothing,
+#               cashflow_connectFarm = connectFarm_result))
 # }
 
 
