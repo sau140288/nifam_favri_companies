@@ -290,26 +290,15 @@ source("functions/discount.R")
                                         relative_trend = inflation_rate,
                                         n = number_of_years)
   
-  # Final result
+  # Final result connect farm
   connectFarm_result <- expected_benefit_of_connectFarm - expected_cost_of_connectFarm
   
+  # Do nothing 
   
-
-  # The difference is inherent in our calculation so we do not need the 
-  # comparative NPV here, just discount the intervention result
-  # # = (1 + Real Discount Rate)(1 + Inflation Rate) – 1 ≈ Real Discount Rate + Inflation Rate
-  # Real Discount Rate ≈ Nominal Discount Rate - Inflation Rate
-  # Nominal discount rate is often considered as nominal bank interest rate. If we have already considered inflation in the cost and benefit calculation, then for calculating NPV, we should consider
-
   do_nothing_costs <- rep(0, number_of_years)
   do_nothing_benefits <- rep(0, number_of_years)
   NPV_do_nothing <- discount(do_nothing_benefits, discount_rate, TRUE)
   
-# Missing Baseline Scenario Problem: we are comparing connectFarm to farmstand,
-# but there's no baseline (“do nothing”) scenario.
-# Effect: Without a baseline, it's impossible to say if either intervention
-# improves conditions or how much better one is relative to inaction.
-# Implication: Decision-makers can’t see the full trade-off space.
   
   # Nominal interest rate
   # Company's choice of nominal interest rate (or nominal discount rate).
