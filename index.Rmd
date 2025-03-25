@@ -54,60 +54,6 @@ garden_simulation_results <- mcSimulation(
   functionSyntax = "plainNames"
 )
 
-
-
-
-# plot distributions for the two options
-source("functions/plot_distributions.R")
-plot_distributions(mcSimulation_object = company_results, 
-                   vars = c("NPV_farmstand","NPV_connectFarm"),
-                   method = 'smooth_simple_overlay', 
-                   base_size = 7)
-
-plot_distributions(mcSimulation_object = company_results, 
-                   vars = c("NPV_farmstand","NPV_connectFarm"),
-                   method = 'boxplot')
-
-plot_distributions(mcSimulation_object = company_results, 
-                   vars = "decision",
-                   method = 'smooth_simple_overlay', 
-                   base_size = 7)
-
-# Cashflow of the company option
-source("functions/plot_cashflow.R")
-plot_cashflow(mcSimulation_object = company_results, 
-              cashflow_var_name = "cashflow_farmstand")
-
-# PLS
-source("functions/pls_model.R")
-pls_result <- pls_model(object = company_results,
-                                resultName = names(company_results$y)[3], 
-                                ncomp = 1)
-
-input_table <- read.csv("company_input.csv")
-source("functions/plot_pls.R")
-plot_pls(pls_result, input_table = input_table, threshold = 0)
-
-# EVPI 
-source("functions/multi_EVPI.R")
-#here we subset the outputs from the mcSimulation function (y) 
-# by selecting the correct variables
-# be sure to run the multi_EVPI only on the variables that the we want
-# check names
-names(company_results$x) #input table
-names(company_results$y) #return
-mcSimulation_table <- data.frame(company_results$x, 
-                                 company_results$y[1:3]) #choose NPV only
-
-evpi <- multi_EVPI(mc = mcSimulation_table, first_out_var = "NPV_farmstand")
-
-source("functions/plot_evpi.R")
-plot_evpi(evpi, decision_vars = "decision")
-
-# Get summary statistics
-summary(company_results$y$decision)
-
-
 ```
 
 The Net Present Value (i.e. current value of the future benefits) of the garden decision options over `r garden_simulation_results$x$number_of_years[1]` years of the intervention. For public and private schools the STEM costs are considered to be in the same garden space but with the additional costs and benefits of a full STEM education program. All options are compared to the same years of using the land for something that is not related to the garden, i.e. as a playground or for parking. Here we plot the distribution for the decision and frame the projected NPV. 
@@ -115,69 +61,16 @@ The Net Present Value (i.e. current value of the future benefits) of the garden 
 For public schools:
 
 ```{r plot_dist_public, warning=FALSE, message=FALSE}
+# plot distributions for the two options
 source("functions/plot_distributions.R")
-plot_distributions(mcSimulation_object = garden_simulation_results, 
-                                    vars = c("NPV_garden_public_school_inclusive", 
-                                             "NPV_garden_STEM_public_school_inclusive"),
-                   old_names = c("NPV_garden_public_school_inclusive", "NPV_garden_STEM_public_school_inclusive"),
-                   new_names = c("NPV public school passive garden", "NPV public school STEM garden"),
-                                    method = 'smooth_simple_overlay', 
-                                    base_size = 7, 
-                                    x_axis_name = "Comparative NPV outcomes")
-```
+plot_distributions(mcSimulation_object = company_results, 
+                   vars = c("NPV_decision"),
+                   old_names = c("NPV_decision"),
+                   new_names = c("NPV farmstand vs. connect farms"),
+                   method = 'boxplot', 
+                   base_size = 7,
+                   x_axis_name = "Comparative NPV outcomes")
 
-For private schools: 
-
-```{r plot_dist_private, warning=FALSE, message=FALSE}
-source("functions/plot_distributions.R")
-plot_distributions(mcSimulation_object = garden_simulation_results, 
-                                    vars = c("NPV_garden_inclusive","NPV_garden_STEM_inclusive"),
-                   old_names = c("NPV_garden_inclusive","NPV_garden_STEM_inclusive"),
-                   new_names = c("NPV private school passive garden","NPV private school STEM garden"),
-                                    method = 'smooth_simple_overlay', 
-                                    base_size = 7, 
-                                    x_axis_name = "Comparative NPV outcomes")
-```
-
-The same results again but this time as boxplots:
-
-```{r plot_boxplot_public_private, warning=FALSE, message=FALSE}
-source("functions/plot_distributions.R")
-plot_distributions(mcSimulation_object = garden_simulation_results, 
-                   vars = c("NPV_garden_inclusive","NPV_garden_STEM_inclusive", "NPV_garden_public_school_inclusive", "NPV_garden_STEM_public_school_inclusive"),
-                   old_names = c("NPV_garden_inclusive","NPV_garden_STEM_inclusive", "NPV_garden_public_school_inclusive", "NPV_garden_STEM_public_school_inclusive"),
-                   new_names = c("Private school passive garden","Private school STEM garden", "Public school passive garden", "Public school STEM garden"),
-                                    method = "boxplot", 
-                                    base_size = 11, 
-                                    x_axis_name = "Net Present Value (NPV) outcomes (million VND)")
-
-ggsave("figures/Fig_3_Boxplots.png", width = 15, height = 8, units = "cm")
-```
-
-As boxplots and distributions for public schools:
-
-```{r plot_distboxplot_public, warning=FALSE, message=FALSE}
-source("functions/plot_distributions.R")
-plot_distributions(mcSimulation_object = garden_simulation_results, 
-                                    vars = c("NPV_garden_public_school_inclusive", "NPV_garden_STEM_public_school_inclusive"),
-                   old_names = c("NPV_garden_public_school_inclusive", "NPV_garden_STEM_public_school_inclusive"),
-                   new_names = c("NPV public farmstand", "NPV public farmstand with STEM"),
-                                    method = "boxplot_density", 
-                                    base_size = 7, 
-                                    x_axis_name = "NPV outcomes")
-```
-
-As boxplots and distributions for private schools:
-
-```{r plot_distboxplot_private, warning=FALSE, message=FALSE}
-source("functions/plot_distributions.R")
-plot_distributions(mcSimulation_object = garden_simulation_results, 
-                                    vars = c("NPV_garden_inclusive","NPV_garden_STEM_inclusive"),
-                   old_names = c("NPV_garden_inclusive","NPV_garden_STEM_inclusive"),
-                   new_names = c("Private farmstand","Private school with STEM"),
-                                    method = "boxplot_density", 
-                                    base_size = 7, 
-                                    x_axis_name = "NPV outcomes")
 ```
 
 ## Summary of results for the decision
