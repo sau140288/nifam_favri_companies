@@ -236,7 +236,7 @@ source("functions/discount.R")
     company_revenue_through_intervention <- company_revenue_through_intervention 
   }
   
-  company_revenue_through_intervention <- company_revenue_through_intervention + 
+  company_result <- (company_revenue_through_intervention - total_costs) + 
     benefit_enviroment_on_campus # quality of factory campus improved
   
   # ConnectFarm Intervention ####
@@ -293,25 +293,22 @@ source("functions/discount.R")
   # Final result connect farm
   connectFarm_result <- expected_benefit_of_connectFarm - expected_cost_of_connectFarm
   
-  # Do nothing 
+  # Do nothing ####
   
   do_nothing_costs <- rep(0, number_of_years)
   do_nothing_benefits <- rep(0, number_of_years)
   NPV_do_nothing <- discount(do_nothing_benefits, discount_rate, TRUE)
-  
-  
-  # Nominal interest rate
-  # Company's choice of nominal interest rate (or nominal discount rate).
 
+  # NPV ####
+  
   NPV_farmstand <-
-    discount(company_revenue_through_intervention, 
+    discount(company_result, 
              discount_rate, calculate_NPV = TRUE) #consider inflation rate???
   
  NPV_connectFarm <-
     discount(connectFarm_result, 
              discount_rate, calculate_NPV = TRUE)
 
- 
   # name outputs (left-hand side of the equal sign) in the return section, 
   # or the variables will be called output_1, _2, etc.
 #   
