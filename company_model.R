@@ -5,7 +5,7 @@
 # make sure to clear in Enviroment
 source("functions/make_variables.R")
 source("functions/estimate_read_csv.R")
-make_variables(estimate_read_csv(paste("company_input.csv", sep="")))
+make_variables(estimate_read_csv(paste("data/company_input.csv", sep="")))
 
 # value varier function to add variability to values
 source("functions/vv.R")
@@ -21,12 +21,10 @@ source("functions/discount.R")
 # set.seed(1234) # to keep the same collection of results each time
 company_function <- function(x, varnames){
   
-     # Cost####
-
+  # Cost####
   
  # establishment costs####
-  
-  
+
    one_time_establishment_costs <- cost_of_establishment_capital +
                        cost_establishment_cleaning_establishment +
                        cost_establishment_human_resource_staff +
@@ -61,18 +59,35 @@ company_function <- function(x, varnames){
   
   # Benefits ####
   
+  baseline_health_conditions <- 100 # vulnerable urban communities have underlying health effects
+  
+  # By the beginning of 2020, according to central standards,
+  # Hanoi city has 4,112 poor households, accounting for 0.2% and 3,939
+  # near-poor households, accounting for 0.19% of the total number of
+  # households. The poverty rate according to central standards decreased from
+  # 2.97% at the beginning of the period to 0.2%.
+  
+  # According to the city's standards, Hanoi city has 8,692 poor households,
+  # accounting for 0.42% and 41,937 near-poor households, accounting for 2.01%
+  # of the total number of households. The poverty rate according to the city
+  # standard decreased from 3.64% to 0.42% (down 52,212 households).
+  
+  # This is the official statistics of Vietnam (no poverty
+  # rate of Hanoi) https://www.gso.gov.vn/en/?s=poverty+rate+hanoi&lang=en
+  # Newspaper (quite reliable): Toàn thành phố Hà Nội chỉ còn 0,2% tỷ lệ hộ nghèo
+  # (laodongthudo.vn) 
+  
   # Risks to access ####
   
   ## if_accessible  
   
-  chance_disease_outbreak <-chance_event(disease_outbreak,value_if=1,
+  disease_outbreak <-chance_event(disease_outbreak,value_if=1,
                                   value_if_not=0)
   
-  if( chance_disease_outbreak == 1) {
+  if( disease_outbreak == 1) {
     if_accessible <- if_accessible - access_reduction_disease
   } else {
     if_accessible <- if_accessible}
-  
   
   change_of_source_undesirable <-chance_event(change_of_source_undesirable,
                                               value_if=1,value_if_not=0)
@@ -82,20 +97,21 @@ company_function <- function(x, varnames){
   } else {
     if_accessible <- if_accessible}
   
-  
-  chance_affordability_low <-chance_event(affordability,value_if=1,
+  affordability_low <-chance_event(affordability,value_if=1,
                                    value_if_not=0)
-  
-  if( chance_affordability_low == 1) {
+
+  if( affordability_low == 1) {
     if_accessible <- if_accessible - access_reduction_affordability
   } else {
     if_accessible <- if_accessible}
   
-  chance_organization_inconvenient <-chance_event(organization_inconvenient,value_if=1,
+  organization_poor <-chance_event(chance_poorly_organized,value_if=1,
                                    value_if_not=0)
   
- 
-  if(chance_organization_inconvenient== 1 | organization_inconvenient == 1) {
+  inconvenient <-chance_event(chance_farmstand_inconvenient,value_if=1,
+                              value_if_not=0)
+  
+  if(organization_poor == 1 | inconvenient == 1) {
     if_accessible <- if_accessible - access_reduction_organization_inconvenient
   } else {
     if_accessible <- if_accessible}
@@ -103,7 +119,6 @@ company_function <- function(x, varnames){
   
   not_preferred <-chance_event(chance_not_meet_preference,value_if=1,
                                value_if_not=0)
-  
   
   if(not_preferred == 1) {
     if_accessible <- if_accessible - access_reduction_preference
@@ -114,54 +129,67 @@ company_function <- function(x, varnames){
   # we do not expect a negative effect on accessibility
   if_accessible[if_accessible<0]<-0
   
+  # benefits from nutrition####
+  # TEMP remmve ######
+ #  #monopoly effects on quality
+ #  monopoly_low_quality <-chance_event(chance_monopoly_reliance_supply)
+ #  
+ #  if(monopoly_low_quality == 1){
+ #    vegetable_quality <- vegetable_quality - 
+ #      reduction_in_veg_quality_if_monopoly # percent reduction of quality
+ #    # if there is a monopoly there is a chance that the quality goes down
+ #  } else {
+ #    vegetable_quality <- vegetable_quality}
+ #  
+ #  # farmer knowledge and preferences will drive this up
+ #  # farming practice ####
+ #  
+ #  #monopoly effects on quality
+ #  good_farm_practice <-chance_event(farming_practice)
+ #  
+ #  if(good_farm_practice == 1){
+ #    vegetable_quality <- vegetable_quality + farming_practice_increase_quality + farming_practice_increase_diversity
+ # # percent increase of quality
+ #    # if there is a monopoly there is a chance that the quality goes down
+ #  } else {
+ #    vegetable_quality <- vegetable_quality
+ #    }
   
-  # worker's health benefit ####
  
-
-  # benefit safety_of_food 
   
-  benefit_safety_of_food_risk <- ((benefit_safety_of_food * total_worker_company) *
-                                (1-reduction_in_veg_quality_if_monopoly)*
-                                (1+ farming_practice_increase_quality))* if_accessible
- 
-  ## if_nutrition
+  # worker's health benefit from nutrition
+  # calculated as a cost savings to the company 
+  # annual benefits to work productivity
+  # due to better nutrition for the workers (less health care costs, more efficient)
   
-  # calculate if_nutrition with risk from diversity
+  # benefit safety_of_food
   
-  nutrition_diversity_risk <-chance_event(diversity,value_if=1,
-                                value_if_not=0)
+  work_benefits_from_safety_of_food <-benefit_safety_of_food *
+                                              (1-reduction_in_veg_quality_if_monopoly)*
+                                              (1+ farming_practice_increase_quality)
   
-   if(nutrition_diversity_risk == 1){
-    if_nutrition <- if_nutrition *
-                    (1 - reduction_nutrition_low_diverse)*
-                    (1+  farming_practice_increase_diversity)
-  } else {
-    if_nutrition <- if_nutrition
-  }
+  # CW NEED TO WORK HERE ####
+  work_benefits_from_accessibility <-benefit_accessibility_of_food*if_accessible*
+                                              (1-reduction_in_veg_quality_if_monopoly)*
+                                              (1+ farming_practice_increase_quality)
+  # CW NEED TO WORK HERE ####
+  work_benefits_from_food_prep <-benefit_prep_of_food *
+    (1-reduction_in_veg_quality_if_monopoly)*
+    (1+ farming_practice_increase_quality)
   
-  # calculate if_nutrition with risk from vegetable quality
+  # CW NEED TO WORK HERE ####
+  work_benefits_from_nutrition <-benefit_nutrition_of_food *
+                                           (1-reduction_in_veg_quality_if_monopoly)*
+                                           (1+ farming_practice_increase_quality)
   
-nutrition_quality_risk <- chance_event(vegetable_quality_nutrition,value_if=1,
-                                         value_if_not=0)
+  # benefits to workers health ####
+  benefit_worker_health <-(work_benefits_from_accessibility + 
+                              work_benefits_from_food_prep + 
+                              work_benefits_from_safety_of_food + 
+                              work_benefits_from_nutrition) *if_accessible
   
-  if(nutrition_quality_risk == 1){
-    if_nutrition <- if_nutrition *
-      (1 - reduction_nutrition_low_quality)*
-      (1+  farming_practice_increase_quality)
-  } else {
-    if_nutrition  <- if_nutrition
-  }
-   
- # calculate total worker health
-
-  total_worker_health_benefit <- (benefit_nutrition *if_accessible* if_nutrition* total_worker_company)+
-                                  benefit_safety_of_food_risk+
-                                  (benefit_food_prep_cooking_and_food_waste *if_accessible*total_worker_company)
-  
-   
   # Risk of poor relationship ####
   ## if_relationship
-  
   
   conflict_farmer_buyer <-chance_event(chance_conflict_farmer_buyer,value_if=1,
                                        value_if_not=0)
@@ -175,7 +203,6 @@ nutrition_quality_risk <- chance_event(vegetable_quality_nutrition,value_if=1,
   
   # if factory has a good reputation then work ethic goes up a bit
   # if not it goes down a bit
-  # this is the
   if(conflict_farmer_buyer == 1|
      conflict_farmer_company == 1|
      rumor == 1) {
@@ -183,23 +210,39 @@ nutrition_quality_risk <- chance_event(vegetable_quality_nutrition,value_if=1,
   } else {
     factory_reputation <- benefit_factory_reputation}
   
-  # calculate the work efficiency ####
-   benefit_work_efficiency <- (benefit_worker_time_savings * total_worker_company * if_accessible)+ # 1-2 hours a week saved on shopping (max)
-                              total_worker_health_benefit +                        
-                              benefit_factory_reputation
+  # calculate the work efficiency effect of the safe vegetables####
+   benefit_work_efficiency <- (benefit_worker_health +
+    (benefit_worker_time_savings * # 1-2 hours a week saved on shopping (max)
+                            if_accessible)) * benefit_factory_reputation
 
+ 
+  diversity_risk <-chance_event(chance_vegetable_diversity,value_if=1,
+                                value_if_not=0)
+  
+  vegetable_quality_risk <- chance_event(chance_vegetable_quality,value_if=1,
+                                         value_if_not=0)
+  
+  
+  if(diversity_risk == 1| vegetable_quality_risk == 1){
+    work_benefits_from_nutrition <- work_benefits_from_nutrition * #VND value
+      (1 - reduction_nutrition_low_diverse_and_quality) #reduction percentage
+  } else {
+    work_benefits_from_nutrition <- work_benefits_from_nutrition
+  }
+  
+  
   
    # calculate company revenue####
-  company_revenue_annual <- (benefit_work_efficiency + 
-                             benefit_farmer_revenue) #shared with company
+  company_revenue_annual <- 
+    benefit_work_efficiency +
+    benefit_farmer_revenue #shared with company
   
   company_revenue_through_intervention <- vv(company_revenue_annual, 
                                              var_CV = CV_value, 
                                              relative_trend = inflation_rate,
                                              n = number_of_years)
   
-  #  calculate conflicting business interests risk effects on company revenue annual
-  
+
   
   conflicting_interest <- chance_event(conflicting_business_interests) 
   
@@ -213,25 +256,23 @@ nutrition_quality_risk <- chance_event(vegetable_quality_nutrition,value_if=1,
   longterm_benefits_farmstand <- company_revenue_through_intervention + 
     benefit_enviroment_on_campus
   
- 
-  
   # Alternative ####
   # what might the company do instead 
   # just connect farmers and consumers and allow them to handle logistics
-  
  
-  expected_cost_of_altervative <- vv(cost_establishment_human_resource_staff * 
+  expected_cost_of_connectFarm <- vv(cost_establishment_human_resource_staff * 
                                   percent_meetings_no_intervention, # ten percent of the meetings, but each year
                                   var_CV = CV_value, 
                                   n = number_of_years)
   
-  expected_benefit_of_altervative <- vv(longterm_benefits_farmstand*
+  expected_benefit_of_connectFarm <- vv(longterm_benefits_farmstand*
                                         percent_veg_benefit_no_intervention,
                                         var_CV = CV_value, 
                                         n = number_of_years)
-                             
                                   
-  connectFarm_result <- expected_benefit_of_altervative - expected_cost_of_altervative
+                                  
+                                  
+  connectFarm_result <- expected_benefit_of_connectFarm - expected_cost_of_connectFarm
   
   # The difference is inherent in our calculation so we do not need the 
   # comparative NPV here, just discount the intervention result
@@ -258,69 +299,8 @@ nutrition_quality_risk <- chance_event(vegetable_quality_nutrition,value_if=1,
   
   return(list(NPV_farmstand = NPV_farmstand,
               NPV_connectFarm = NPV_connectFarm,
-              decision = NPV_farmstand - NPV_connectFarm, #the decision is in the trade off
+              NPV_decision = NPV_farmstand - NPV_connectFarm, #the decision
               cashflow_farmstand = longterm_benefits_farmstand))
 }
-
-
-# Monte Carlo simulation 
-source("functions/mcSimulation.R")
-
-company_results <- mcSimulation(estimate = estimate_read_csv("company_input.csv"),
-  model_function = company_function,
-  numberOfModelRuns = 1000, #run 1,000 times
-  functionSyntax = "plainNames"
-)
-
-# plot distributions for the two options
-source("functions/plot_distributions.R")
-plot_distributions(mcSimulation_object = company_results, 
-                   vars = c("NPV_farmstand","NPV_connectFarm"),
-                   method = 'smooth_simple_overlay', 
-                   base_size = 7)
-
-plot_distributions(mcSimulation_object = company_results, 
-                   vars = c("NPV_farmstand","NPV_connectFarm"),
-                   method = 'boxplot')
-
-plot_distributions(mcSimulation_object = company_results, 
-                   vars = "decision",
-                   method = 'smooth_simple_overlay', 
-                   base_size = 7)
-
-# Cashflow of the company option
-source("functions/plot_cashflow.R")
-plot_cashflow(mcSimulation_object = company_results, 
-              cashflow_var_name = "cashflow_farmstand")
-
-# PLS
-source("functions/pls_model.R")
-pls_result <- pls_model(object = company_results,
-                                resultName = names(company_results$y)[3], 
-                                ncomp = 1)
-
-input_table <- read.csv("company_input.csv")
-source("functions/plot_pls.R")
-plot_pls(pls_result, input_table = input_table, threshold = 0)
-
-# EVPI 
-source("functions/multi_EVPI.R")
-#here we subset the outputs from the mcSimulation function (y) 
-# by selecting the correct variables
-# be sure to run the multi_EVPI only on the variables that the we want
-# check names
-names(company_results$x) #input table
-names(company_results$y) #return
-mcSimulation_table <- data.frame(company_results$x, 
-                                 company_results$y[1:3]) #choose NPV only
-
-evpi <- multi_EVPI(mc = mcSimulation_table, first_out_var = "NPV_farmstand")
-
-source("functions/plot_evpi.R")
-plot_evpi(evpi, decision_vars = "decision")
-
-# Get summary statistics
-summary(company_results$y$decision)
-
 
 
