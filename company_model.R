@@ -294,35 +294,7 @@ source("functions/discount.R")
   connectFarm_result <- expected_benefit_of_connectFarm - expected_cost_of_connectFarm
   
   
- #CW NOTE add detailed logic of
- #farmstand intervention has. It's too abstract and leans on a few vague
- #multipliers instead of modeling the mechanisms that matter — especially food
- #environment effects, reputation risks, and cost structures.
-  # ✅ Costs are flat and based only on a % of meetings — no breakdown of effort, personnel, or engagement level.
-  #
-  # ❌ Benefits are treated as a vague percentage of another scenario’s benefits.
-  # This erases the chance to understand why this option might be good (or not).
-  # ❌ There’s no connection to:
-  # Accessibility
-  # Food quality or diversity
-  # Worker health or factory reputation
-  # ❌ The NPV outcome is always slightly worse — because the logic is built to
-  # make it worse.
-  
-  
-  expected_cost_of_connectFarm <- vv(cost_establishment_human_resource_staff * 
-                                  percent_meetings_no_intervention, # ten percent of the meetings, but each year
-                                  var_CV = CV_value, 
-                                  n = number_of_years)
-  
-  # CW CHECK THIS A VERY WEAK ARGUENT THAT ALWAYS MAKES THIS OPTION SLIGHTLY WORSE 
-  expected_benefit_of_connectFarm <- vv(company_revenue_through_intervention*
-                                        percent_veg_benefit_no_intervention,
-                                        var_CV = CV_value, 
-                                        n = number_of_years)
-                                  
-  connectFarm_result <- expected_benefit_of_connectFarm - expected_cost_of_connectFarm
-  
+
   # The difference is inherent in our calculation so we do not need the 
   # comparative NPV here, just discount the intervention result
   # # = (1 + Real Discount Rate)(1 + Inflation Rate) – 1 ≈ Real Discount Rate + Inflation Rate
