@@ -7,6 +7,13 @@ source("functions/make_variables.R")
 source("functions/estimate_read_csv.R")
 make_variables(estimate_read_csv(paste("data/company_input.csv", sep="")))
 
+data <- read.csv("data/company_input.csv")  # replace with your actual CSV file name
+var_list <- unique(data$variable)  # extract the variable names you're checking
+r_script_lines <- readLines("company_model.R")  # replace with your actual R file
+r_script_text <- paste(r_script_lines, collapse = " ")
+# Check which variables from CSV are NOT found in the R script text
+missing_vars <- var_list[!sapply(var_list, function(v) grepl(v, r_script_text))]
+
 # value varier function to add variability to values
 source("functions/vv.R")
 
@@ -19,7 +26,7 @@ source("functions/discount.R")
 
 # Model ####
 # set.seed(1234) # to keep the same collection of results each time
-company_function <- function(x, varnames){
+# company_function <- function(x, varnames){
   
   # Cost####
   
@@ -97,7 +104,7 @@ company_function <- function(x, varnames){
   } else {
     if_accessible <- if_accessible}
   
-  affordability_low <-chance_event(affordability,value_if=1,
+  affordability_low <-chance_event(chance_low_affordability,value_if=1,
                                    value_if_not=0)
 
   if( affordability_low == 1) {
@@ -130,33 +137,7 @@ company_function <- function(x, varnames){
   if_accessible[if_accessible<0]<-0
   
   # benefits from nutrition####
-  # TEMP remmve ######
- #  #monopoly effects on quality
- #  monopoly_low_quality <-chance_event(chance_monopoly_reliance_supply)
- #  
- #  if(monopoly_low_quality == 1){
- #    vegetable_quality <- vegetable_quality - 
- #      reduction_in_veg_quality_if_monopoly # percent reduction of quality
- #    # if there is a monopoly there is a chance that the quality goes down
- #  } else {
- #    vegetable_quality <- vegetable_quality}
- #  
- #  # farmer knowledge and preferences will drive this up
- #  # farming practice ####
- #  
- #  #monopoly effects on quality
- #  good_farm_practice <-chance_event(farming_practice)
- #  
- #  if(good_farm_practice == 1){
- #    vegetable_quality <- vegetable_quality + farming_practice_increase_quality + farming_practice_increase_diversity
- # # percent increase of quality
- #    # if there is a monopoly there is a chance that the quality goes down
- #  } else {
- #    vegetable_quality <- vegetable_quality
- #    }
-  
  
-  
   # worker's health benefit from nutrition
   # calculated as a cost savings to the company 
   # annual benefits to work productivity
@@ -282,9 +263,7 @@ company_function <- function(x, varnames){
   # 
   # Nominal interest rate
   # Company's choice of nominal interest rate (or nominal discount rate).
-  # We suggest the discount rate from 3-15%  
 
-  
   NPV_farmstand <-
     discount(longterm_benefits_farmstand, 
              discount_rate, calculate_NPV = TRUE) #consider inflation rate???
@@ -293,14 +272,13 @@ company_function <- function(x, varnames){
     discount(connectFarm_result, 
              discount_rate, calculate_NPV = TRUE)
   
- 
   # Beware, if you do not name your outputs (left-hand side of the equal sign) in the return section, 
   # the variables will be called output_1, _2, etc.
-  
-  return(list(NPV_farmstand = NPV_farmstand,
-              NPV_connectFarm = NPV_connectFarm,
-              NPV_decision = NPV_farmstand - NPV_connectFarm, #the decision
-              cashflow_farmstand = longterm_benefits_farmstand))
-}
+#   
+#   return(list(NPV_farmstand = NPV_farmstand,
+#               NPV_connectFarm = NPV_connectFarm,
+#               NPV_decision = NPV_farmstand - NPV_connectFarm, #the decision
+#               cashflow_farmstand = longterm_benefits_farmstand))
+# }
 
 
