@@ -7,12 +7,12 @@ source("functions/make_variables.R")
 source("functions/estimate_read_csv.R")
 make_variables(estimate_read_csv(paste("data/company_input.csv", sep="")))
 
-data <- read.csv("data/company_input.csv")  # replace with your actual CSV file name
-var_list <- unique(data$variable)  # extract the variable names you're checking
-r_script_lines <- readLines("company_model.R")  # replace with your actual R file
-r_script_text <- paste(r_script_lines, collapse = " ")
-# Check which variables from CSV are NOT found in the R script text
-missing_vars <- var_list[!sapply(var_list, function(v) grepl(v, r_script_text))]
+# data <- read.csv("data/company_input.csv")  # replace with your actual CSV file name
+# var_list <- unique(data$variable)  # extract the variable names you're checking
+# r_script_lines <- readLines("company_model.R")  # replace with your actual R file
+# r_script_text <- paste(r_script_lines, collapse = " ")
+# # Check which variables from CSV are NOT found in the R script text
+# var_list[!sapply(var_list, function(v) grepl(v, r_script_text))]
 
 # value varier function to add variability to values
 source("functions/vv.R")
@@ -216,7 +216,8 @@ source("functions/discount.R")
    # calculate company revenue####
   company_revenue_annual <- 
     benefit_work_efficiency +
-    benefit_farmer_revenue #shared with company
+    #shared with company, increased due to better farm reputation
+    benefit_farmer_revenue* 1-(prob_increased_farmer_reputation) 
   
   company_revenue_through_intervention <- vv(company_revenue_annual, 
                                              var_CV = CV_value, 
