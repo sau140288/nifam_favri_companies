@@ -187,14 +187,8 @@ source("functions/discount.R")
   
   benefit_work_efficiency <- (benefit_worker_health + benefit_worker_time_savings * if_accessible) *
     factory_reputation  
-  
-# CW NOTE The benefit_worker_health includes multiple benefit terms (access,
-# prep, safety, nutrition), then this was again multiplied by if_accessible and
-# also added to benefit_work_efficiency, which is again part of revenue. That
-# may result in inflated impact estimates. 
 
 # Risk of poor relationship ####
-# if_relationship doing three things:
   # Modeling trust/reputation risks based on conflict and rumors
   # Adjusting reputation-dependent effects on productivity
   # Applying nutrition risk due to diversity/quality issues
