@@ -7,6 +7,7 @@ inflation_rate,3,,7,posnorm,Inflation rate (%)
 cost_of_establishment_capital,1,,15,posnorm,cost of establishment capital (million VND)
 cost_establishment_cleaning_establishment,0.5,,4,posnorm,cost of cleaning establishment (million VND)
 cost_establishment_human_resource_staff,1,,5,posnorm,labor cost of the core team to support establishment (million VND)
+connectFarm_meeting_fraction,0.1,,0.4,tnorm_0_1,Fraction of meeting time needed for connecting workers and farmers (%)
 cost_establishment_allowance_extended_participants,2,,8,posnorm,allowance for extended participants during establishment time (million VND)
 cost_establishment_promotion,3,,20,posnorm,cost of establishment promotion (million VND)
 cost_establishment_stakeholder_engagement,2,,8,posnorm,cost of establishment stakeholder engagement (million VND)
@@ -21,6 +22,7 @@ cost_of_maintaining_cleaning,5,,25,posnorm,annual maintaining costs of cleaning 
 cost_of_maintaining_human_resource_staff,6,,40,posnorm,annual maintaining labor costs for the core team (million VND)
 cost_of_maintaining_allowance_extended_partipants,5,,15,posnorm,allowance for extended participants involved in annual maintaining (million VND)
 cost_of_maintaining_promotion,3,,20,posnorm,annual maintaining costs of promotion (million VND)
+connectFarm_promo_fraction,0.1,,0.4,tnorm_0_1,Fraction of promotion needed for connecting workers and farmers (%)
 ,,,,,
 prob_increased_farmer_reputation,0.001,,0.01,tnorm_0_1,chance of shared farmer revenue increasing due to increasing farmer's reputation (million VND/year)
 benefit_factory_reputation,50,,500,posnorm,factory' revenue increasing due to increasing farmer's reputation (million VND/year)
@@ -49,8 +51,7 @@ access_reduction_preference,0.05,,0.5,tnorm_0_1,percentage of reduction in acces
 disease_outbreak,0.001,,0.007,tnorm_0_1,chance of a disease outbreak totally removing access to the farm stand (i.e. COVID) (%)
 change_of_source_undesirable,0.1,,0.6,tnorm_0_1,chance of undersirable change of veg (%)
 chance_low_affordability,0.1,,0.65,tnorm_0_1,chance of affordability change of veg (%)
-chance_poorly_organized,0.05,,0.4,tnorm_0_1,prob. of poor organization/management (%)
-chance_farmstand_inconvenient,0.05,,0.4,tnorm_0_1,prob. of farmstand being inconvenient to workers (%)
+chance_poorly_organized_inconvenient,0.05,,0.4,tnorm_0_1,prob. of poor organization/management (%)
 chance_not_meet_preference,0.1,,0.5,tnorm_0_1,chance that veg is reduced due to cultural(%)
 reduction_nutrition_low_diverse_and_quality,0.05,,0.5,tnorm_0_1,percentage of reduction in worker nutrition benefit if low low diversity (%)
 ,,,,,
@@ -65,3 +66,7 @@ benefit_farmer_revenue,10,,150,posnorm,the revenue of the farmer shared with com
 ,,,,,
 percent_veg_benefit_no_intervention,0.05,,0.5,tnorm_0_1,Relative percent vegetable benefits if only connect farmers and consumers (%)
 percent_meetings_no_intervention,0.2,,0.4,tnorm_0_1,Relative percent meetings required if only connect farmers and consumers (%)
+,,,,,
+health_response_to_food_env,0.1,,0.4,tnorm_0_1,Relative percent health increase from food environment factors (%)
+,,,,,
+connectFarm_accessibility_multiplier,0.1,,0.4,tnorm_0_1,"Relative connect farm accessibility effect: less structured, less reliable (%)"
