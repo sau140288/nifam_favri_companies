@@ -22,9 +22,8 @@ cost_of_maintaining_human_resource_staff,6,,40,posnorm,annual maintaining labor 
 cost_of_maintaining_allowance_extended_partipants,5,,15,posnorm,allowance for extended participants involved in annual maintaining (million VND)
 cost_of_maintaining_promotion,3,,20,posnorm,annual maintaining costs of promotion (million VND)
 ,,,,,
-benefit_farmer_reputation,5,,20,posnorm,farmer' revenue increasing due to increasing farmer's reputation (million VND/year)
+prob_increased_farmer_reputation,0.001,,0.01,tnorm_0_1,chance of shared farmer revenue increasing due to increasing farmer's reputation (million VND/year)
 benefit_factory_reputation,50,,500,posnorm,factory' revenue increasing due to increasing farmer's reputation (million VND/year)
-benefit_food_prep_cooking_and_food_waste,0.2,,2,posnorm,saving monney due to reducing food waste (million VND/year)
 benefit_enviroment_on_campus,1,,8,posnorm,having green and clean space for selling point instead of grass or dirty (million VND/year)
 benefit_work_efficiency,10,,150,posnorm,company revenue from farmer's working more efficiency (million VND/year)
 benefit_safety_of_food,0.5,,2,posnorm,value of improved work from eating safe food (million VND/year)
@@ -33,12 +32,9 @@ benefit_nutrition_of_food,3,,15,posnorm,value of improved work from additional n
 benefit_prep_of_food,0.5,,2,posnorm,value of improved work from preparing safe food (million VND/year)
 benefit_worker_time_savings,0.5,,2,posnorm,value of workers time saved (not shopping) that is then applied to work (million VND/yr)
 benefit_nutrition,3,,15,posnorm,value of the contribution of worker health from nutritious food (million VND)
-benefit_consumption,3,,15,posnorm,value of the contribution from consumption safe food (million VND)
 ,,,,,
 conflicting_business_interests,0.001,,0.01,tnorm_0_1,chance if conflicting business interests (i.e. already sell veggies) (%)
 revenue_reduction_if_conflicting_interest,0.05,,0.2,tnorm_0_1,revenue reduction if conflicting business interests (i.e. already sell veggies) (%)
-trust,0.1,,0.85,tnorm_0_1,chance if lost the trust on the factory's reputation (%)
-factory_reputation_reduction_if_trust,0.3,,0.9,tnorm_0_1,factory's reputation reduction if loss their reputation due to the bad vegetable selling (%)
 if_relationship,0.3,,0.85,tnorm_0_1,general chance that relationship change (%) 
 chance_conflict_farmer_buyer,0.05,,0.15,tnorm_0_1,chance of conflict between famer and buyer (%) 
 chance_conflict_farmer_company,0.02,,0.2,tnorm_0_1,chance of conflict between famer and company (%) 
@@ -57,20 +53,15 @@ chance_poorly_organized,0.05,,0.4,tnorm_0_1,prob. of poor organization/managemen
 chance_farmstand_inconvenient,0.05,,0.4,tnorm_0_1,prob. of farmstand being inconvenient to workers (%)
 chance_not_meet_preference,0.1,,0.5,tnorm_0_1,chance that veg is reduced due to cultural(%)
 reduction_nutrition_low_diverse_and_quality,0.05,,0.5,tnorm_0_1,percentage of reduction in worker nutrition benefit if low low diversity (%)
-vegetable_quality_nutrition,0.05,,0.5,tnorm_0_1,percentage of reduction in worker nutrition benefit if low diversity or quality (%)
+,,,,,
 vegetable_quality_farmer_reputation,0.05,,0.5,tnorm_0_1,percentage of reduction in farmer reputation benefit if low quality (%)
 reduction_in_veg_quality_if_monopoly,0.05,,0.6,tnorm_0_1,percentage of reduction in vegetable quality under monopoly (%)
 farming_practice_increase_quality,0.05,,0.5,tnorm_0_1,increase in veg quality if good farmer knowledge and practice (%)
-farming_practice_increase_diversity,0.05,,0.5,tnorm_0_1,increase in veg diversity if good farmer knowledge and practice (%)
-chance_monopoly_reliance_supply,0.05,,0.1,tnorm_0_1,chance of monopoly (%)
+,,,,,
 chance_vegetable_diversity,0.1,,0.5,tnorm_0_1,chance that veg diversity is reduced (%)
 chance_vegetable_quality,0.1,,0.5,tnorm_0_1,chance that veg diversity is reduced (%)
-if_safety_of_food,0.3,,0.75,tnorm_0_1,general chance that safety of food is change (%) 
-safety_of_food_reduction_veg_quality,0.05,,0.5,tnorm_0_1,amount of reduction in safety of food (%)
+,,,,,
 benefit_farmer_revenue,10,,150,posnorm,the revenue of the farmer shared with company (million VND/year)
-if_benefit_farmer_revenue,0.3,,0.75,tnorm_0_1,general chance that farmer's revenue is change (%) 
-competition_other_farmer,0.05,,0.4,tnorm_0_1,prob. of competion with other farmers (%)
-benefit_farmer_revenue_reduction,0.05,,0.5,tnorm_0_1,amount of reduction in safety of food (%)
+,,,,,
 percent_veg_benefit_no_intervention,0.05,,0.5,tnorm_0_1,Relative percent vegetable benefits if only connect farmers and consumers (%)
 percent_meetings_no_intervention,0.2,,0.4,tnorm_0_1,Relative percent meetings required if only connect farmers and consumers (%)
-total_worker_company,1700,,1700,const,Total workers of the company
