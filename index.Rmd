@@ -1,0 +1,274 @@
+---
+title: "Farmstands in urban Hanoi"
+output:
+  html_document:
+    selfcontained: true
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE,
+               out.width = "75%", 
+               fig.align = "center", 
+               warning = FALSE, 
+               message = FALSE) 
+
+library(akima)
+library(decisionSupport)
+library(ggstance)
+library(gtExtras)
+library(patchwork)
+library(plotly)
+library(rPref)
+library(svglite)
+library(tidyverse)
+```
+
+We model a decision impact pathway is for farmstands or connecting farms to workers as general interventions for sustainable food environments in urban Hanoi, Vietnam. 
+
+# Urban Hanoi farmstand 
+
+Simulation of the farmstand intervention options:
+
+```{r mcsimulation, warning=FALSE, message=FALSE}
+# Source our model
+source("company_model.R")
+
+# Ensure consistent results with the random number generator
+# not for each 'run' of the MC simulation but for 
+# consistency each time we run the entire simulation 
+set.seed(84)
+
+# Monte Carlo simulation 
+source("functions/mcSimulation.R")
+
+company_simulation_results <- mcSimulation(
+  estimate = estimate_read_csv("data/company_input.csv"),
+  model_function = company_model,
+  numberOfModelRuns = 100, # 1e4, #run 10,000 times later
+  functionSyntax = "plainNames"
+)
+
+```
+
+The Net Present Value (i.e. current value of the future benefits). Here we plot the distribution for the decision and frame the projected NPV. 
+
+```{r plot_dist_boxplot, warning=FALSE, message=FALSE}
+# plot distributions for the two options
+source("functions/plot_distributions.R")
+plot_distributions(mcSimulation_object = company_simulation_results, 
+                   vars = c("decision_farmstand", "decision_connectFarm"),
+                   old_names = c("decision_farmstand", "decision_connectFarm"),
+                   new_names = c("NPV farmstand vs. baseline", "NPV connect farm vs. baseline"),
+                   method = 'boxplot', 
+                   base_size = 7,
+                   x_axis_name = "Comparative NPV outcomes over five years")
+
+```
+
+## Summary of results for the decision
+
+```{r summary_decisions, warning=FALSE, message=FALSE}
+# Summary for private school passive and STEM gardens
+summary(company_simulation_results$y[1:2]) 
+```
+
+```{r percentiles_decision, warning=FALSE, message=FALSE}
+# Calculate the 5th and 95th percentiles for farmstand
+quantile(company_simulation_results$y$decision_farmstand, probs = c(0.05, 0.95))
+```
+
+```{r percentiles_decision, warning=FALSE, message=FALSE}
+# Calculate the 5th and 95th percentiles for connectfarm
+quantile(company_simulation_results$y$decision_connectFarm, probs = c(0.05, 0.95))
+```
+
+
+## Food environment outcomes
+
+Compared to the baseline of doing nothing 
+
+```{r summary_food_env, warning=FALSE, message=FALSE}
+summary(company_simulation_results$y[13:14]) 
+```
+
+
+```{r plot_boxplot_health_food_env, warning=FALSE, message=FALSE}
+
+plot_distributions(mcSimulation_object = company_simulation_results, 
+                   vars = c("farmstand_food_env_score", "connect_food_env_score"),
+                   old_names = c("farmstand_food_env_score", "connect_food_env_score"),
+                   new_names = c("Food environment effect farmstand vs. do nothing", "Food environment effects farm connect vs. do nothing"),
+                                    method = "boxplot", 
+                                    base_size = 11, 
+                                    x_axis_name = "Net Present Value (NPV) outcomes (million VND) over five years")
+
+# ggsave("figures/Fig_3_Boxplots.png", width = 15, height = 8, units = "cm")
+```
+
+
+## Cash flow plots 
+
+```{r cashflow, warning=FALSE, message=FALSE}
+
+source("functions/plot_cashflow.R")
+plot_cashflow_farmstand <- plot_cashflow(mcSimulation_object = company_simulation_results, 
+              cashflow_var_name = "cashflow_farmstand", 
+              facet_labels = "Farmstand vs. do nothing") + 
+  theme(legend.position = "none", axis.title.y = element_blank())  
+
+plot_cashflow_connect <- plot_cashflow(mcSimulation_object = company_simulation_results, 
+              cashflow_var_name = "cashflow_connectFarm", 
+              facet_labels = "Connect farms")+
+  labs(y = "Cashflow (million VND) over five years") + 
+  theme(legend.position = "none")  
+
+# Determine global y-axis limits based on all cash flow data
+# y_limits <- range(
+#   company_simulation_results$y$plot_cashflow_farmstand*.45
+# )
+
+# # Apply uniform y-axis limits across all plots
+# plot_cashflow_farmstand <- plot_cashflow_farmstand + ylim(y_limits)
+# plot_cashflow_connect <- plot_cashflow_connect + ylim(y_limits)
+
+# Arrange plots with patchwork
+(plot_cashflow_farmstand | plot_cashflow_connect)
+
+# ggsave("figures/Fig_4_cashflow.png", width=6, height=4) 
+
+```
+
+Summary of cashflow private school with passive garden
+
+```{r summary_cashflow_farmstand}
+summary(company_simulation_results$y[3:7])
+
+```
+Summary of cashflow private school with STEM garden
+
+```{r summary_cashflow_connect}
+summary(company_simulation_results$y[8:12])
+```
+
+## Projection to Latent Structures (PLS)
+
+We use Projection to Latent Structures (PLS) model to assess the correlation strength and direction for model variables and outcome variables. The Partial Least Squares is fitted with the orthogonal scores algorithm with `pls::plsr`.
+
+
+```{r pls_farmstand}
+
+source("functions/pls_model.R")
+pls_result <- pls_model(object = company_simulation_results,
+                resultName = names(company_simulation_results$y)[1],  
+                                ncomp = 1)
+# read in the common input table
+input_table <- read.csv("data/company_input.csv")
+
+plot_pls_farmstand <- plot_pls(plsrResults = pls_result, 
+                            input_table = input_table, 
+                            threshold = 0.9) + 
+  theme(legend.position = "none", axis.title.x = element_blank(), 
+  axis.text.x = element_blank(),
+  axis.ticks = element_blank()) + scale_x_continuous(limits = c(0, 7)) + ggtitle("PLS Farmstand") + 
+  annotate(geom="text", x=5, y=2, label="Farmstand")
+
+#For farmstand with formal STEM education
+pls_result_connect<- pls_model(object = company_simulation_results,
+                  resultName = names(company_simulation_results$y)[2], # the "NPV_garden_STEM" 
+                                ncomp = 1)
+
+plot_pls_connect <- plot_pls(plsrResults = pls_result_connect, 
+                          input_table = input_table, 
+                          threshold = 0.9) + 
+  scale_x_continuous(limits = c(0, 7)) + 
+  annotate(geom="text", x=5, y=2, label="Farm connect")
+
+plot_pls_farmstand / plot_pls_connect 
+```
+
+## Value of Information
+
+Here we assess value of information with the `multi_EVPI` function. We calculate value of information in the form of Expected Value of Perfect Information (EVPI).
+
+```{r mc_table, warning=FALSE, message=FALSE}
+
+mcSimulation_table <- data.frame(company_simulation_results$x, 
+                                 company_simulation_results$y[1:2])
+
+# # List of NPV variables to move to the last position (calculate 2 EVPIs only)
+# npvs_to_move <- c("decision_farmstand", "decision_connectFarm")
+# 
+# # Move NPV variables to the last position
+# mcSimulation_table <- mcSimulation_table %>% select(-all_of(npvs_to_move), all_of(npvs_to_move))
+
+```
+
+Calculate EVPI:
+
+```{r evpi-general_calc}
+
+evpi <- decisionSupport::multi_EVPI(mc = mcSimulation_table, 
+                                    first_out_var = "decision_farmstand")
+#  save as a local .csv (takes ~ 15 minutes to run this)
+ # save(evpi,file="data/data_evpi.Rda")
+ # load("data/company_input.csv")
+# open from saved file (last model run) - it is stable result / takes very long to run 
+
+```
+
+EVPI :
+
+```{r evpi_farmstand}
+#Value of information 
+plot_evpi(EVPIresults = evpi,
+                            decision_vars = "decision_farmstand",
+                            new_names = "Farmstand",
+                          input_table = input_table,
+                          threshold = 10) +
+theme(legend.position = "none", axis.title.x = element_blank(),
+axis.text.x = element_blank(),
+axis.ticks = element_blank()) # +
+# scale_x_continuous(limits = c(0, 210))
+```
+
+
+```{r evpi_farmstand}
+#Value of information 
+plot_evpi_connectfarm <- plot_evpi(EVPIresults = evpi,
+                            decision_vars = "decision_connectFarm",
+                            new_names = "Connect farm",
+                          input_table = input_table,
+                          threshold = 10) +
+theme(legend.position = "none") # +
+# scale_x_continuous(limits = c(0, 210))
+
+plot_evpi_connectfarm
+```
+
+## Input data for the simulations 
+
+### Summary
+
+Here we provide a summary of the garden intervention options. We do this with a summary table of the simulation results. We show the percentage of missing values as well as the mean, median and standard deviation (SD) for each output of our model simulations. We use the `gt_plt_summary()` from {gtExtras} and with options from {svglite}. The table shows the  name, the plot overview as well as the number of missing values, the mean, median and the standard deviation of the distribution for all variables that were fed into the model from our input table of uncertainty values. 
+
+```{r gtExtras_summary_x, warning=FALSE, message=FALSE}
+# Subset the outputs from the mcSimulation function (y) to summarize only on the variables that we want.
+# names(garden_simulation_results$x)
+mcSimulation_table_x <- data.frame(company_simulation_results$x[4:7]) #, 21:30, 32:41, 43:70, 73:76)  also of possible interest
+
+ gtExtras::gt_plt_summary(mcSimulation_table_x) 
+# a summary table with missing, mean, median and sd
+
+```
+
+The table shows the variable name, the plot overview as well as the number of missing values, the mean, median and the standard deviation of the distribution for variables that calculated in the model.
+
+<!-- mcSimulation_table_y <- data.frame(garden_simulation_results$y[1:11]) -->
+<!-- gtExtras::gt_plt_summary(mcSimulation_table_y) -->
+
+The full repository can be accessed at https://github.com/CWWhitney/urban_school_gardens
+
+<!-- The git create a qr -->
+<!-- library(qrcode) -->
+<!-- qrcode_gen('https://github.com/CWWhitney/urban_school_gardens') -->
