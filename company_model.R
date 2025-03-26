@@ -7,12 +7,12 @@ source("functions/make_variables.R")
 source("functions/estimate_read_csv.R")
 make_variables(estimate_read_csv(paste("data/company_input.csv", sep="")))
 
-# data <- read.csv("data/company_input.csv")  # replace with your actual CSV file name
-# var_list <- unique(data$variable)  # extract the variable names you're checking
-# r_script_lines <- readLines("company_model.R")  # replace with your actual R file
-# r_script_text <- paste(r_script_lines, collapse = " ")
-# # Check which variables from CSV are NOT found in the R script text
-# var_list[!sapply(var_list, function(v) grepl(v, r_script_text))]
+data <- read.csv("data/company_input.csv")  # replace with your actual CSV file name
+var_list <- unique(data$variable)  # extract the variable names you're checking
+r_script_lines <- readLines("company_model.R")  # replace with your actual R file
+r_script_text <- paste(r_script_lines, collapse = " ")
+# Check which variables from CSV are NOT found in the R script text
+var_list[!sapply(var_list, function(v) grepl(v, r_script_text))]
 
 # value varier function to add variability to values
 source("functions/vv.R")
@@ -142,7 +142,7 @@ company_model <- function(x, varnames){
   # transparently evaluated.
   
   # Clarify and Expand Food Environment Outcomes Use the five food environment
-  # domains as dimensions:
+  # domains as dimensions (Turner has 8, we have information for fewer but still comprehensive):
   # Availability (e.g., number of fresh veg stalls)
   # Affordability (prices vs worker income)
   # Accessibility (distance/time)
@@ -182,7 +182,6 @@ company_model <- function(x, varnames){
   # Impact on worker health and factory productivity
   benefit_worker_health <- farmstand_food_env_score * health_response_to_food_env
   
-
 # Risk of poor relationship ####
   # Modeling trust/reputation risks based on conflict and rumors
   # Adjusting reputation-dependent effects on productivity
@@ -327,15 +326,15 @@ company_model <- function(x, varnames){
   
   # NPV ####
   
-  NPV_farmstand <-
+NPV_farmstand <-
     discount(farmstand_company_result, 
              discount_rate, calculate_NPV = TRUE) 
   
- NPV_connectFarm <-
+NPV_connectFarm <-
     discount(connectFarm_result, 
              discount_rate, calculate_NPV = TRUE)
  
- NPV_do_nothing <- discount(do_nothing_company_result,
+NPV_do_nothing <- discount(do_nothing_company_result,
                             discount_rate, calculate_NPV = TRUE)
  
 
@@ -346,7 +345,7 @@ company_model <- function(x, varnames){
               decision_connectFarm = NPV_connectFarm - NPV_do_nothing,
               cashflow_farmstand = farmstand_company_result,
             cashflow_connectFarm = connectFarm_result, 
-  farmstand_food_env_score = farmstand_food_env_score -do_nothing_food_env_score ,
+  farmstand_food_env_score = farmstand_food_env_score -do_nothing_food_env_score,
   connect_food_env_score = connect_food_env_score - do_nothing_food_env_score 
   ))
 }
