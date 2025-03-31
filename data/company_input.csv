@@ -29,7 +29,7 @@ benefit_factory_reputation,50,,500,posnorm,factory' revenue increasing due to in
 benefit_enviroment_on_campus,1,,8,posnorm,having green and clean space for selling point instead of grass or dirty (million VND/year)
 benefit_work_efficiency,10,,150,posnorm,company revenue from farmer's working more efficiency (million VND/year)
 base_safety_of_food,0.5,,2,posnorm,base value of work from eating safe food (million VND/year)
-base_accessibility_of_food,0.5,,2,posnorm,base value of  work due to accessibility of food (million VND/year)
+base_accessibility_of_food,0.5,,2,posnorm,base value of work due to accessibility of food (million VND/year)
 base_nutrition_of_food,3,,15,posnorm,base value of work due to nutrition of food (million VND/year)
 base_prep_of_food,0.5,,2,posnorm,base value work due to preparing safe food (million VND/year)
 benefit_worker_time_savings,0.5,,2,posnorm,value of workers time saved (not shopping) that is then applied to work (million VND/yr)
