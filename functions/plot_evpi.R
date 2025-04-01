@@ -12,6 +12,7 @@ plot_evpi <-
             y_axis_name = NULL,
             bar_color = "cadetblue",
             base_size = 11,
+            min_evpi = 0,
             ...)
   {
     assertthat::assert_that("EVPI_outputs" %in% class(EVPIresults),
@@ -37,7 +38,7 @@ plot_evpi <-
       combined_table <- full_evpi_data
     assertthat::assert_that(any(decision_vars %in% combined_table$output_variable),
                             msg = "The names provided for decision_vars do not match the names in the EVPIresults. Make sure that they are in the EVPIresults and are spelled correctly.")
-    filtered_table <- dplyr::filter(combined_table, EVPI > 0)
+    filtered_table <- dplyr::filter(combined_table, EVPI > min_evpi)
     data <- dplyr::filter(filtered_table, output_variable %in%
                             decision_vars)
     if (nrow(data) == 0) {
