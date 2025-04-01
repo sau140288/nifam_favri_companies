@@ -117,12 +117,12 @@ source("functions/plot_cashflow.R")
 plot_cashflow_farmstand <- plot_cashflow(mcSimulation_object = company_simulation_results, 
               cashflow_var_name = "cashflow_farmstand", 
               facet_labels = "Farmstand vs. Do Nothing") + 
-  theme(legend.position = "none", axis.title.y = element_blank())  
+              labs(y = "Cashflow (million VND)")
 
 plot_cashflow_connect <- plot_cashflow(mcSimulation_object = company_simulation_results, 
               cashflow_var_name = "cashflow_connectFarm", 
               facet_labels = "Connect Farms")+
-  labs(y = "Cashflow (million VND)") + 
+              labs(y = "Cashflow (million VND)") + 
   theme(legend.position = "none")  
 
 # Determine global y-axis limits based on all cash flow data
