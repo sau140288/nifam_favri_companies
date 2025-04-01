@@ -227,11 +227,13 @@ EVPI :
 
 ```{r evpi_farmstand}
 #Value of information 
+source("functions/plot_evpi.R")
 plot_evpi_farmstand <- plot_evpi(EVPIresults = evpi,
                             decision_vars = "decision_farmstand",
                             new_names = "Farmstand",
                           input_table = input_table,
-                          threshold = 10) +
+                          threshold = 10, 
+                          min_evpi = 1) +
 theme(legend.position = "none", axis.title.x = element_blank()) # +
 # scale_x_continuous(limits = c(0, 210))
 
@@ -240,7 +242,8 @@ plot_evpi_connectfarm <- plot_evpi(EVPIresults = evpi,
                             decision_vars = "decision_connectFarm",
                             new_names = "Connect farm",
                           input_table = input_table,
-                          threshold = 10) +
+                          threshold = 10, 
+                          min_evpi = 0.02) +
 theme(legend.position = "none") # +
 # scale_x_continuous(limits = c(0, 210))
 
