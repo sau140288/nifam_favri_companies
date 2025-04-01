@@ -105,7 +105,7 @@ Fig_plot_boxplot_health_food_env <- plot_distributions(mcSimulation_object = com
                                     base_size = 11, 
                                     x_axis_name = "Net Present Value (NPV) outcomes (million VND) over five years")
 
-ggsave("figures/Fig_plot_boxplot_health_food_env.png", width = 15, height = 8, units = "cm")
+ggsave("figures/Fig_plot_boxplot_health_food_env.png", width = 13, height = 8, units = "cm")
 ```
 
 
@@ -116,13 +116,13 @@ ggsave("figures/Fig_plot_boxplot_health_food_env.png", width = 15, height = 8, u
 source("functions/plot_cashflow.R")
 plot_cashflow_farmstand <- plot_cashflow(mcSimulation_object = company_simulation_results, 
               cashflow_var_name = "cashflow_farmstand", 
-              facet_labels = "Farmstand vs. do nothing") + 
+              facet_labels = "Farmstand vs. Do Nothing") + 
   theme(legend.position = "none", axis.title.y = element_blank())  
 
 plot_cashflow_connect <- plot_cashflow(mcSimulation_object = company_simulation_results, 
               cashflow_var_name = "cashflow_connectFarm", 
-              facet_labels = "Connect farms")+
-  labs(y = "Cashflow (million VND) over five years") + 
+              facet_labels = "Connect Farms")+
+  labs(y = "Cashflow (million VND)") + 
   theme(legend.position = "none")  
 
 # Determine global y-axis limits based on all cash flow data
@@ -136,9 +136,9 @@ plot_cashflow_connect <- plot_cashflow(mcSimulation_object = company_simulation_
 
 # Arrange plots with patchwork
 library(patchwork)
-Fig_cashflow <- plot_cashflow_farmstand | plot_cashflow_connect
+Fig_cashflow <- plot_cashflow_farmstand / plot_cashflow_connect
 
-ggsave("figures/Fig_cashflow.png", width=6, height=4) 
+ggsave("figures/Fig_cashflow.png", width=15, height=16,units = "cm") 
 
 ```
 
