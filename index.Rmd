@@ -59,7 +59,7 @@ source("functions/plot_distributions.R")
 Fig_distributions <- plot_distributions(mcSimulation_object = company_simulation_results, 
                    vars = c("decision_farmstand", "decision_connectFarm"),
                    old_names = c("decision_farmstand", "decision_connectFarm"),
-                   new_names = c("NPV farmstand vs. baseline", "NPV connect farm vs. baseline"),
+                   new_names = c("NPV farmstand vs. do nothing", "NPV connect farm vs. do nothing"),
                    method = 'boxplot', 
                    base_size = 7,
                    x_axis_name = "Comparative NPV outcomes over five years")
