@@ -105,7 +105,7 @@ Fig_plot_boxplot_health_food_env <- plot_distributions(mcSimulation_object = com
                                     base_size = 11, 
                                     x_axis_name = "Net Present Value (NPV) outcomes (million VND) over five years")
 
-ggsave("figures/Fig_plot_boxplot_health_food_env.png", width = 13, height = 8, units = "cm")
+ggsave("figures/Fig_plot_boxplot_health_food_env.png", width = 20, height = 8, units = "cm")
 ```
 
 
@@ -190,7 +190,7 @@ plot_pls_connect <- plot_pls(plsrResults = pls_result_connect,
 
 Fig_pls <- plot_pls_farmstand / plot_pls_connect 
 
-ggsave("figures/Fig_pls.png", width=6, height=4) 
+ggsave("figures/Fig_pls.png", width=10, height=4) 
 ```
 
 ## Value of Information
