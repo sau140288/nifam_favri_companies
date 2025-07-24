@@ -27,7 +27,7 @@ connectFarm_promo_fraction,0.001,,0.01,tnorm_0_1,Fraction of promotion needed fo
 prob_increased_farmer_reputation,0.001,,0.01,tnorm_0_1,chance of shared farmer revenue increasing due to increasing farmer's reputation (million VND/year)
 benefit_factory_reputation,5,,20,posnorm,factory' revenue increasing due to increasing farmer's reputation (million VND/year)
 benefit_enviroment_on_campus,1,,8,posnorm,having green and clean space for selling point instead of grass or dirty (million VND/year)
-benefit_work_efficiency,10,,150,posnorm,company revenue from farmer's working more efficiency (million VND/year)
+benefit_work_efficiency,5,,20,posnorm,company revenue from farmer's working more efficiency (million VND/year)
 base_safety_of_food,0.5,,2,posnorm,base value of work from eating safe food (million VND/year)
 base_accessibility_of_food,0.5,,2,posnorm,base value of work due to accessibility of food (million VND/year)
 base_nutrition_of_food,3,,15,posnorm,base value of work due to nutrition of food (million VND/year)

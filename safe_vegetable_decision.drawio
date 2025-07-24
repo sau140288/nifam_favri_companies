@@ -1,0 +1,59 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Safe Vegetable Decision" id="diagram-1">
+    <mxGraphModel dx="1034" dy="541" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Title -->
+        <mxCell id="title" value="Should a company in urban Hanoi invest time and resources in having a safe vegetable (SV) selling point at the company's campus?" style="text;html=1;strokeColor=none;fillColor=none;fontSize=16;fontColor=red;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="20" width="900" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- Outcome -->
+        <mxCell id="outcome" value="Intervention Outcome" style="ellipse;fillColor=none;strokeColor=green;fontColor=green;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="900" y="120" width="160" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- Costs group -->
+        <mxCell id="cost1" value="Establishment cost" style="ellipse;fillColor=none;strokeColor=blue;fontColor=blue;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="50" y="120" width="140" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="cost2" value="Maintaining cost" style="ellipse;fillColor=none;strokeColor=blue;fontColor=blue;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="50" y="200" width="140" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- Risks group -->
+        <mxCell id="risk1" value="Low demand" style="ellipse;fillColor=none;strokeColor=red;fontColor=red;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="50" y="300" width="140" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="risk2" value="Food safety incident" style="ellipse;fillColor=none;strokeColor=red;fontColor=red;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="50" y="380" width="160" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- Benefits -->
+        <mxCell id="benefit1" value="Company revenue" style="ellipse;fillColor=none;strokeColor=black;fontColor=black;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="500" y="220" width="140" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="benefit2" value="Workers' health" style="ellipse;fillColor=none;strokeColor=black;fontColor=black;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="700" y="280" width="140" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrows -->
+        <mxCell id="arrow1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=black;" edge="1" parent="1" source="cost1" target="benefit1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="arrow2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=black;" edge="1" parent="1" source="cost2" target="benefit1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="arrow3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=black;" edge="1" parent="1" source="benefit1" target="benefit2">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="arrow4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=black;" edge="1" parent="1" source="benefit2" target="outcome">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
