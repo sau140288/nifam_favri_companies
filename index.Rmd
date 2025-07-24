@@ -142,7 +142,125 @@ ggsave("figures/Fig_cashflow.png", width=15, height=16,units = "cm")
 
 ```
 
-Summary of cashflow private school with passive garden
+Explanation for cash flow with connectFarm. The plot is positive but values include negative values
+
+```{r combined_cashflow_boxplot, message=FALSE}
+
+# Load libraries
+library(tidyverse)
+
+# Load simulation results
+company_data <- read_csv("results/company_simulation_results.csv")
+
+# Prepare connectFarm data
+cashflow_connectFarm <- company_data %>%
+  select(starts_with("cashflow_connectFarm")) %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "Year",
+    values_to = "CashFlow"
+  ) %>%
+  mutate(
+    Year = as.integer(str_extract(Year, "\\d+")),
+    Scenario = "ConnectFarm"
+  )
+
+# Prepare farmstand data
+cashflow_farmstand <- company_data %>%
+  select(starts_with("cashflow_farmstand")) %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "Year",
+    values_to = "CashFlow"
+  ) %>%
+  mutate(
+    Year = as.integer(str_extract(Year, "\\d+")),
+    Scenario = "FarmStand"
+  )
+
+# Combine both
+combined_cashflow <- bind_rows(cashflow_connectFarm, cashflow_farmstand)
+
+# Plot boxplot with facets
+ggplot(combined_cashflow, aes(x = factor(Year), y = CashFlow, fill = Scenario)) +
+  geom_boxplot(outlier.color = "gray40", outlier.alpha = 0.2) +
+  stat_summary(fun = median, geom = "crossbar", width = 0.65, color = "orange", fatten = 2) +
+  facet_wrap(~ Scenario) +
+  labs(
+    x = "Year",
+    y = "Cash Flow (million VND)"
+  ) +
+  scale_fill_manual(values = c("ConnectFarm" = "steelblue", "FarmStand" = "green")) +
+  theme_minimal(base_size = 14)
+
+# Save the combined plot
+ggsave("figures/Fig_cashflow_combined_boxplot.png", width = 10, height = 5)
+
+```
+
+
+Another figure style
+
+```{r explain_cashflow_box_connectFarm}
+
+# Load libraries
+library(tidyverse)
+
+# Load the simulation results
+company_data <- read_csv("results/company_simulation_results.csv")
+
+# Extract connectFarm cash flow columns
+cashflow_data <- company_data %>%
+  select(starts_with("cashflow_connectFarm"))
+
+# Reshape to long format
+cashflow_long <- cashflow_data %>%
+  pivot_longer(cols = everything(),
+               names_to = "Year",
+               values_to = "CashFlow") %>%
+  mutate(Year = as.integer(str_extract(Year, "\\d+")))
+
+# Calculate percentiles per year
+quantiles_by_year <- cashflow_long %>%
+  group_by(Year) %>%
+  summarise(
+    P5  = quantile(CashFlow, 0.05, na.rm = TRUE),
+    P25 = quantile(CashFlow, 0.25, na.rm = TRUE),
+    P50 = quantile(CashFlow, 0.50, na.rm = TRUE),
+    P75 = quantile(CashFlow, 0.75, na.rm = TRUE),
+    P95 = quantile(CashFlow, 0.95, na.rm = TRUE)
+  ) %>%
+  pivot_longer(
+    cols = -Year,
+    names_to = "Quantile",
+    values_to = "CashFlow"
+  )
+
+# Plot the quantile trends
+ggplot(quantiles_by_year, aes(x = Year, y = CashFlow, color = Quantile)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 2) +
+  scale_color_manual(
+    values = c(
+      P5 = "#d73027",
+      P25 = "#fc8d59",
+      P50 = "#1a9850",
+      P75 = "#91bfdb",
+      P95 = "#4575b4"
+    )
+  ) +
+  labs(
+    title = "connectFarm: Cash Flow Quantile Trends Over 5 Years",
+    x = "Year",
+    y = "Cash Flow (€)",
+    color = "Quantile"
+  ) +
+  theme_minimal(base_size = 14)
+
+
+```
+
+Summary of cashflow
 
 ```{r summary_cashflow_farmstand}
 summary(company_simulation_results$y[3:7])
