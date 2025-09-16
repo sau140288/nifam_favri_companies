@@ -7,6 +7,7 @@ source("functions/make_variables.R")
 source("functions/estimate_read_csv.R")
 make_variables(estimate_read_csv(paste("data/company_input.csv", sep="")))
 
+# Check in the input table and script have the same variables
 data <- read.csv("data/company_input.csv")  # replace with your actual CSV file name
 var_list <- unique(data$variable)  # extract the variable names you're checking
 r_script_lines <- readLines("company_model.R")  # replace with your actual R file
@@ -60,7 +61,8 @@ company_model <- function(x, varnames){
   
   
   #assumning that in the first year we establishment costs and running costs
-  total_costs_farmstand[1] <- total_costs_farmstand[1] + one_time_establishment_costs_farmstand
+  total_costs_farmstand[1] <- total_costs_farmstand[1] + 
+    one_time_establishment_costs_farmstand
   
   # Benefits ####
   
@@ -87,6 +89,7 @@ company_model <- function(x, varnames){
   ## if_accessible  
   
   # Keep the probabilities in a separate list
+  # list of probability of damage
   farmstand_access_risk_probs <- list(
     disease_outbreak = disease_outbreak,
     change_of_source_undesirable = change_of_source_undesirable,
@@ -95,6 +98,7 @@ company_model <- function(x, varnames){
     chance_not_meet_preference = chance_not_meet_preference
   )
   
+  # list of amount of damage
   farmstand_access_risk_reductions <- list(
     disease_outbreak = access_reduction_disease,
     change_of_source_undesirable = access_reduction_change_of_source,
@@ -204,14 +208,15 @@ company_model <- function(x, varnames){
     factory_reputation <- benefit_factory_reputation
   }
   
-  benefit_work_efficiency <- (benefit_worker_health + benefit_worker_time_savings * if_accessible) *
-    factory_reputation  
+  benefit_work_efficiency <- (benefit_worker_health + 
+                                benefit_worker_time_savings * 
+                                if_accessible) * factory_reputation  
   
    # calculate company revenue ####
   added_company_revenue_annual <- 
     benefit_work_efficiency +
     #shared with company, increased due to better farm reputation
-    benefit_farmer_revenue* 1-(prob_increased_farmer_reputation) 
+    benefit_farmer_revenue * (1 + prob_increased_farmer_reputation) 
   
   company_revenue_through_intervention <- vv(added_company_revenue_annual, 
                                              var_CV = CV_value, 
