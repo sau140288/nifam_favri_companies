@@ -26,7 +26,7 @@ library(tidyverse)
 
 We model a decision impact pathway is for farmstands or connecting farms to workers as general interventions for sustainable food environments in urban Hanoi, Vietnam. 
 
-# Urban Hanoi farmstand 
+# Urban Hanoi's food environment - interventions to support low income workers
 
 Simulation of the farmstand intervention options:
 
@@ -63,6 +63,8 @@ Fig_distributions <- plot_distributions(mcSimulation_object = company_simulation
                    method = 'boxplot', 
                    base_size = 7,
                    x_axis_name = "Comparative NPV outcomes over five years")
+
+Fig_distributions
 
 ggsave("figures/Fig_distributions.png", width = 15, height = 8, units = "cm") 
 
@@ -105,13 +107,15 @@ Fig_plot_boxplot_health_food_env <- plot_distributions(mcSimulation_object = com
                                     base_size = 11, 
                                     x_axis_name = "Net Present Value (NPV) outcomes (million VND) over five years")
 
+Fig_plot_boxplot_health_food_env
+
 ggsave("figures/Fig_plot_boxplot_health_food_env.png", width = 20, height = 8, units = "cm")
 ```
 
 
 ## Cash flow plots 
 
-```{r cashflow, warning=FALSE, message=FALSE}
+```{r plot_cashflow_farmstand, warning=FALSE, message=FALSE}
 
 source("functions/plot_cashflow.R")
 plot_cashflow_farmstand <- plot_cashflow(mcSimulation_object = company_simulation_results, 
@@ -119,6 +123,10 @@ plot_cashflow_farmstand <- plot_cashflow(mcSimulation_object = company_simulatio
               facet_labels = "Farmstand vs. Do Nothing") + 
               labs(y = "Cashflow (million VND)")
 
+plot_cashflow_farmstand
+```
+
+```{r plot_cashflow_connect}
 plot_cashflow_connect <- plot_cashflow(mcSimulation_object = company_simulation_results, 
               cashflow_var_name = "cashflow_connectFarm", 
               facet_labels = "Connect Farms")+
@@ -137,6 +145,8 @@ plot_cashflow_connect <- plot_cashflow(mcSimulation_object = company_simulation_
 # Arrange plots with patchwork
 library(patchwork)
 Fig_cashflow <- plot_cashflow_farmstand / plot_cashflow_connect
+
+Fig_cashflow
 
 ggsave("figures/Fig_cashflow.png", width=15, height=16,units = "cm") 
 
@@ -197,7 +207,6 @@ ggplot(combined_cashflow, aes(x = factor(Year), y = CashFlow, fill = Scenario)) 
 ggsave("figures/Fig_cashflow_combined_boxplot.png", width = 10, height = 5)
 
 ```
-
 
 Another figure style
 
@@ -277,7 +286,6 @@ summary(company_simulation_results$y[8:12])
 
 We use Projection to Latent Structures (PLS) model to assess the correlation strength and direction for model variables and outcome variables. The Partial Least Squares is fitted with the orthogonal scores algorithm with `pls::plsr`.
 
-
 ```{r pls_farmstand}
 
 source("functions/pls_model.R")
@@ -328,22 +336,22 @@ mcSimulation_table <- data.frame(company_simulation_results$x,
 
 ```
 
-Calculate EVPI:
+Calculate EVPI with `multi_EVPI` and :
 
 ```{r evpi-general_calc}
 
 # evpi <- decisionSupport::multi_EVPI(mc = mcSimulation_table, 
-#                                     first_out_var = "decision_farmstand")
+#                                 first_out_var = "decision_farmstand")
 #  save as a local .csv (takes ~ 20 minutes to run this)
-#  save(evpi,file="data/data_evpi.Rda")
+# save(evpi,file="data/data_evpi.Rda")
   load("data/data_evpi.Rda")
 # open from saved file (last model run) - it is stable result / takes very long to run 
 
 ```
 
-EVPI :
+EVPI for the decision options:
 
-```{r evpi_farmstand}
+```{r plot_evpi_farmstand}
 #Value of information 
 source("functions/plot_evpi.R")
 plot_evpi_farmstand <- plot_evpi(EVPIresults = evpi,
@@ -352,9 +360,13 @@ plot_evpi_farmstand <- plot_evpi(EVPIresults = evpi,
                           input_table = input_table,
                           threshold = 10, 
                           min_evpi = 1) +
-theme(legend.position = "none", axis.title.x = element_blank()) # +
-# scale_x_continuous(limits = c(0, 210))
+theme(legend.position = "none", axis.title.x = element_blank()) +
+ scale_x_continuous(limits = c(0, 25))
 
+plot_evpi_farmstand
+```
+
+```{r plot_evpi_connectfarm}
 
 plot_evpi_connectfarm <- plot_evpi(EVPIresults = evpi,
                             decision_vars = "decision_connectFarm",
@@ -362,12 +374,14 @@ plot_evpi_connectfarm <- plot_evpi(EVPIresults = evpi,
                           input_table = input_table,
                           threshold = 10, 
                           min_evpi = 0.02) +
-theme(legend.position = "none") # +
-# scale_x_continuous(limits = c(0, 210))
+theme(legend.position = "none")  +
+ scale_x_continuous(limits = c(0, 25))
 
-Fig_evpi <- plot_evpi_connectfarm | plot_evpi_farmstand
+plot_evpi_connectfarm
 
-ggsave("figures/Fig_evpi.png", width = 30, height = 8, units = "cm")
+Fig_evpi <- plot_evpi_farmstand / plot_evpi_connectfarm 
+
+ggsave("figures/Fig_evpi.png", width = 20, height = 10, units = "cm")
 ```
 
 ## Input data for the simulations 
