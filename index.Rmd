@@ -24,9 +24,9 @@ library(svglite)
 library(tidyverse)
 ```
 
-We model a decision impact pathway is for farmstands or connecting farms to workers as general interventions for sustainable food environments in urban Hanoi, Vietnam. 
+# Supporting sustainable food environments for low income workers in urban Hanoi
 
-# Urban Hanoi's food environment - interventions to support low income workers
+We model a decision impact pathway is for farmstands or connecting farms to workers as general interventions for sustainable food environments in urban Hanoi, Vietnam. 
 
 Simulation of the farmstand intervention options:
 
@@ -61,8 +61,8 @@ Fig_distributions <- plot_distributions(mcSimulation_object = company_simulation
                    old_names = c("decision_farmstand", "decision_connectFarm"),
                    new_names = c("NPV farmstand vs. do nothing", "NPV connect farm vs. do nothing"),
                    method = 'boxplot', 
-                   base_size = 7,
-                   x_axis_name = "Comparative NPV outcomes over five years")
+                   base_size = 11,
+                   x_axis_name = "Comparative NPV outcomes over five years (million VND)")
 
 Fig_distributions
 
@@ -88,7 +88,7 @@ quantile(company_simulation_results$y$decision_connectFarm, probs = c(0.05, 0.95
 ```
 
 
-## Food environment outcomes
+# Food environment outcomes
 
 Compared to the baseline of doing nothing 
 
@@ -102,57 +102,18 @@ summary(company_simulation_results$y[13:14])
 Fig_plot_boxplot_health_food_env <- plot_distributions(mcSimulation_object = company_simulation_results, 
                    vars = c("farmstand_food_env_score", "connect_food_env_score"),
                    old_names = c("farmstand_food_env_score", "connect_food_env_score"),
-                   new_names = c("Food environment effect farmstand vs. do nothing", "Food environment effects farm connect vs. do nothing"),
+                   new_names = c("Food env. effect farmstand vs. do nothing", "Food env. effects farm connect vs. do nothing"),
                                     method = "boxplot", 
                                     base_size = 11, 
-                                    x_axis_name = "Net Present Value (NPV) outcomes (million VND) over five years")
+                                    x_axis_name = "Comparative NPV outcomes over five years (million VND)")
 
 Fig_plot_boxplot_health_food_env
 
-ggsave("figures/Fig_plot_boxplot_health_food_env.png", width = 20, height = 8, units = "cm")
+ggsave("figures/Fig_plot_boxplot_health_food_env.png", width = 25, height = 8, units = "cm")
 ```
 
 
-## Cash flow plots 
-
-```{r plot_cashflow_farmstand, warning=FALSE, message=FALSE}
-
-source("functions/plot_cashflow.R")
-plot_cashflow_farmstand <- plot_cashflow(mcSimulation_object = company_simulation_results, 
-              cashflow_var_name = "cashflow_farmstand", 
-              facet_labels = "Farmstand vs. Do Nothing") + 
-              labs(y = "Cashflow (million VND)")
-
-plot_cashflow_farmstand
-```
-
-```{r plot_cashflow_connect}
-plot_cashflow_connect <- plot_cashflow(mcSimulation_object = company_simulation_results, 
-              cashflow_var_name = "cashflow_connectFarm", 
-              facet_labels = "Connect Farms")+
-              labs(y = "Cashflow (million VND)") + 
-  theme(legend.position = "none")  
-
-# Determine global y-axis limits based on all cash flow data
-# y_limits <- range(
-#   company_simulation_results$y$plot_cashflow_farmstand*.45
-# )
-
-# # Apply uniform y-axis limits across all plots
-# plot_cashflow_farmstand <- plot_cashflow_farmstand + ylim(y_limits)
-# plot_cashflow_connect <- plot_cashflow_connect + ylim(y_limits)
-
-# Arrange plots with patchwork
-library(patchwork)
-Fig_cashflow <- plot_cashflow_farmstand / plot_cashflow_connect
-
-Fig_cashflow
-
-ggsave("figures/Fig_cashflow.png", width=15, height=16,units = "cm") 
-
-```
-
-Explanation for cash flow with connectFarm. The plot is positive but values include negative values
+## Cash flow plot 
 
 ```{r combined_cashflow_boxplot, message=FALSE}
 
@@ -208,66 +169,6 @@ ggsave("figures/Fig_cashflow_combined_boxplot.png", width = 10, height = 5)
 
 ```
 
-Another figure style
-
-```{r explain_cashflow_box_connectFarm}
-
-# Load libraries
-library(tidyverse)
-
-# Load the simulation results
-company_data <- read_csv("results/company_simulation_results.csv")
-
-# Extract connectFarm cash flow columns
-cashflow_data <- company_data %>%
-  select(starts_with("cashflow_connectFarm"))
-
-# Reshape to long format
-cashflow_long <- cashflow_data %>%
-  pivot_longer(cols = everything(),
-               names_to = "Year",
-               values_to = "CashFlow") %>%
-  mutate(Year = as.integer(str_extract(Year, "\\d+")))
-
-# Calculate percentiles per year
-quantiles_by_year <- cashflow_long %>%
-  group_by(Year) %>%
-  summarise(
-    P5  = quantile(CashFlow, 0.05, na.rm = TRUE),
-    P25 = quantile(CashFlow, 0.25, na.rm = TRUE),
-    P50 = quantile(CashFlow, 0.50, na.rm = TRUE),
-    P75 = quantile(CashFlow, 0.75, na.rm = TRUE),
-    P95 = quantile(CashFlow, 0.95, na.rm = TRUE)
-  ) %>%
-  pivot_longer(
-    cols = -Year,
-    names_to = "Quantile",
-    values_to = "CashFlow"
-  )
-
-# Plot the quantile trends
-ggplot(quantiles_by_year, aes(x = Year, y = CashFlow, color = Quantile)) +
-  geom_line(size = 1.2) +
-  geom_point(size = 2) +
-  scale_color_manual(
-    values = c(
-      P5 = "#d73027",
-      P25 = "#fc8d59",
-      P50 = "#1a9850",
-      P75 = "#91bfdb",
-      P95 = "#4575b4"
-    )
-  ) +
-  labs(
-    title = "connectFarm: Cash Flow Quantile Trends Over 5 Years",
-    x = "Year",
-    y = "Cash Flow (€)",
-    color = "Quantile"
-  ) +
-  theme_minimal(base_size = 14)
-
-
-```
 
 Summary of cashflow
 
@@ -342,7 +243,7 @@ Calculate EVPI with `multi_EVPI` and :
 
 # evpi <- decisionSupport::multi_EVPI(mc = mcSimulation_table, 
 #                                 first_out_var = "decision_farmstand")
-#  save as a local .csv (takes ~ 20 minutes to run this)
+#  save as a local .csv (takes ~ 40 minutes to run this)
 # save(evpi,file="data/data_evpi.Rda")
   load("data/data_evpi.Rda")
 # open from saved file (last model run) - it is stable result / takes very long to run 
@@ -363,7 +264,6 @@ plot_evpi_farmstand <- plot_evpi(EVPIresults = evpi,
 theme(legend.position = "none", axis.title.x = element_blank()) +
  scale_x_continuous(limits = c(0, 25))
 
-plot_evpi_farmstand
 ```
 
 ```{r plot_evpi_connectfarm}
@@ -377,11 +277,12 @@ plot_evpi_connectfarm <- plot_evpi(EVPIresults = evpi,
 theme(legend.position = "none")  +
  scale_x_continuous(limits = c(0, 25))
 
-plot_evpi_connectfarm
 
 Fig_evpi <- plot_evpi_farmstand / plot_evpi_connectfarm 
 
 ggsave("figures/Fig_evpi.png", width = 20, height = 10, units = "cm")
+
+Fig_evpi
 ```
 
 ## Input data for the simulations 
