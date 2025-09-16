@@ -5,6 +5,8 @@ output:
     selfcontained: true
 ---
 
+Nguyen Thi Sau, Thi Thu Giang Luu, Nguyen Huu Nhuan, Nguyen Thi Tan Loc, Cory Whitney
+
 ```{r setup, include=FALSE}
 library(knitr)
 knitr::opts_chunk$set(echo = TRUE,
@@ -26,9 +28,9 @@ library(tidyverse)
 
 # Supporting sustainable food environments for low income workers in urban Hanoi
 
-We model a decision impact pathway is for farmstands or connecting farms to workers as general interventions for sustainable food environments in urban Hanoi, Vietnam. 
+We model a decision impact pathway to support sustainable food environments for low income workers in urban Hanoi. The decision is for large companies (i.e. garment factories) to support the establishment of farmstands on campus or connecting farm cooperatives to workers. Each option is compared to a 'do nothing' scenario in terms of how it will influence the outcomes for the company, supporting sustainable food environments and not causing a loss to the company. 
 
-Simulation of the farmstand intervention options:
+## Simulation of the farmstand intervention options
 
 ```{r mcsimulation, warning=FALSE, message=FALSE}
 # Source our model
@@ -51,7 +53,9 @@ company_simulation_results <- mcSimulation(
 
 ```
 
-The Net Present Value (i.e. current value of the future benefits). Here we plot the distribution for the decision and frame the projected NPV. 
+### The Net Present Value (i.e. current value of the future benefits). 
+
+Here we plot the distribution for the decision and frame the projected NPV. 
 
 ```{r plot_dist_boxplot, warning=FALSE, message=FALSE}
 # plot distributions for the two options
@@ -70,10 +74,12 @@ ggsave("figures/Fig_distributions.png", width = 15, height = 8, units = "cm")
 
 ```
 
-## Summary of results for the decision
+### Summary of results for the two main decision options
+
+Each option is compared to a 'do nothing' scenario.
 
 ```{r summary_decisions, warning=FALSE, message=FALSE}
-# Summary for private school passive and STEM gardens
+# Summary 
 summary(company_simulation_results$y[1:2]) 
 ```
 
@@ -87,31 +93,9 @@ quantile(company_simulation_results$y$decision_farmstand, probs = c(0.05, 0.95))
 quantile(company_simulation_results$y$decision_connectFarm, probs = c(0.05, 0.95))
 ```
 
-
-# Food environment outcomes
-
-Compared to the baseline of doing nothing 
-
 ```{r summary_food_env, warning=FALSE, message=FALSE}
 summary(company_simulation_results$y[13:14]) 
 ```
-
-
-```{r plot_boxplot_health_food_env, warning=FALSE, message=FALSE}
-
-Fig_plot_boxplot_health_food_env <- plot_distributions(mcSimulation_object = company_simulation_results, 
-                   vars = c("farmstand_food_env_score", "connect_food_env_score"),
-                   old_names = c("farmstand_food_env_score", "connect_food_env_score"),
-                   new_names = c("Food env. effect farmstand vs. do nothing", "Food env. effects farm connect vs. do nothing"),
-                                    method = "boxplot", 
-                                    base_size = 11, 
-                                    x_axis_name = "Comparative NPV outcomes over five years (million VND)")
-
-Fig_plot_boxplot_health_food_env
-
-ggsave("figures/Fig_plot_boxplot_health_food_env.png", width = 25, height = 8, units = "cm")
-```
-
 
 ## Cash flow plot 
 
@@ -177,7 +161,7 @@ summary(company_simulation_results$y[3:7])
 
 ```
 
-Summary of cashflow private school with STEM garden
+Summary of cashflow
 
 ```{r summary_cashflow_connect}
 summary(company_simulation_results$y[8:12])
@@ -208,7 +192,7 @@ plot_pls_farmstand <- plot_pls(plsrResults = pls_result,
 
 #For farmstand with formal STEM education
 pls_result_connect<- pls_model(object = company_simulation_results,
-                  resultName = names(company_simulation_results$y)[2], # the "NPV_garden_STEM" 
+                  resultName = names(company_simulation_results$y)[2],
                                 ncomp = 1)
 
 plot_pls_connect <- plot_pls(plsrResults = pls_result_connect, 
@@ -288,16 +272,31 @@ ggsave("figures/Fig_evpi.png", width = 20, height = 10, units = "cm")
 
 Fig_evpi
 ```
+# Food environment outcomes
+
+```{r plot_boxplot_health_food_env, warning=FALSE, message=FALSE}
+Fig_plot_boxplot_health_food_env <- plot_distributions(mcSimulation_object = company_simulation_results, 
+                   vars = c("farmstand_food_env_score", "connect_food_env_score"),
+                   old_names = c("farmstand_food_env_score", "connect_food_env_score"),
+                   new_names = c("Food env. effect farmstand vs. do nothing", "Food env. effects farm connect vs. do nothing"),
+                                    method = "boxplot", 
+                                    base_size = 11, 
+                                    x_axis_name = "Comparative NPV outcomes over five years (million VND)")
+
+Fig_plot_boxplot_health_food_env
+
+ggsave("figures/Fig_plot_boxplot_health_food_env.png", width = 25, height = 8, units = "cm")
+```
 
 ## Input data for the simulations 
 
 ### Summary
 
-Here we provide a summary of the garden intervention options. We do this with a summary table of the simulation results. We show the percentage of missing values as well as the mean, median and standard deviation (SD) for each output of our model simulations. We use the `gt_plt_summary()` from {gtExtras} and with options from {svglite}. The table shows the  name, the plot overview as well as the number of missing values, the mean, median and the standard deviation of the distribution for all variables that were fed into the model from our input table of uncertainty values. 
+Here we provide a summary of the intervention options. We do this with a summary table of the simulation results. We show the percentage of missing values as well as the mean, median and standard deviation (SD) for each output of our model simulations. We use the `gt_plt_summary()` from {gtExtras} and with options from {svglite}. The table shows the  name, the plot overview as well as the number of missing values, the mean, median and the standard deviation of the distribution for all variables that were fed into the model from our input table of uncertainty values. 
 
 ```{r gtExtras_summary_x, warning=FALSE, message=FALSE}
 # Subset the outputs from the mcSimulation function (y) to summarize only on the variables that we want.
-# names(garden_simulation_results$x)
+# names(company_simulation_results$x)
 mcSimulation_table_x <- data.frame(company_simulation_results$x[4:7]) #, 21:30, 32:41, 43:70, 73:76)  also of possible interest
 
  gtExtras::gt_plt_summary(mcSimulation_table_x) 
@@ -307,11 +306,11 @@ mcSimulation_table_x <- data.frame(company_simulation_results$x[4:7]) #, 21:30, 
 
 The table shows the variable name, the plot overview as well as the number of missing values, the mean, median and the standard deviation of the distribution for variables that calculated in the model.
 
-<!-- mcSimulation_table_y <- data.frame(garden_simulation_results$y[1:11]) -->
+<!-- mcSimulation_table_y <- data.frame(company_simulation_results$y[1:11]) -->
 <!-- gtExtras::gt_plt_summary(mcSimulation_table_y) -->
 
-The full repository can be accessed at https://github.com/CWWhitney/urban_school_gardens
+The full repository can be accessed at https://github.com/sau140288/nifam_favri_companies
 
 <!-- The git create a qr -->
 <!-- library(qrcode) -->
-<!-- qrcode_gen('https://github.com/CWWhitney/urban_school_gardens') -->
+<!-- qrcode_gen('https://github.com/sau140288/nifam_favri_companies') -->
