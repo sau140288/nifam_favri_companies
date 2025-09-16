@@ -13,7 +13,7 @@ cost_establishment_promotion,3,,20,posnorm,cost of establishment promotion (mill
 cost_establishment_stakeholder_engagement,2,,8,posnorm,cost of establishment stakeholder engagement (million VND)
 cost_establishment_communication,1,,6,posnorm,cost of establishment communication (million VND)
 cost_establishment_legal_permission,0.5,,3,posnorm,cost of establishment legal permission (million VND)
-cost_establishment_overhead_cost,0.5,,7,posnorm,cost of establishment overhead cost (million VND)
+cost_establishment_overhead_cost,0.5,,7,posnorm,establishment overhead cost. Insitutional costs (million VND)
 cost_establishment_equipment,2,,15,posnorm,cost of establishment equipments (million VND)
 cost_of_maintaining_monitoring_and_evaluation,3,,25,posnorm,"annual maintaining costs of monitoring and evaluation e.g. project visits, market surveillance (million VND)"
 cost_of_maintaining_depreciation_of_equipment,0.5,,3,posnorm,annual maintaining costs of depreciation of equipments (million VND)
