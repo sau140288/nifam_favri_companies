@@ -15,8 +15,9 @@ https://drive.google.com/file/d/1kELrib10hJUgPWbWSeM22vfh6RSHgpB2/view?usp=shari
 
 1st graphical model (March 2024)
 
+https://app.diagrams.net/#G1iQt8OK5GOo-RZrXwynv38mvSAoBRjBLG#%7B%22pageId%22%3A%22tMbEkC9uEcdnOnHhfgGZ%22%7D
 
-https://app.diagrams.net/#G1iobStrW_KP6Dpmh1JJy7CChhD-h5g6p7#%7B%22pageId%22%3A%22e_1qZf2wFl0a_8nF6qEF%22%7D
+https://drive.google.com/file/d/1iQt8OK5GOo-RZrXwynv38mvSAoBRjBLG/view?usp=sharing
 
 ![NIFAM -Conceptual model-Sau drawio (1)](https://github.com/sau140288/nifam_favri_companies/assets/125959163/72cb8556-2615-4596-ab87-e80df6de9d65)
 
