@@ -229,11 +229,11 @@ Calculate EVPI with `multi_EVPI` and :
 
 ```{r evpi-general_calc}
 
-# evpi <- decisionSupport::multi_EVPI(mc = mcSimulation_table, 
+# evpi <- decisionSupport::multi_EVPI(mc = mcSimulation_table,
 #                                 first_out_var = "decision_farmstand")
 #  save as a local .csv (takes ~ 40 minutes to run this)
 # save(evpi,file="data/data_evpi.Rda")
-  load("data/data_evpi.Rda")
+load("data/data_evpi.Rda")
 # open from saved file (last model run) - it is stable result / takes very long to run 
 
 ```
