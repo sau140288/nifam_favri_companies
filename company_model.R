@@ -331,26 +331,23 @@ company_model <- function(x, varnames){
   
   # NPV ####
   
-NPV_farmstand <-
-    discount(farmstand_company_result, 
+NPV_farmstandDecision <-
+    discount(farmstand_company_result - do_nothing_company_result, 
              discount_rate, calculate_NPV = TRUE) 
   
-NPV_connectFarm <-
-    discount(connectFarm_result, 
+NPV_connectFarmDecision <-
+    discount(connectFarm_result - do_nothing_company_result, 
              discount_rate, calculate_NPV = TRUE)
- 
-NPV_do_nothing <- discount(do_nothing_company_result,
-                            discount_rate, calculate_NPV = TRUE)
  
 
   # name outputs (left-hand side of the equal sign) in the return section, 
   # or the variables will be called output_1, _2, etc.
 #   
-  return(list(decision_farmstand = NPV_farmstand - NPV_do_nothing,
-              decision_connectFarm = NPV_connectFarm - NPV_do_nothing,
+  return(list(decision_farmstand = NPV_farmstandDecision,
+              decision_connectFarm = NPV_connectFarmDecision,
               cashflow_farmstand = farmstand_company_result,
             cashflow_connectFarm = connectFarm_result, 
-  farmstand_food_env_score = farmstand_food_env_score -do_nothing_food_env_score,
+  farmstand_food_env_score = farmstand_food_env_score - do_nothing_food_env_score,
   connect_food_env_score = connect_food_env_score - do_nothing_food_env_score 
   ))
 }
