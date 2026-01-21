@@ -32,3 +32,7 @@ https://drive.google.com/file/d/1iQt8OK5GOo-RZrXwynv38mvSAoBRjBLG/view?usp=shari
 3rd version 12/07/2024
 
 ![NIFAM -Conceptual model-Sau 12 07 2024](https://github.com/user-attachments/assets/3b7a91e4-ef1d-4809-b92f-aa7cc039f6db)
+
+
+The latest version (used in the paper) 
+https://app.diagrams.net/#G1iQt8OK5GOo-RZrXwynv38mvSAoBRjBLG#%7B%22pageId%22%3A%22tMbEkC9uEcdnOnHhfgGZ%22%7D
