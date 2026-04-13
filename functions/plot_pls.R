@@ -33,7 +33,12 @@ plot_pls <-
       vipResult <- VIP(plsrResults)
     else
       vipResult <- VIP(plsrResults)["Comp 1",]
+    # pls::plsr(y ~ x) prepends "x" to all predictor names; strip it so that
+    # variable names match the input_table and the join works correctly.
+    names(vipResult) <- sub("^x", "", names(vipResult))
     coef <- plsrResults$coefficients[, , 1]
+    if (!is.null(rownames(coef))) rownames(coef) <- sub("^x", "", rownames(coef))
+    if (!is.null(names(coef)))    names(coef)    <- sub("^x", "", names(coef))
     pls_outputs <-
       data.frame(
         Variable = names(vipResult),
@@ -41,6 +46,7 @@ plot_pls <-
         Coefficient = coef
       )
     rownames(pls_outputs) <- NULL
+    pls_outputs$Coefficient[is.na(pls_outputs$Coefficient)] <- 0
     if (!(is.null(input_table)))
       combined_table <- dplyr::left_join(pls_outputs, input_table,
                                          by = c(Variable = "variable"))
