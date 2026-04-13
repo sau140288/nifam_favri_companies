@@ -28,9 +28,9 @@ library(tidyverse)
 
 # Supporting sustainable food environments for low income workers in urban Hanoi
 
-We model a decision impact pathway to support sustainable food environments for low income workers in urban Hanoi. The decision is for large companies (i.e. garment factories) to support the establishment of farmstands on campus or connecting farm cooperatives to workers. Each option is compared to a 'do nothing' scenario in terms of how it will influence the outcomes for the company, supporting sustainable food environments and not causing a loss to the company. 
+We model a decision impact pathway to support sustainable food environments for low income workers in urban Hanoi. The decision is for large companies (i.e. garment factories) to support the establishment of FarmStands on campus or connecting farm cooperatives to workers (ConnectFarm). Each option is compared to a DoNothing scenario in terms of how it will influence the outcomes for the company, supporting sustainable food environments and not causing a loss to the company. 
 
-## Simulation of the farmstand intervention options
+## Simulation of the FarmStand and ConnectFarm intervention options
 
 ```{r mcsimulation, warning=FALSE, message=FALSE}
 # Source our model
@@ -63,7 +63,7 @@ source("functions/plot_distributions.R")
 Fig_distributions <- plot_distributions(mcSimulation_object = company_simulation_results, 
                    vars = c("decision_farmstand", "decision_connectFarm"),
                    old_names = c("decision_farmstand", "decision_connectFarm"),
-                   new_names = c("NPV farmstand vs. do nothing", "NPV connect farm vs. do nothing"),
+                   new_names = c("NPV FarmStand vs. DoNothing", "NPV ConnectFarm vs. DoNothing"),
                    method = 'boxplot', 
                    base_size = 11,
                    x_axis_name = "Comparative NPV outcomes over five years (million VND)")
@@ -76,7 +76,7 @@ ggsave("figures/Fig_distributions.png", width = 15, height = 8, units = "cm")
 
 ### Summary of results for the two main decision options
 
-Each option is compared to a 'do nothing' scenario.
+Each option is compared to the DoNothing scenario.
 
 ```{r summary_decisions, warning=FALSE, message=FALSE}
 # Summary 
@@ -84,12 +84,12 @@ summary(company_simulation_results$y[1:2])
 ```
 
 ```{r percentiles_decision_farmstand, warning=FALSE, message=FALSE}
-# Calculate the 5th and 95th percentiles for farmstand
+# Calculate the 5th and 95th percentiles for FarmStand
 quantile(company_simulation_results$y$decision_farmstand, probs = c(0.05, 0.95))
 ```
 
 ```{r percentiles_decision_connectfarm, warning=FALSE, message=FALSE}
-# Calculate the 5th and 95th percentiles for connectfarm
+# Calculate the 5th and 95th percentiles for ConnectFarm
 quantile(company_simulation_results$y$decision_connectFarm, probs = c(0.05, 0.95))
 ```
 
@@ -188,9 +188,9 @@ plot_pls_farmstand <- plot_pls(plsrResults = pls_result,
   axis.ticks = element_blank()) + 
   scale_x_continuous(limits = c(0, 7)) + 
   ggtitle("Projection to Latent Structures (PLS)") + 
-  annotate(geom="text", x=5, y=2, label="Farmstand")
+  annotate(geom="text", x=5, y=2, label="FarmStand")
 
-#For farmstand with formal STEM education
+# PLS for ConnectFarm
 pls_result_connect<- pls_model(object = company_simulation_results,
                   resultName = names(company_simulation_results$y)[2],
                                 ncomp = 1)
@@ -199,7 +199,7 @@ plot_pls_connect <- plot_pls(plsrResults = pls_result_connect,
                           input_table = input_table, 
                           threshold = 0.9) + 
   scale_x_continuous(limits = c(0, 7)) + 
-  annotate(geom="text", x=5, y=2, label="Farm connect")
+  annotate(geom="text", x=5, y=2, label="ConnectFarm")
 
 Fig_pls <- plot_pls_farmstand / plot_pls_connect 
 
@@ -245,7 +245,7 @@ EVPI for the decision options:
 source("functions/plot_evpi.R")
 plot_evpi_farmstand <- plot_evpi(EVPIresults = evpi,
                             decision_vars = "decision_farmstand",
-                            new_names = "Farmstand",
+                            new_names = "FarmStand",
                           input_table = input_table,
                           threshold = 10, 
                           min_evpi = 1) +
@@ -258,7 +258,7 @@ theme(legend.position = "none", axis.title.x = element_blank()) +
 
 plot_evpi_connectfarm <- plot_evpi(EVPIresults = evpi,
                             decision_vars = "decision_connectFarm",
-                            new_names = "Connect farm",
+                            new_names = "ConnectFarm",
                           input_table = input_table,
                           threshold = 10, 
                           min_evpi = 0.02) +
@@ -278,7 +278,7 @@ Fig_evpi
 Fig_plot_boxplot_health_food_env <- plot_distributions(mcSimulation_object = company_simulation_results, 
                    vars = c("farmstand_food_env_score", "connect_food_env_score"),
                    old_names = c("farmstand_food_env_score", "connect_food_env_score"),
-                   new_names = c("Food env. effect farmstand vs. do nothing", "Food env. effects farm connect vs. do nothing"),
+                   new_names = c("Food env. effect FarmStand vs. DoNothing", "Food env. effect ConnectFarm vs. DoNothing"),
                                     method = "boxplot", 
                                     base_size = 11, 
                                     x_axis_name = "Comparative NPV outcomes over five years (million VND)")

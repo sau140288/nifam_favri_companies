@@ -48,7 +48,7 @@ access_reduction_change_of_source,0.05,,0.5,tnorm_0_1,percentage of reduction in
 access_reduction_affordability,0.05,,0.5,tnorm_0_1,percentage of reduction in access to safe veg if not affordable (%)
 access_reduction_organization_inconvenient,0.05,,0.3,tnorm_0_1,percentage of reduction in access to safe ve if poor organization or inconvenient (%)
 access_reduction_preference,0.05,,0.5,tnorm_0_1,percentage of reduction in access to safe veg if veg not meeting preference (%)
-disease_outbreak,0.001,,0.007,tnorm_0_1,chance of a disease outbreak totally removing access to the farm stand (i.e. COVID) (%)
+disease_outbreak,0.001,,0.007,tnorm_0_1,chance of a disease outbreak totally removing access to the FarmStand (i.e. COVID) (%)
 change_of_source_undesirable,0.1,,0.6,tnorm_0_1,chance of undersirable change of veg (%)
 chance_low_affordability,0.1,,0.65,tnorm_0_1,chance of affordability change of veg (%)
 chance_poorly_organized_inconvenient,0.05,,0.4,tnorm_0_1,prob. of poor organization/management (%)
@@ -69,4 +69,4 @@ percent_meetings_no_intervention,0.2,,0.4,tnorm_0_1,Relative percent meetings re
 ,,,,,
 health_response_to_food_env,0.1,,0.4,tnorm_0_1,Relative percent health increase from food environment factors (%)
 ,,,,,
-connectFarm_accessibility_multiplier,0.1,,0.4,tnorm_0_1,"Relative connect farm accessibility effect: less structured, less reliable (%)"
+connectFarm_accessibility_multiplier,0.1,,0.4,tnorm_0_1,"Relative ConnectFarm accessibility effect: less structured, less reliable (%)"

@@ -27,7 +27,7 @@ source("functions/discount.R")
 
 company_model <- function(x, varnames){
   
-  # Costs of the farmstand ####
+  # Costs of the FarmStand ####
   
  # establishment costs ####
 
@@ -200,20 +200,21 @@ company_model <- function(x, varnames){
   # Simulate whether any trust-breaking event occurred
   reputation_events <- sapply(reputation_risks, function(prob) chance_event(prob, 1, 0))
   
-  # If any happened, reduce factory reputation
+  # If any happened, reduce factory reputation revenue
   if (any(reputation_events == 1)) {
-    factory_reputation <- benefit_factory_reputation - relationship_reduction
+    factory_reputation_revenue <- benefit_factory_reputation * (1 - relationship_reduction)
   } else {
-    factory_reputation <- benefit_factory_reputation
+    factory_reputation_revenue <- benefit_factory_reputation
   }
   
   benefit_work_efficiency <- (benefit_worker_health + 
                                 benefit_worker_time_savings * 
-                                if_accessible) * factory_reputation  
+                                if_accessible)
   
    # calculate company revenue ####
   added_company_revenue_annual <- 
     benefit_work_efficiency +
+    factory_reputation_revenue +  # additive reputation revenue (million VND/year)
     #shared with company, increased due to better farm reputation
     benefit_farmer_revenue * (1 + prob_increased_farmer_reputation) 
   
@@ -288,10 +289,10 @@ company_model <- function(x, varnames){
                                         relative_trend = inflation_rate,
                                         n = number_of_years)
   
-  # Final result connect farm
+  # Final result ConnectFarm
   connectFarm_result <- expected_benefit_of_connectFarm - cost_of_connectFarm
   
-  # Do Nothing Scenario ####
+  # DoNothing Scenario ####
   
   # Quality and diversity risks still apply (unmitigated)
   diversity_risk_do_nothing <- chance_event(chance_vegetable_diversity, 1, 0)
