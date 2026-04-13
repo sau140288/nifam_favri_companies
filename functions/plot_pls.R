@@ -36,9 +36,10 @@ plot_pls <-
     # pls::plsr(y ~ x) prepends "x" to all predictor names; strip it so that
     # variable names match the input_table and the join works correctly.
     names(vipResult) <- sub("^x", "", names(vipResult))
-    coef <- plsrResults$coefficients[, , 1]
-    if (!is.null(rownames(coef))) rownames(coef) <- sub("^x", "", rownames(coef))
-    if (!is.null(names(coef)))    names(coef)    <- sub("^x", "", names(coef))
+    # drop() converts the n×1 matrix to a named vector so data.frame() creates
+    # column "Coefficient" (not "Coefficient.y"), keeping the fill aesthetic valid.
+    coef <- drop(plsrResults$coefficients[, , 1])
+    names(coef) <- sub("^x", "", names(coef))
     pls_outputs <-
       data.frame(
         Variable = names(vipResult),
