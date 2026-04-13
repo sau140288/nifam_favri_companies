@@ -103,8 +103,7 @@ company_model <- function(x, varnames){
     disease_outbreak = access_reduction_disease,
     change_of_source_undesirable = access_reduction_change_of_source,
     chance_low_affordability = access_reduction_affordability,
-    chance_poorly_organized = access_reduction_organization_inconvenient,
-    chance_farmstand_inconvenient = access_reduction_organization_inconvenient,
+    chance_poorly_organized_inconvenient = access_reduction_organization_inconvenient,
     chance_not_meet_preference = access_reduction_preference
   )
   
@@ -249,7 +248,10 @@ company_model <- function(x, varnames){
   connect_if_accessible <- if_accessible * connectFarm_accessibility_multiplier  
   
   # Food environment benefits: scaled-down effects
-  connect_quality_multiplier <- (1 - reduction_in_veg_quality_if_monopoly * 1.5) * 
+  connect_quality_multiplier <- (1 - 
+  # 1.5 is hard coded here to reflect that the quality issues are worse without intervention, and that nutrition is more sensitive to those issues (1.5 times was expected as a stable effect in the farmstand scenario, so we are assuming it's worse without direct control over the supply chain)
+  reduction_in_veg_quality_if_monopoly * 1.5) * 
+  # 0.5 is hard coded here to reflect that the quality benefits from farming practices are less without direct control over the supply chain (half was expectd as a stable effect in the farmstand scenario)
     (1 + farming_practice_increase_quality * 0.5)
   
   # Quality and diversity risk adjustment
@@ -258,6 +260,7 @@ company_model <- function(x, varnames){
   
   if (diversity_risk_connect == 1 | veg_quality_risk_connect == 1) {
     connect_nutrition_multiplier <- connect_quality_multiplier * 
+    # 1.5 is hard coded here to reflect that the quality issues are worse without intervention, and that nutrition is more sensitive to those issues (1.5 times was expected as a stable effect in the farmstand scenario, so we are assuming it's worse without direct control over the supply chain)
       (1 - reduction_nutrition_low_diverse_and_quality * 1.5)
   } else {
     connect_nutrition_multiplier <- connect_quality_multiplier
@@ -295,10 +298,13 @@ company_model <- function(x, varnames){
   veg_quality_risk_do_nothing <- chance_event(chance_vegetable_quality, 1, 0)
   
   # Food environment is worse overall: low-quality, uncoordinated
-  do_nothing_quality_multiplier <- (1 - reduction_in_veg_quality_if_monopoly * 1.5)
+  do_nothing_quality_multiplier <- (1 - 
+  # 1.5 is hard coded here to reflect that the quality issues are worse without intervention, and that nutrition is more sensitive to those issues
+  reduction_in_veg_quality_if_monopoly * 1.5)
   
   if (diversity_risk_do_nothing == 1 | veg_quality_risk_do_nothing == 1) {
     do_nothing_nutrition_multiplier <- do_nothing_quality_multiplier *
+      # 1.5 is hard coded here to reflect that the quality issues are worse without intervention, and that nutrition is more sensitive to those issues
       (1 - reduction_nutrition_low_diverse_and_quality * 1.5)
   } else {
     do_nothing_nutrition_multiplier <- do_nothing_quality_multiplier
@@ -308,7 +314,10 @@ company_model <- function(x, varnames){
   do_nothing_food_accessibility = food_env_access * do_nothing_quality_multiplier * if_accessible
   do_nothing_food_prep = food_env_prep * do_nothing_quality_multiplier 
   do_nothing_food_safety = food_env_safety * do_nothing_quality_multiplier
-  do_nothing_food_nutrition = food_env_nutrition * do_nothing_quality_multiplier * do_nothing_nutrition_multiplier
+  do_nothing_food_nutrition = food_env_nutrition * 
+  # double discount here after quality multiplier because nutrition is more sensitive to quality/diversity issues
+  # DoNothing is structurally worse in this dimension
+  do_nothing_quality_multiplier * do_nothing_nutrition_multiplier
   
   # Base food environment components
    do_nothing_food_env_score <- do_nothing_food_accessibility + do_nothing_food_prep + 
@@ -319,9 +328,9 @@ company_model <- function(x, varnames){
   
   do_nothing_work_efficiency <- (do_nothing_worker_health + 
                                    benefit_worker_time_savings * do_nothing_food_accessibility) 
-  # benefits slightly from existing health and time-savings
-  do_nothing_company_revenue_annual <- do_nothing_work_efficiency + 
-    benefit_farmer_revenue * 0  # no revenue share
+  # DoNothing has no farmer revenue share or campus benefit — 
+  # revenue is work efficiency only
+  do_nothing_company_revenue_annual <- do_nothing_work_efficiency
   
   
   do_nothing_company_result <- vv(do_nothing_company_revenue_annual,
