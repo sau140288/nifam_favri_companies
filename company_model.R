@@ -320,10 +320,9 @@ company_model <- function(x, varnames){
   do_nothing_food_accessibility = food_env_access * do_nothing_quality_multiplier * if_accessible
   do_nothing_food_prep = food_env_prep * do_nothing_quality_multiplier 
   do_nothing_food_safety = food_env_safety * do_nothing_quality_multiplier
-  do_nothing_food_nutrition = food_env_nutrition * 
-  # double discount here after quality multiplier because nutrition is more sensitive to quality/diversity issues
-  # DoNothing is structurally worse in this dimension
-  do_nothing_quality_multiplier * do_nothing_nutrition_multiplier
+  do_nothing_food_nutrition = food_env_nutrition * do_nothing_nutrition_multiplier
+  # do_nothing_nutrition_multiplier already embeds do_nothing_quality_multiplier (defined above);
+  # using it directly matches the FarmStand/ConnectFarm structure and avoids double-application.
   
   # Base food environment components
    do_nothing_food_env_score <- do_nothing_food_accessibility + do_nothing_food_prep + 
