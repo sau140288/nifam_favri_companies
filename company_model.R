@@ -127,7 +127,7 @@ company_model <- function(x, varnames){
   
   # benefit safety_of_food
   
-  # CW NOTES We are mixing together:
+  # We are mixing together:
   # Intrinsic food environment attributes (access, prep, safety, nutrition)
   # Modifiers like quality loss due to monopoly and quality gain from farming
   # Then multiplying all of that by if_accessible again at the end
@@ -215,7 +215,12 @@ company_model <- function(x, varnames){
   added_company_revenue_annual <- 
     benefit_work_efficiency +
     factory_reputation_revenue +  # additive reputation revenue (million VND/year)
-    #shared with company, increased due to better farm reputation
+    # NOTE: prob_increased_farmer_reputation (0.001–0.01) is applied here as a
+    # continuous scaler rather than a probabilistic event (cf. chance_event()).
+    # This consistently adds 0.1–1% to farmer revenue share rather than
+    # modelling it as an uncertain event. The practical effect on NPV is
+    # negligible given the range, but future iterations should use chance_event()
+    # for consistency with the rest of the model.
     benefit_farmer_revenue * (1 + prob_increased_farmer_reputation) 
   
   company_revenue_through_intervention <- vv(added_company_revenue_annual, 
@@ -328,7 +333,7 @@ company_model <- function(x, varnames){
   do_nothing_worker_health <- do_nothing_food_env_score * health_response_to_food_env
   
   do_nothing_work_efficiency <- (do_nothing_worker_health + 
-                                   benefit_worker_time_savings * do_nothing_food_accessibility) 
+                                   benefit_worker_time_savings * if_accessible)  # dimensionless access fraction, matching FarmStand/ConnectFarm
   # DoNothing has no farmer revenue share or campus benefit — 
   # revenue is work efficiency only
   do_nothing_company_revenue_annual <- do_nothing_work_efficiency
