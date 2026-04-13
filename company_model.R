@@ -249,11 +249,11 @@ company_model <- function(x, varnames){
   connect_if_accessible <- if_accessible * connectFarm_accessibility_multiplier  
   
   # Food environment benefits: scaled-down effects
-  connect_quality_multiplier <- (1 - 
+  connect_quality_multiplier <- max((1 - 
   # 1.5 is hard coded here to reflect that the quality issues are worse without intervention, and that nutrition is more sensitive to those issues (1.5 times was expected as a stable effect in the farmstand scenario, so we are assuming it's worse without direct control over the supply chain)
   reduction_in_veg_quality_if_monopoly * 1.5) * 
   # 0.5 is hard coded here to reflect that the quality benefits from farming practices are less without direct control over the supply chain (half was expectd as a stable effect in the farmstand scenario)
-    (1 + farming_practice_increase_quality * 0.5)
+    (1 + farming_practice_increase_quality * 0.5), 0)  # clamped to prevent negative food env scores in tail draws
   
   # Quality and diversity risk adjustment
   diversity_risk_connect <- chance_event(chance_vegetable_diversity, 1, 0)
@@ -299,9 +299,9 @@ company_model <- function(x, varnames){
   veg_quality_risk_do_nothing <- chance_event(chance_vegetable_quality, 1, 0)
   
   # Food environment is worse overall: low-quality, uncoordinated
-  do_nothing_quality_multiplier <- (1 - 
+  do_nothing_quality_multiplier <- max((1 - 
   # 1.5 is hard coded here to reflect that the quality issues are worse without intervention, and that nutrition is more sensitive to those issues
-  reduction_in_veg_quality_if_monopoly * 1.5)
+  reduction_in_veg_quality_if_monopoly * 1.5), 0)  # clamped to prevent negative food env scores in tail draws
   
   if (diversity_risk_do_nothing == 1 | veg_quality_risk_do_nothing == 1) {
     do_nothing_nutrition_multiplier <- do_nothing_quality_multiplier *
