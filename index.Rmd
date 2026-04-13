@@ -180,6 +180,7 @@ pls_result <- pls_model(object = company_simulation_results,
 # read in the common input table
 input_table <- read.csv("data/company_input.csv")
 
+source("functions/plot_pls.R")
 plot_pls_farmstand <- plot_pls(plsrResults = pls_result, 
                             input_table = input_table, 
                             threshold = 0.9) + 
