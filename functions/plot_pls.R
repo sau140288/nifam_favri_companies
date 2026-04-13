@@ -55,15 +55,16 @@ plot_pls <-
                                      filtered_table$VIP)
     ggplot2::ggplot(filtered_table,
                     ggplot2::aes(VIP, ordered_vars,
-                                 fill = Coefficient > 0)) + ggplot2::geom_col() + ggplot2::geom_vline(ggplot2::aes(xintercept = cut_off_line)) +
-      ggplot2::scale_fill_manual(
-        breaks = c(TRUE, FALSE),
-        values = c(pos_color,
-                   neg_color),
-        labels = legend_labels
+                                 fill = Coefficient)) + ggplot2::geom_col() + ggplot2::geom_vline(ggplot2::aes(xintercept = cut_off_line)) +
+      ggplot2::scale_fill_gradient2(
+        low = neg_color,
+        mid = "grey80",
+        high = pos_color,
+        midpoint = 0,
+        name = legend_name
       ) + ggplot2::scale_x_continuous(expand = ggplot2::expansion(mult = c(0,
                                                                            0.01))) + ggplot2::scale_y_discrete(expand = ggplot2::expansion(add = 0.5)) +
-      ggplot2::labs(x = x_axis_name, y = y_axis_name, fill = legend_name) +
+      ggplot2::labs(x = x_axis_name, y = y_axis_name) +
       ggplot2::theme_bw(base_size = base_size) + ggplot2::theme(legend.position = "bottom") +
       ggplot2::theme(...)
   }
