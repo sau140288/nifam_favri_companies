@@ -6,10 +6,22 @@ multi_EVPI <-
   function (mc,
             first_out_var,
             write_table = FALSE,
-            outfolder = NA)
+            outfolder = NA,
+            n_cores = max(1L, parallel::detectCores() - 1L),
+            mc_samples = NULL)
   {
     if (mean(mc[, 1] == 1:nrow(mc)) == 1)
       mc <- mc[, 2:ncol(mc)]
+
+    # Optionally subsample rows before EVPI calculation.
+    # EVPI estimates are stable with ~2000-3000 rows and LOESS cost scales
+    # super-linearly with N, so subsampling gives large speed gains with
+    # minimal accuracy loss (Luedeling & Shepherd, 2016).
+    if (!is.null(mc_samples) && mc_samples < nrow(mc)) {
+      set.seed(42)
+      mc <- mc[sample(nrow(mc), mc_samples), ]
+    }
+
     # which and colnames from base R
     outvar1pos <- which(colnames(mc) == first_out_var)
     outvars <- colnames(mc)[outvar1pos:ncol(mc)]
@@ -17,20 +29,27 @@ multi_EVPI <-
     print(paste(
       "Processing",
       length(outvars),
-      "output variables. This can take some time."
+      "output variables using",
+      n_cores,
+      "cores. This can take some time."
     ))
     outputs <- list()
     for (out_var in outvars) {
-      # t and sapply from base R
-      results <- t(sapply(colnames(mc)[1:(outvar1pos - 1)],
-                          # empirical_EVPI from another script
+      # Parallelise over input variables using forked processes (mclapply).
+      # Falls back to sequential on Windows (mc.cores is ignored there).
+      input_vars <- colnames(mc)[1:(outvar1pos - 1)]
+      raw <- parallel::mclapply(
+                          input_vars,
                           function(x)
                             empirical_EVPI(mc, x, out_var)[c("expected_gain",
-                                                             "EVPI_do", "EVPI_dont")]))
+                                                             "EVPI_do", "EVPI_dont")],
+                          mc.cores = n_cores)
+      names(raw) <- input_vars
+      # Convert list-of-lists to named matrix matching t(sapply(...)) output
+      results <- t(sapply(raw, function(r) r))
       outs <- data.frame(
         variable = rownames(results),
-        expected_gain = unlist(results[,
-                                       "expected_gain"]),
+        expected_gain = unlist(results[, "expected_gain"]),
         EVPI_do = unlist(results[, "EVPI_do"]),
         EVPI_dont = unlist(results[, "EVPI_dont"])
       )
