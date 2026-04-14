@@ -1,66 +1,70 @@
-variable,lower ,median,upper,distribution,label
-number_of_years,5,,5,const,Number of years for model simulation
-discount_rate,3,,15,posnorm,Discounting factor
-CV_value,0.1,,0.4,tnorm_0_1,Coefficient of variation for company intervention (%)
-inflation_rate,3,,7,posnorm,Inflation rate (%)
-,,,,,
-cost_of_establishment_capital,1,,15,posnorm,cost of establishment capital (million VND)
-cost_establishment_cleaning_establishment,0.5,,4,posnorm,cost of cleaning establishment (million VND)
-cost_establishment_human_resource_staff,1,,5,posnorm,labor cost of the core team to support establishment (million VND)
-connectFarm_meeting_fraction,0.001,,0.01,tnorm_0_1,Fraction of meeting time needed for connecting workers and farmers (%)
-cost_establishment_allowance_extended_participants,2,,8,posnorm,allowance for extended participants during establishment time (million VND)
-cost_establishment_promotion,3,,20,posnorm,cost of establishment promotion (million VND)
-cost_establishment_stakeholder_engagement,2,,8,posnorm,cost of establishment stakeholder engagement (million VND)
-cost_establishment_communication,1,,6,posnorm,cost of establishment communication (million VND)
-cost_establishment_legal_permission,0.5,,3,posnorm,cost of establishment legal permission (million VND)
-cost_establishment_overhead_cost,0.5,,7,posnorm,establishment overhead cost. Insitutional costs (million VND)
-cost_establishment_equipment,2,,15,posnorm,cost of establishment equipments (million VND)
-cost_of_maintaining_monitoring_and_evaluation,3,,25,posnorm,"annual maintaining costs of monitoring and evaluation e.g. project visits, market surveillance (million VND)"
-cost_of_maintaining_depreciation_of_equipment,0.5,,3,posnorm,annual maintaining costs of depreciation of equipments (million VND)
-cost_of_maintaining_capital,3,,12,posnorm,annual maintaining costs of capital to support staff involvement in the intervention (million VND)
-cost_of_maintaining_cleaning,5,,25,posnorm,annual maintaining costs of cleaning  (million VND)
-cost_of_maintaining_human_resource_staff,6,,40,posnorm,annual maintaining labor costs for the core team (million VND)
-cost_of_maintaining_allowance_extended_partipants,5,,15,posnorm,allowance for extended participants involved in annual maintaining (million VND)
-cost_of_maintaining_promotion,3,,20,posnorm,annual maintaining costs of promotion (million VND)
-connectFarm_promo_fraction,0.001,,0.01,tnorm_0_1,Fraction of promotion needed for connecting workers and farmers (%)
-,,,,,
-prob_increased_farmer_reputation,0.001,,0.01,tnorm_0_1,chance of shared farmer revenue increasing due to increasing farmer's reputation (million VND/year)
-benefit_factory_reputation,5,,20,posnorm,factory' revenue increasing due to increasing farmer's reputation (million VND/year)
-benefit_enviroment_on_campus,1,,8,posnorm,having green and clean space for selling point instead of grass or dirty (million VND/year)
-benefit_work_efficiency,5,,20,posnorm,company revenue from worker's working more efficiency (million VND/year)
-base_safety_of_food,0.5,,2,posnorm,base value of work from eating safe food (million VND/year)
-base_accessibility_of_food,0.5,,2,posnorm,base value of work due to accessibility of food (million VND/year)
-base_nutrition_of_food,3,,15,posnorm,base value of work due to nutrition of food (million VND/year)
-base_prep_of_food,0.5,,2,posnorm,base value work due to preparing safe food (million VND/year)
-benefit_worker_time_savings,0.5,,2,posnorm,value of workers time saved (not shopping) that is then applied to work (million VND/yr)
-,,,,,
-conflicting_business_interests,0.001,,0.01,tnorm_0_1,chance if conflicting business interests (i.e. already sell veggies) (%)
-revenue_reduction_if_conflicting_interest,0.05,,0.2,tnorm_0_1,revenue reduction if conflicting business interests (i.e. already sell veggies) (%)
-chance_conflict_farmer_buyer,0.05,,0.15,tnorm_0_1,chance of conflict between famer and buyer (%) 
-chance_conflict_farmer_company,0.02,,0.2,tnorm_0_1,chance of conflict between famer and company (%) 
-chance_rumor,0.05,,0.6,tnorm_0_1,chance of negative rumors (%)
-relationship_reduction,0.05,,0.5,tnorm_0_1,amount of reduction in relationship (%)
-if_accessible,0.4,,0.85,tnorm_0_1,general chance that veg are accessible (%) 
-access_reduction_disease,0.05,,0.3,tnorm_0_1,percentage of reduction in access to safe veg if disease (%)
-access_reduction_change_of_source,0.05,,0.5,tnorm_0_1,percentage of reduction in access to safe veg if undesirable source change (%)
-access_reduction_affordability,0.05,,0.5,tnorm_0_1,percentage of reduction in access to safe veg if not affordable (%)
-access_reduction_organization_inconvenient,0.05,,0.3,tnorm_0_1,percentage of reduction in access to safe ve if poor organization or inconvenient (%)
-access_reduction_preference,0.05,,0.5,tnorm_0_1,percentage of reduction in access to safe veg if veg not meeting preference (%)
-disease_outbreak,0.001,,0.007,tnorm_0_1,chance of a disease outbreak totally removing access to the FarmStand (i.e. COVID) (%)
-change_of_source_undesirable,0.1,,0.6,tnorm_0_1,chance of undersirable change of veg (%)
-chance_low_affordability,0.1,,0.65,tnorm_0_1,chance of affordability change of veg (%)
-chance_poorly_organized_inconvenient,0.05,,0.4,tnorm_0_1,prob. of poor organization/management (%)
-chance_not_meet_preference,0.1,,0.5,tnorm_0_1,chance that veg is reduced due to cultural(%)
-reduction_nutrition_low_diverse_and_quality,0.05,,0.5,tnorm_0_1,percentage of reduction in worker nutrition benefit if low low diversity (%)
-,,,,,
-reduction_in_veg_quality_if_monopoly,0.05,,0.6,tnorm_0_1,percentage of reduction in vegetable quality under monopoly (%)
-farming_practice_increase_quality,0.05,,0.5,tnorm_0_1,increase in veg quality if good farmer knowledge and practice (%)
-,,,,,
-chance_vegetable_diversity,0.1,,0.5,tnorm_0_1,chance that veg diversity is reduced (%)
-chance_vegetable_quality,0.1,,0.5,tnorm_0_1,chance that veg diversity is reduced (%)
-,,,,,
-benefit_farmer_revenue,10,,150,posnorm,the revenue of the farmer shared with company (million VND/year)
-,,,,,
-health_response_to_food_env,0.1,,0.4,tnorm_0_1,Relative percent health increase from food environment factors (%)
-,,,,,
-connectFarm_accessibility_multiplier,0.1,,0.4,tnorm_0_1,"Relative ConnectFarm accessibility effect: less structured, less reliable (%)"
+variable,lower ,median,upper,distribution,,label,description
+number_of_years,5,,5,const,,Simulation period (years),Number of years for model simulation
+discount_rate,3,,15,posnorm,,Discount rate (%),Discounting factor
+CV_value,0.1,,0.4,tnorm_0_1,,Coefficient of variation,Coefficient of variation for company intervention (%)
+inflation_rate,3,,7,posnorm,,Inflation rate (%),Inflation rate (%)
+chance_benefit_farmer_revenue,0.4,,0.8,tnorm_0_1,,Prob. farmer revenue sharing,chance of farmers sharing revenue from vegetable sales with company (%)
+,,,,,,,
+cost_of_establishment_capital,0.27,,15,posnorm,,Setup: capital (M VND),cost of establishment capital (million VND)
+cost_establishment_cleaning_establishment,0.08,,4,posnorm,,Setup: cleaning (M VND),cost of cleaning establishment (million VND)
+cost_establishment_human_resource_staff,0.1,,5,posnorm,,Setup: HR staff (M VND),labor cost of the core team to support establishment (million VND)
+connectFarm_meeting_fraction,0.001,,0.01,tnorm_0_1,,CF meeting time fraction,Fraction of meeting time needed for connecting workers and farmers (%)
+cost_establishment_allowance_extended_participants,0.15,,8,posnorm,,Setup: participant allowance (M VND),allowance for extended participants during establishment time (million VND)
+cost_establishment_promotion,0.18,,10,posnorm,,Setup: promotion (M VND),cost of establishment promotion (million VND)
+cost_establishment_stakeholder_engagement,0.15,,8,posnorm,,Setup: stakeholder engagement (M VND),cost of establishment stakeholder engagement (million VND)
+cost_establishment_communication,0.11,,6,posnorm,,Setup: communication (M VND),cost of establishment communication (million VND)
+cost_establishment_legal_permission,0.06,,3,posnorm,,Setup: legal fee (M VND),cost of establishment legal permission (million VND)
+cost_establishment_overhead_cost,0.13,,7,posnorm,,Setup: overhead (M VND),establishment overhead cost. Insitutional costs (million VND)
+cost_establishment_equipment,0.27,,15,posnorm,,Setup: equipment (M VND),cost of establishment equipments (million VND)
+cost_of_maintaining_monitoring_and_evaluation,0.27,,15,posnorm,,Annual: monitoring & eval. (M VND),"annual maintaining costs of monitoring and evaluation e.g. project visits, market surveillance (million VND)"
+cost_of_maintaining_depreciation_of_equipment,0.06,,3,posnorm,,Annual: depreciation (M VND),annual maintaining costs of depreciation of equipments (million VND)
+cost_of_maintaining_capital,0.22,,12,posnorm,,Annual: capital (M VND),annual maintaining costs of capital to support staff involvement in the intervention (million VND)
+cost_of_maintaining_cleaning,0.18,,10,posnorm,,Annual: cleaning (M VND),annual maintaining costs of cleaning  (million VND)
+cost_of_maintaining_human_resource_staff,0.36,,20,posnorm,,Annual: HR staff (M VND),annual maintaining labor costs for the core team (million VND)
+cost_of_maintaining_allowance_extended_partipants,0.27,,15,posnorm,,Annual: participant allowance (M VND),allowance for extended participants involved in annual maintaining (million VND)
+cost_of_maintaining_promotion,0.36,,20,posnorm,,Annual: promotion (M VND),annual maintaining costs of promotion (million VND)
+connectFarm_promo_fraction,0.001,,0.01,tnorm_0_1,,CF promotion fraction,Fraction of promotion needed for connecting workers and farmers (%)
+connectFarm_establishment_fraction,0.02,,0.1,tnorm_0_1,,CF setup cost fraction,Fraction of FarmStand establishment cost incurred by ConnectFarm in year 1 (kickoff meetings only) (%)
+,,,,,,,
+prob_increased_farmer_reputation,0.001,,0.01,tnorm_0_1,,Prob. farmer reputation gain,chance of shared farmer revenue increasing due to increasing farmer's reputation (%)
+benefit_factory_reputation,1,,20,posnorm,,Reputation benefit (M VND/yr),factory' revenue increasing due to increasing farmer's reputation (million VND/year)
+benefit_enviroment_on_campus,1,,8,posnorm,,Campus environment benefit (M VND/yr),having green and clean space for selling point instead of grass or dirty (million VND/year)
+base_safety_of_food,0.5,,2,posnorm,,Food safety base value (M VND/yr),base value of work from eating safe food (million VND/year)
+base_accessibility_of_food,0.5,,2,posnorm,,Food access base value (M VND/yr),base value of work due to accessibility of food (million VND/year)
+base_nutrition_of_food,3,,15,posnorm,,Food nutrition base value (M VND/yr),base value of work due to nutrition of food (million VND/year)
+base_prep_of_food,0.5,,2,posnorm,,Food prep base value (M VND/yr),base value work due to preparing safe food (million VND/year)
+benefit_worker_time_savings,0.5,,2,posnorm,,Worker time savings (M VND/yr),value of workers time saved (not shopping) that is then applied to work (million VND/yr)
+,,,,,,,
+conflicting_business_interests,0.001,,0.01,tnorm_0_1,,Prob. conflicting interests,chance if conflicting business interests (i.e. already sell veggies) (%)
+revenue_reduction_if_conflicting_interest,0.5,,0.8,tnorm_0_1,,Revenue reduction if conflict,revenue reduction if conflicting business interests (i.e. already sell veggies) (%)
+chance_conflict_farmer_buyer,0.05,,0.15,tnorm_0_1,,Prob. farmer-buyer conflict,chance of conflict between famer and buyer (%) 
+chance_conflict_farmer_company,0.02,,0.2,tnorm_0_1,,Prob. farmer-company conflict,chance of conflict between famer and company (%) 
+chance_rumor,0.05,,0.6,tnorm_0_1,,Prob. negative rumour,chance of negative rumors (%)
+relationship_reduction,0.05,,0.5,tnorm_0_1,,Relationship quality reduction,amount of reduction in relationship (%)
+access_reduction_disease,0.05,,0.3,tnorm_0_1,,Access loss: disease,percentage of reduction in access to safe veg if disease (%)
+access_reduction_change_of_source,0.05,,0.5,tnorm_0_1,,Access loss: source change,percentage of reduction in access to safe veg if undesirable source change (%)
+access_reduction_affordability,0.05,,0.5,tnorm_0_1,,Access loss: affordability,percentage of reduction in access to safe veg if not affordable (%)
+access_reduction_organization_inconvenient,0.05,,0.3,tnorm_0_1,,Access loss: poor organisation,percentage of reduction in access to safe ve if poor organization or inconvenient (%)
+access_reduction_preference,0.05,,0.5,tnorm_0_1,,Access loss: preference,percentage of reduction in access to safe veg if veg not meeting preference (%)
+disease_outbreak,0.001,,0.007,tnorm_0_1,,Prob. disease outbreak,chance of a disease outbreak totally removing access to the FarmStand (i.e. COVID) (%)
+change_of_source_undesirable,0.1,,0.6,tnorm_0_1,,Prob. undesirable source change,chance of undersirable change of veg (%)
+chance_low_affordability,0.1,,0.65,tnorm_0_1,,Prob. low affordability,chance of affordability change of veg (%)
+chance_poorly_organized_inconvenient,0.05,,0.4,tnorm_0_1,,Prob. poor organisation,prob. of poor organization/management (%)
+chance_not_meet_preference,0.1,,0.5,tnorm_0_1,,Prob. preference not met,chance that veg is reduced due to cultural(%)
+reduction_nutrition_low_diverse_and_quality,0.05,,0.5,tnorm_0_1,,Nutrition loss: low diversity,percentage of reduction in worker nutrition benefit if low low diversity (%)
+,,,,,,,
+reduction_in_veg_quality_if_monopoly,0.05,,0.6,tnorm_0_1,,Quality loss: monopoly,percentage of reduction in vegetable quality under monopoly (%)
+farming_practice_increase_quality,0.05,,0.5,tnorm_0_1,,Quality gain: farming practice,increase in veg quality if good farmer knowledge and practice (%)
+connectFarm_quality_penalty_scaler,1,,1.5,posnorm,,CF monopoly quality scaler,scaler for amplified monopoly quality penalty under ConnectFarm relative to FarmStand (no direct supply chain control) (multiplier)
+connect_farming_practice_scaler,0.2,,0.7,tnorm_0_1,,CF farming practice scaler,fraction of farming practice quality benefit realised under ConnectFarm vs FarmStand (%)
+no_farmstand_nutrition_penalty_scaler,1,,2,posnorm,,No-FarmStand nutrition scaler,scaler for how much worse nutrition penalty is without direct farm supply chain control (applies to ConnectFarm and DoNothing) (multiplier)
+do_nothing_quality_penalty_scaler,1.3,,2.5,posnorm,,DoNothing quality scaler,scaler for amplified monopoly quality penalty under DoNothing (no supply chain or farming practice support) (multiplier)
+,,,,,,,
+chance_vegetable_diversity,0.1,,0.5,tnorm_0_1,,Prob. reduced veg diversity,chance that veg diversity is reduced (%)
+chance_vegetable_quality,0.1,,0.5,tnorm_0_1,,Prob. reduced veg quality,chance that veg diversity is reduced (%)
+,,,,,,,
+benefit_farmer_revenue,10,,150,posnorm,,Farmer revenue shared (M VND/yr),the revenue of the farmer shared with company (million VND/year)
+,,,,,,,
+health_response_to_food_env,0.1,,0.4,tnorm_0_1,,Health response to food env.,Relative percent health increase from food environment factors (%)
+,,,,,,,
+connectFarm_accessibility_multiplier,0.1,,0.4,tnorm_0_1,,CF accessibility effect,"Relative ConnectFarm accessibility effect: less structured, less reliable (%)"
