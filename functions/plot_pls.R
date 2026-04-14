@@ -60,6 +60,9 @@ plot_pls <-
     else
       ordered_vars <- stats::reorder(filtered_table$Variable,
                                      filtered_table$VIP)
+    # Clamp the fill scale to the 95th percentile of |Coefficient| so that
+    # extreme outliers don't compress all other bars to near-grey.
+    coef_lim <- quantile(abs(filtered_table$Coefficient), 0.95, na.rm = TRUE)
     ggplot2::ggplot(filtered_table,
                     ggplot2::aes(VIP, ordered_vars,
                                  fill = Coefficient)) + ggplot2::geom_col() + ggplot2::geom_vline(ggplot2::aes(xintercept = cut_off_line)) +
@@ -68,6 +71,8 @@ plot_pls <-
         mid = "grey80",
         high = pos_color,
         midpoint = 0,
+        limits = c(-coef_lim, coef_lim),
+        oob = scales::squish,
         name = legend_name
       ) + ggplot2::scale_x_continuous(expand = ggplot2::expansion(mult = c(0,
                                                                            0.01))) + ggplot2::scale_y_discrete(expand = ggplot2::expansion(add = 0.5)) +
