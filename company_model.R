@@ -119,38 +119,18 @@ company_model <- function(x, varnames){
   
   # Bound it to 0
   if_accessible <- max(if_accessible, 0)
-  
-  # worker's health benefit from nutrition
-  # calculated as a cost savings to the company 
-  # annual benefits to work productivity
-  # due to better nutrition for the workers (less health care costs, more efficient)
-  
-  # benefit safety_of_food
-  
-  # We are mixing together:
-  # Intrinsic food environment attributes (access, prep, safety, nutrition)
-  # Modifiers like quality loss due to monopoly and quality gain from farming
-  # Then multiplying all of that by if_accessible again at the end
-  # So if_accessible is kind of double counted, both in
-  # work_benefits_from_accessibility and again in benefit_worker_health.
+  # if_accessible starts at 1.0 (100%) because the FarmStand is on-campus and purpose-built —
+  # perfect baseline accessibility absent risk events. Risk events reduce this from the baseline.
+  # NOTE: if_accessible is computed once and shared across all three scenarios. Risk events
+  # framed as FarmStand-specific (e.g., disease_outbreak on the campus stand) therefore
+  # affect ConnectFarm and DoNothing comparisons equally — a conservative simplifying assumption.
   
   # Food environment ####
-  
-  # Food Environment #### 
-  # Problem: Food environment effects on workers are
-  # implied (accessibility, nutrition, etc.) but not clearly modeled or linked
-  # to actual outcomes like diet quality, health status, productivity, or
-  # satisfaction.
-  # Effect: The core intended benefit—improved food environment—is not
-  # transparently evaluated.
-  
-  # Clarify and Expand Food Environment Outcomes Use the five food environment
-  # domains as dimensions (Turner has 8, we have information for fewer but still comprehensive):
-  # Availability (e.g., number of fresh veg stalls)
-  # Affordability (prices vs worker income)
-  # Accessibility (distance/time)
-  # Desirability (preference match)
-  # Quality/Safety (hygiene, freshness)
+  # Modeled across four components adapted from Turner et al. (2018): accessibility
+  # (proximity/availability), food preparation, food safety, and nutrition quality.
+  # Base component values (million VND/year) represent the monetised worker productivity
+  # benefit to the company — expert-elicited estimates of absenteeism reduction and
+  # productivity gain from an improved food environment in the Hanoi factory worker context.
   
   # Simulate diversity and quality risks
   diversity_risk <- chance_event(chance_vegetable_diversity, value_if = 1, value_if_not = 0)
@@ -162,7 +142,9 @@ company_model <- function(x, varnames){
   food_env_safety <- base_safety_of_food
   food_env_nutrition <- base_nutrition_of_food
   
-  # Adjust for supply monopoly and farming practice effects
+  # FarmStand quality modifier: despite direct supply chain management, the FarmStand is a
+  # single on-campus vendor and retains inherent monopoly risk. Farming practice improvements
+  # (training, quality standards) partially offset this penalty (Reardon & Timmer, 2007).
   quality_multiplier <- (1 - reduction_in_veg_quality_if_monopoly) * (1 + farming_practice_increase_quality)
   
   # Adjust for quality/diversity risks
@@ -172,12 +154,13 @@ company_model <- function(x, varnames){
     nutrition_multiplier <- quality_multiplier
   }
   
-  # Final adjusted components
-    farmstand_food_env_accessibility = food_env_access * quality_multiplier * if_accessible
+  # Final adjusted components.
+  # Per Turner et al. (2018), physical accessibility (proximity, operating hours) is independent
+  # of supply quality — quality_multiplier is therefore not applied to the accessibility component.
+    farmstand_food_env_accessibility = food_env_access * if_accessible
     farmstand_food_env_prep = food_env_prep * quality_multiplier
     farmstand_food_env_safety = food_env_safety * quality_multiplier
     farmstand_food_env_nutrition = food_env_nutrition * nutrition_multiplier
-  # ####
   # Composite food environment score
     farmstand_food_env_score <- farmstand_food_env_accessibility + farmstand_food_env_prep + 
     farmstand_food_env_safety + farmstand_food_env_nutrition
@@ -212,8 +195,10 @@ company_model <- function(x, varnames){
                                 if_accessible)
   
    # calculate company revenue ####
-  added_company_revenue_annual <- 
-    benefit_work_efficiency +
+  # Work efficiency and reputation revenues always occur; farmer revenue sharing is additionally conditional
+  added_company_revenue_annual <- chance_event(chance = chance_benefit_farmer_revenue, 
+               value_if = 
+  (benefit_work_efficiency +
     factory_reputation_revenue +  # additive reputation revenue (million VND/year)
     # NOTE: prob_increased_farmer_reputation (0.001–0.01) is applied here as a
     # continuous scaler rather than a probabilistic event (cf. chance_event()).
@@ -221,7 +206,9 @@ company_model <- function(x, varnames){
     # modelling it as an uncertain event. The practical effect on NPV is
     # negligible given the range, but future iterations should use chance_event()
     # for consistency with the rest of the model.
-    benefit_farmer_revenue * (1 + prob_increased_farmer_reputation) 
+    benefit_farmer_revenue * (1 + prob_increased_farmer_reputation)), 
+  value_if_not =  (benefit_work_efficiency +
+      factory_reputation_revenue))
   
   company_revenue_through_intervention <- vv(added_company_revenue_annual, 
                                              var_CV = CV_value, 
@@ -231,14 +218,15 @@ company_model <- function(x, varnames){
   conflicting_interest <- chance_event(conflicting_business_interests) 
   
   if(conflicting_interest == 1) {
-    company_revenue_through_intervention <- company_revenue_through_intervention - 
-      revenue_reduction_if_conflicting_interest
+    company_revenue_through_intervention <- company_revenue_through_intervention * # million VND
+      (1 - revenue_reduction_if_conflicting_interest) # a %
   }else{
     company_revenue_through_intervention <- company_revenue_through_intervention 
   }
   
   farmstand_company_result <- (company_revenue_through_intervention - total_costs_farmstand) + 
     benefit_enviroment_on_campus # quality of factory campus improved
+    # annual amenity value from having a green and clean space for selling point (million VND/year)
   
   # ConnectFarm Intervention ####
   
@@ -250,30 +238,37 @@ company_model <- function(x, varnames){
                                      var_CV = CV_value,
                                      n = number_of_years)
   
+  # Add light year-1 setup cost: a small fraction of FarmStand establishment (kickoff meetings only)
+  cost_of_connectFarm[1] <- cost_of_connectFarm[1] +
+    one_time_establishment_costs_farmstand * connectFarm_establishment_fraction
+  
   # Accessibility effect: less structured, less reliable
   connect_if_accessible <- if_accessible * connectFarm_accessibility_multiplier  
   
-  # Food environment benefits: scaled-down effects
+  # ConnectFarm quality modifier: without physical supply chain control, the monopoly quality
+  # penalty is amplified by connectFarm_quality_penalty_scaler (>= 1.0). Farming practice
+  # benefits are partially realised through cooperative relationships (connect_farming_practice_scaler < 1.0).
+  # ConnectFarm generates no factory_reputation_revenue: without a visible on-campus presence,
+  # there is no physical space to generate goodwill, campus amenity, or employer brand value.
+  # Quality ordering is maintained: FarmStand > ConnectFarm > DoNothing (see do_nothing_quality_multiplier).
   connect_quality_multiplier <- max((1 - 
-  # 1.5 is hard coded here to reflect that the quality issues are worse without intervention, and that nutrition is more sensitive to those issues (1.5 times was expected as a stable effect in the farmstand scenario, so we are assuming it's worse without direct control over the supply chain)
-  reduction_in_veg_quality_if_monopoly * 1.5) * 
-  # 0.5 is hard coded here to reflect that the quality benefits from farming practices are less without direct control over the supply chain (half was expectd as a stable effect in the farmstand scenario)
-    (1 + farming_practice_increase_quality * 0.5), 0)  # clamped to prevent negative food env scores in tail draws
-  
+    reduction_in_veg_quality_if_monopoly * connectFarm_quality_penalty_scaler) * 
+    (1 + farming_practice_increase_quality * connect_farming_practice_scaler), 0)  # clamped to prevent negative scores in tail draws
+
   # Quality and diversity risk adjustment
   diversity_risk_connect <- chance_event(chance_vegetable_diversity, 1, 0)
   veg_quality_risk_connect <- chance_event(chance_vegetable_quality, 1, 0)
   
   if (diversity_risk_connect == 1 | veg_quality_risk_connect == 1) {
     connect_nutrition_multiplier <- connect_quality_multiplier * 
-    # 1.5 is hard coded here to reflect that the quality issues are worse without intervention, and that nutrition is more sensitive to those issues (1.5 times was expected as a stable effect in the farmstand scenario, so we are assuming it's worse without direct control over the supply chain)
-      (1 - reduction_nutrition_low_diverse_and_quality * 1.5)
+      (1 - reduction_nutrition_low_diverse_and_quality * no_farmstand_nutrition_penalty_scaler)
   } else {
     connect_nutrition_multiplier <- connect_quality_multiplier
   }
   
   # Components of the food environment connect ####
-    connect_food_accessibility = food_env_access * connect_if_accessible * connect_quality_multiplier 
+  # Accessibility is not modified by supply quality (Turner et al., 2018).
+    connect_food_accessibility = food_env_access * connect_if_accessible
     connect_food_prep = food_env_prep * connect_quality_multiplier
     connect_food_safety = food_env_safety * connect_quality_multiplier 
     connect_food_nutrition = food_env_nutrition * connect_nutrition_multiplier
@@ -303,24 +298,25 @@ company_model <- function(x, varnames){
   diversity_risk_do_nothing <- chance_event(chance_vegetable_diversity, 1, 0)
   veg_quality_risk_do_nothing <- chance_event(chance_vegetable_quality, 1, 0)
   
-  # Food environment is worse overall: low-quality, uncoordinated
+  # DoNothing quality modifier: with no supply chain oversight and no farming practice support,
+  # the monopoly quality penalty is amplified more than under ConnectFarm, using a separate
+  # do_nothing_quality_penalty_scaler with a higher range than connectFarm_quality_penalty_scaler.
+  # This preserves the intended quality ordering: FarmStand > ConnectFarm > DoNothing.
   do_nothing_quality_multiplier <- max((1 - 
-  # 1.5 is hard coded here to reflect that the quality issues are worse without intervention, and that nutrition is more sensitive to those issues
-  reduction_in_veg_quality_if_monopoly * 1.5), 0)  # clamped to prevent negative food env scores in tail draws
+    reduction_in_veg_quality_if_monopoly * do_nothing_quality_penalty_scaler), 0)  # clamped
   
   if (diversity_risk_do_nothing == 1 | veg_quality_risk_do_nothing == 1) {
     do_nothing_nutrition_multiplier <- do_nothing_quality_multiplier *
-      # 1.5 is hard coded here to reflect that the quality issues are worse without intervention, and that nutrition is more sensitive to those issues
-      (1 - reduction_nutrition_low_diverse_and_quality * 1.5)
+      (1 - reduction_nutrition_low_diverse_and_quality * no_farmstand_nutrition_penalty_scaler)
   } else {
     do_nothing_nutrition_multiplier <- do_nothing_quality_multiplier
   }
   
   # Components of the food environment do nothing
-  do_nothing_food_accessibility = food_env_access * do_nothing_quality_multiplier * if_accessible
-  do_nothing_food_prep = food_env_prep * do_nothing_quality_multiplier 
-  do_nothing_food_safety = food_env_safety * do_nothing_quality_multiplier
-  do_nothing_food_nutrition = food_env_nutrition * do_nothing_nutrition_multiplier
+  do_nothing_food_accessibility <- food_env_access * if_accessible  # accessibility not modified by quality (Turner et al., 2018)
+  do_nothing_food_prep <- food_env_prep * do_nothing_quality_multiplier 
+  do_nothing_food_safety <- food_env_safety * do_nothing_quality_multiplier
+  do_nothing_food_nutrition <- food_env_nutrition * do_nothing_nutrition_multiplier
   # do_nothing_nutrition_multiplier already embeds do_nothing_quality_multiplier (defined above);
   # using it directly matches the FarmStand/ConnectFarm structure and avoids double-application.
   
@@ -365,5 +361,9 @@ NPV_connectFarmDecision <-
   connect_food_env_score = connect_food_env_score - do_nothing_food_env_score 
   ))
 }
+
+
+
+
 
 
