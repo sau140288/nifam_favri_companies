@@ -302,13 +302,13 @@ mcSimulation_table <- mcSimulation_table %>%
 
 
 ```{r evpi-general_calc, echo=TRUE}
-source("functions/multi_EVPI.R")
-
-evpi <- multi_EVPI(mc = mcSimulation_table,
-                   first_out_var = "decision_farmstand",
-                   n_cores  = parallel::detectCores() - 1,
-                   mc_samples = 3000)   # subsampled for speed; EVPI stable at n = 3000
-save(evpi, file = "data/data_evpi.Rda")
+# source("functions/multi_EVPI.R")
+# 
+# evpi <- multi_EVPI(mc = mcSimulation_table,
+#                    first_out_var = "decision_farmstand",
+#                    n_cores  = parallel::detectCores() - 1,
+#                    mc_samples = 3000)   # subsampled for speed; EVPI stable at n = 3000
+# save(evpi, file = "data/data_evpi.Rda")
 load("data/data_evpi.Rda")
 ```
 
