@@ -372,3 +372,7 @@ All model code, input data, and analysis scripts are archived at:
 The model is implemented in R using the `decisionSupport` package. Monte Carlo simulation, PLS sensitivity analysis, and EVPI are all fully reproducible from the code above with `set.seed(84)`.
 
 **Reference:** Luedeling E, Goehring L, Schiffers K, Whitney C, Fernandez E (2021). *decisionSupport: Quantitative Support of Decision Making under Uncertainty*. R package version 1.111. <https://CRAN.R-project.org/package=decisionSupport>
+
+
+```{r, child='sections/Intervention_Identification.Rmd'}
+```
