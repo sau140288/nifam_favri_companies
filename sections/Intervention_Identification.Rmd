@@ -1,0 +1,61 @@
+# Intervention Identification and Selection
+
+## Food Environment Constraints
+
+Through food environment mapping, we identified systemic constraints 
+affecting LMI consumers in Hanoi spanning affordability, convenience, 
+traceability, and trust. Existing coping strategies — informal sourcing, 
+online purchasing, self-production, social networks — remain insufficient 
+to ensure consistent access to safe vegetables.
+
+## Workshop Process
+
+Four focus groups drawn from the same participant pool discussed two 
+guiding questions:
+
+1. Which aspects of the food environment need improvement to better 
+support safe vegetable consumption among LMI households in inner-city Hanoi?
+2. What feasible and context-appropriate interventions can address 
+the identified challenges?
+
+Candidate interventions were evaluated against three criteria: 
+(1) feasibility, (2) expected effectiveness, and (3) availability 
+of actors capable of implementation.
+
+## Intervention Longlist and Selection
+
+```{r intervention-table, echo=FALSE}
+library(knitr)
+library(kableExtra)
+
+interventions <- data.frame(
+  No = 1:10,
+  Intervention = c(
+    "Establishing social media groups (Facebook/Zalo) for discounted purchasing",
+    "Adapting PGS-based internal monitoring to reduce VietGAP certification costs",
+    "Technical measures and state incentive programs to reduce production and retail costs",
+    "Communication interventions on health benefits of safe vegetables",
+    "Priority cards enabling LMI consumers to purchase safe vegetables at reasonable prices",
+    "Training and communication on best practices across the supply chain",
+    "Supporting producer-consumer linkages through retail and marketing integration",
+    "Short supply chain via direct sale point at company campus",
+    "Land consolidation policies to address fragmented production",
+    "Short supply chain via local Women's Unions organizing residential vegetable supply"
+  ),
+  Selected = c("", "", "", "", "", "", "", "✓", "", "")
+)
+
+kable(interventions, 
+      caption = "Table S1. Candidate interventions identified during the workshop, 
+      evaluated against feasibility, actor availability, and expected effectiveness.") %>%
+  kable_styling(full_width = TRUE) %>%
+  row_spec(8, bold = TRUE)
+```
+
+## Selected Intervention
+
+Two short supply chain interventions received the highest votes. 
+The Women's Union option was excluded on the third criterion — 
+consultations confirmed that existing organizational responsibilities 
+limit capacity for additional roles. The on-campus direct sale model 
+was selected for modelling and piloting.
