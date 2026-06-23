@@ -373,6 +373,8 @@ The model is implemented in R using the `decisionSupport` package. Monte Carlo s
 
 **Reference:** Luedeling E, Goehring L, Schiffers K, Whitney C, Fernandez E (2021). *decisionSupport: Quantitative Support of Decision Making under Uncertainty*. R package version 1.111. <https://CRAN.R-project.org/package=decisionSupport>
 
+Whitney C, Luu TTG, Kopton J, Luedeling E. A decision-analysis framework for school garden investments in Vietnam: evaluating trade-offs for nutrition, biodiversity, and economic outcomes. Humanit Soc Sci Commun. 2026;13(1):580. <https://doi.org/10.1057/s41599-026-07204-0>
+
 
 ```{r, child='sections/Intervention_Identification.Rmd'}
 ```
