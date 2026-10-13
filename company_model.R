@@ -121,9 +121,9 @@ company_model <- function(x, varnames){
   if_accessible <- max(if_accessible, 0)
   # if_accessible starts at 1.0 (100%) because the FarmStand is on-campus and purpose-built —
   # perfect baseline accessibility absent risk events. Risk events reduce this from the baseline.
-  # NOTE: if_accessible is computed once and shared across all three scenarios. Risk events
-  # framed as FarmStand-specific (e.g., disease_outbreak on the campus stand) therefore
-  # affect ConnectFarm and DoNothing comparisons equally — a conservative simplifying assumption.
+  # NOTE: if_accessible is shared by FarmStand and ConnectFarm (scaled by
+  # connectFarm_accessibility_multiplier). DoNothing is the status-quo baseline and receives
+  # no access gain or time savings, so these risk events do not apply to it.
   
   # Food environment ####
   # Modeled across four components adapted from Turner et al. (2018): accessibility
@@ -256,8 +256,9 @@ company_model <- function(x, varnames){
     (1 + farming_practice_increase_quality * connect_farming_practice_scaler), 0)  # clamped to prevent negative scores in tail draws
 
   # Quality and diversity risk adjustment
-  diversity_risk_connect <- chance_event(chance_vegetable_diversity, 1, 0)
-  veg_quality_risk_connect <- chance_event(chance_vegetable_quality, 1, 0)
+  # Same market risk draws as FarmStand so all scenarios face identical conditions
+  diversity_risk_connect <- diversity_risk
+  veg_quality_risk_connect <- vegetable_quality_risk
   
   if (diversity_risk_connect == 1 | veg_quality_risk_connect == 1) {
     connect_nutrition_multiplier <- connect_quality_multiplier * 
@@ -295,8 +296,8 @@ company_model <- function(x, varnames){
   # DoNothing Scenario ####
   
   # Quality and diversity risks still apply (unmitigated)
-  diversity_risk_do_nothing <- chance_event(chance_vegetable_diversity, 1, 0)
-  veg_quality_risk_do_nothing <- chance_event(chance_vegetable_quality, 1, 0)
+  diversity_risk_do_nothing <- diversity_risk
+  veg_quality_risk_do_nothing <- vegetable_quality_risk
   
   # DoNothing quality modifier: with no supply chain oversight and no farming practice support,
   # the monopoly quality penalty is amplified more than under ConnectFarm, using a separate
@@ -313,7 +314,9 @@ company_model <- function(x, varnames){
   }
   
   # Components of the food environment do nothing
-  do_nothing_food_accessibility <- food_env_access * if_accessible  # accessibility not modified by quality (Turner et al., 2018)
+  # base_accessibility_of_food is the value of the access improvement from an intervention;
+  # DoNothing is the status-quo baseline, so it receives no access gain.
+  do_nothing_food_accessibility <- 0
   do_nothing_food_prep <- food_env_prep * do_nothing_quality_multiplier 
   do_nothing_food_safety <- food_env_safety * do_nothing_quality_multiplier
   do_nothing_food_nutrition <- food_env_nutrition * do_nothing_nutrition_multiplier
@@ -327,8 +330,7 @@ company_model <- function(x, varnames){
   # Worker health and work efficiency (no reputation gains)
   do_nothing_worker_health <- do_nothing_food_env_score * health_response_to_food_env
   
-  do_nothing_work_efficiency <- (do_nothing_worker_health + 
-                                   benefit_worker_time_savings * if_accessible)  # dimensionless access fraction, matching FarmStand/ConnectFarm
+  do_nothing_work_efficiency <- do_nothing_worker_health  # no time savings without an intervention
   # DoNothing has no farmer revenue share or campus benefit — 
   # revenue is work efficiency only
   do_nothing_company_revenue_annual <- do_nothing_work_efficiency

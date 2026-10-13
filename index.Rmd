@@ -9,9 +9,13 @@ output:
     number_sections: true
 ---
 
-**Authors:** Nguyen Thi Sau, Thi Thu Giang Luu, Nguyen Huu Nhuan, Nguyen Thi Tan Loc, Cory Whitney
+**Authors:** Nguyen Thi Sau, Thi Thu Giang Luu, Nguyen Huu Nhuan, Nguyen
+Thi Tan Loc, Cory Whitney
 
-This supplementary material provides the full probabilistic decision model, input parameter table, and diagnostic outputs supporting the main article. All code and data are available at <https://github.com/sau140288/nifam_favri_companies>.
+This supplementary material provides the full probabilistic decision
+model, input parameter table, and diagnostic outputs supporting the main
+article. All code and data are available at
+<https://github.com/sau140288/nifam_favri_companies>.
 
 ```{r setup, include=FALSE}
 library(knitr)
@@ -35,22 +39,47 @@ library(tidyverse)
 
 # Decision context and model structure
 
-We apply a probabilistic decision model to assess whether large garment factories in Hanoi, Vietnam should invest in supporting on-site vegetable access for their workers. Two intervention options are evaluated against a *DoNothing* baseline:
+We apply a probabilistic decision model to assess whether large garment
+factories in Hanoi, Vietnam should invest in supporting on-site
+vegetable access for their workers. Two intervention options are
+evaluated against a *DoNothing* baseline:
 
-- **FarmStand**: The company establishes and manages an on-campus vegetable stand, sourcing directly from contracted farmers. The company bears full establishment and annual operating costs but retains control over supply chain quality, worker access, and pricing.
-- **ConnectFarm**: The company facilitates connections between workers and off-site farming cooperatives, enabling direct purchasing without managing a physical stand. Establishment costs are a small fraction of FarmStand costs, but the company has less control over quality and access reliability.
-- **DoNothing**: No intervention. Workers rely on existing off-campus food sources. This serves as the counterfactual baseline.
+- **FarmStand**: The company establishes and manages an on-campus
+  vegetable stand, sourcing directly from contracted farmers. The
+  company bears full establishment and annual operating costs but
+  retains control over supply chain quality, worker access, and pricing.
+- **ConnectFarm**: The company facilitates connections between workers
+  and off-site farming cooperatives, enabling direct purchasing without
+  managing a physical stand. Establishment costs are a small fraction of
+  FarmStand costs, but the company has less control over quality and
+  access reliability.
+- **DoNothing**: No intervention. Workers rely on existing off-campus
+  food sources. This serves as the counterfactual baseline.
 
-The model evaluates each option in terms of its net financial benefit to the company over a five-year horizon as the Net Present Value (NPV) of the intervention *relative to DoNothing*. A positive NPV indicates that the intervention generates more value (or avoids more cost) than taking no action. All outputs are probability distributions, reflecting full propagation of uncertainty across all input parameters.
+The model evaluates each option in terms of its net financial benefit to
+the company over a five-year horizon as the Net Present Value (NPV) of
+the intervention *relative to DoNothing*. A positive NPV indicates that
+the intervention generates more value (or avoids more cost) than taking
+no action. All outputs are probability distributions, reflecting full
+propagation of uncertainty across all input parameters.
 
 # Monte Carlo simulation
 
-We parameterised the model using expert-elicited ranges representing the 5th and 95th percentiles of each uncertain input (see Section 3, Table 1). Monte Carlo simulation with 10,000 model runs was performed using the `decisionSupport` R package (Luedeling et al. 2021), drawing independent samples from each input distribution per run. Costs and benefits are inflated annually using the `inflation_rate` parameter. All future cash flows are discounted to Net Present Value using the `discount_rate`.
+We parameterised the model using expert-elicited ranges representing the
+5th and 95th percentiles of each uncertain input (see Section 3, Table
+1). Monte Carlo simulation with 10,000 model runs was performed using
+the `decisionSupport` R package (Luedeling et al. 2021), drawing
+independent samples from each input distribution per run. Costs and
+benefits are inflated annually using the `inflation_rate` parameter. All
+future cash flows are discounted to Net Present Value using the
+`discount_rate`.
 
 Decision outcome variables:
 
-- `decision_farmstand`: NPV of FarmStand minus NPV of DoNothing (million VND, discounted over five years)
-- `decision_connectFarm`: NPV of ConnectFarm minus NPV of DoNothing (million VND, discounted over five years)
+- `decision_farmstand`: NPV of FarmStand minus NPV of DoNothing (million
+  VND, discounted over five years)
+- `decision_connectFarm`: NPV of ConnectFarm minus NPV of DoNothing
+  (million VND, discounted over five years)
 
 ```{r mcsimulation, warning=FALSE, message=FALSE, echo=TRUE}
 source("company_model.R")
@@ -69,7 +98,12 @@ company_simulation_results <- mcSimulation(
 
 # Input parameters
 
-Table 1 lists all model input variables with their expert-elicited uncertainty ranges. **Lower** and **upper** bounds represent the 5th and 95th percentiles of each parameter distribution. Distribution types: *pos-normal* = truncated normal constrained to positive values; *trunc-normal [0,1]* = normal truncated to the unit interval (used for probabilities and fractions); *constant* = fixed value.
+Table 1 lists all model input variables with their expert-elicited
+uncertainty ranges. **Lower** and **upper** bounds represent the 5th and
+95th percentiles of each parameter distribution. Distribution types:
+*pos-normal* = truncated normal constrained to positive values;
+*trunc-normal [0,1]* = normal truncated to the unit interval (used for
+probabilities and fractions); *constant* = fixed value.
 
 ```{r parameter_table, echo=FALSE}
 input_raw <- read.csv("data/company_input.csv", check.names = FALSE)
@@ -183,7 +217,10 @@ param_table %>%
 
 ## Net Present Value distributions
 
-The distributions below show projected NPV for each intervention relative to DoNothing over five years. Values above zero indicate a net benefit. Boxes show the interquartile range; whiskers extend to the 5th and 95th percentiles.
+The distributions below show projected NPV for each intervention
+relative to DoNothing over five years. Values above zero indicate a net
+benefit. Boxes show the interquartile range; whiskers extend to the 5th
+and 95th percentiles.
 
 ```{r plot_dist_boxplot, warning=FALSE, message=FALSE}
 source("functions/plot_distributions.R")
@@ -208,12 +245,40 @@ quantile(company_simulation_results$y$decision_farmstand,  probs = c(0.05, 0.50,
 quantile(company_simulation_results$y$decision_connectFarm, probs = c(0.05, 0.50, 0.95))
 ```
 
+Table of the NPV positive run-percentage across all 10,000 model runs
+realtive to DoNothing.
+
+```{r summary_of_npv_vars_sim_runs_greater_than_zero}
+
+npv_vars <- c(
+  FarmStand = "decision_farmstand",
+  ConnectFarm = "decision_connectFarm"
+)
+
+npv <- company_simulation_results$y[, unname(npv_vars), drop = FALSE]
+
+valid_runs <- vapply(npv, function(x) sum(!is.na(x)), integer(1))
+positive_runs <- vapply(npv, function(x) sum(x > 0, na.rm = TRUE), integer(1))
+
+# the positive-run percentage
+
+data.frame(
+  scenario = names(npv_vars),
+  simulations = valid_runs,
+  positive_runs = positive_runs,
+  positive_percent = round(100 * positive_runs / valid_runs, 1)
+)
+
+```
+
 ## Annual cash flows
 
-Annual projected cash flows for each scenario across all Monte Carlo runs. The orange crossbar marks the median. Year 1 FarmStand costs are higher due to one-time establishment expenditure.
+Annual projected cash flows for each scenario across all Monte Carlo
+runs. The orange crossbar marks the median. Year 1 FarmStand costs are
+higher due to one-time establishment expenditure.
 
 ```{r combined_cashflow_boxplot, message=FALSE}
-company_data <- read_csv("results/company_simulation_results.csv")
+company_data <- as.data.frame(company_simulation_results$y)
 
 cashflow_farmstand <- company_data %>%
   select(starts_with("cashflow_farmstand")) %>%
@@ -250,7 +315,13 @@ summary(company_simulation_results$y[8:12])
 
 # Sensitivity analysis (PLS)
 
-We use Projection to Latent Structures (PLS) regression (fitted with the orthogonal scores algorithm via `pls::plsr`) to identify which input variables have the strongest influence on each NPV outcome and in which direction. Variables are ranked by their Variable Importance in Projection (VIP) score; only variables with VIP > 0.9 are shown. Bar colour indicates the direction of the standardised PLS coefficient: positive (blue) values increase NPV; negative (red) values decrease NPV.
+We use Projection to Latent Structures (PLS) regression (fitted with the
+orthogonal scores algorithm via `pls::plsr`) to identify which input
+variables have the strongest influence on each NPV outcome and in which
+direction. Variables are ranked by their Variable Importance in
+Projection (VIP) score; only variables with VIP \> 0.9 are shown. Bar
+colour indicates the direction of the standardised PLS coefficient:
+positive (blue) values increase NPV; negative (red) values decrease NPV.
 
 ```{r pls_farmstand}
 input_table <- read.csv("data/company_input.csv")
@@ -290,7 +361,13 @@ Fig_pls
 
 # Expected Value of Perfect Information (EVPI)
 
-The Expected Value of Perfect Information (EVPI) quantifies the maximum a decision-maker should rationally invest to eliminate uncertainty about a given input variable before making the decision. High EVPI identifies variables where targeted data collection would most change or reinforce the decision. EVPI is estimated using LOESS-smoothed empirical curves across the Monte Carlo sample, parallelised across all input variables for efficiency.
+The Expected Value of Perfect Information (EVPI) quantifies the maximum
+a decision-maker should rationally invest to eliminate uncertainty about
+a given input variable before making the decision. High EVPI identifies
+variables where targeted data collection would most change or reinforce
+the decision. EVPI is estimated using LOESS-smoothed empirical curves
+across the Monte Carlo sample, parallelised across all input variables
+for efficiency.
 
 ```{r mc_table, warning=FALSE, message=FALSE}
 mcSimulation_table <- data.frame(company_simulation_results$x, 
@@ -299,7 +376,6 @@ npvs_to_move <- c("decision_farmstand", "decision_connectFarm")
 mcSimulation_table <- mcSimulation_table %>%
   select(-all_of(npvs_to_move), all_of(npvs_to_move))
 ```
-
 
 ```{r evpi-general_calc, echo=TRUE}
 # source("functions/multi_EVPI.R")
@@ -323,7 +399,7 @@ plot_evpi_farmstand <- plot_evpi(
   threshold     = 10, 
   min_evpi      = 0.005) +
   theme(legend.position = "none", axis.title.x = element_blank()) +
-  scale_x_continuous(limits = c(0, 10))
+  scale_x_continuous(limits = c(0, 9))
 
 plot_evpi_connectfarm <- plot_evpi(
   EVPIresults   = evpi,
@@ -333,7 +409,7 @@ plot_evpi_connectfarm <- plot_evpi(
   threshold     = 10, 
   min_evpi      = 0.000001) +
   theme(legend.position = "none") +
-  scale_x_continuous(limits = c(0, 10))
+  scale_x_continuous(limits = c(0, 9))
 
 Fig_evpi <- plot_evpi_farmstand / plot_evpi_connectfarm 
 ggsave("figures/Fig_evpi.png", width = 20, height = 10, units = "cm")
@@ -342,7 +418,10 @@ Fig_evpi
 
 # Food environment outcomes
 
-The food environment score aggregates the effects of each intervention on workers' access to safe, nutritious, and diverse vegetables, estimated as a productivity-equivalent monetary value (million VND/yr). The score is computed relative to DoNothing.
+The food environment score aggregates the effects of each intervention
+on workers' access to safe, nutritious, and diverse vegetables,
+estimated as a productivity-equivalent monetary value (million VND/yr).
+The score is computed relative to DoNothing.
 
 ```{r plot_food_env, fig.cap="Figure: Distribution of food environment scores for FarmStand and ConnectFarm relative to DoNothing."}
 Fig_food_env <- plot_distributions(
@@ -363,18 +442,51 @@ ggsave("figures/Fig_plot_boxplot_health_food_env.png", width = 25, height = 8, u
 summary(company_simulation_results$y[13:14])
 ```
 
+The modeled food-environment score difference relative to DoNothing.
+
+```{r food_env_score_diff_relative_to_do_nothing}
+
+y <- company_simulation_results$y
+
+summarize_scenario <- function(food_var, npv_var, scenario) {
+  d <- data.frame(food = y[[food_var]], npv = y[[npv_var]])
+  d <- d[complete.cases(d), ]
+
+  data.frame(
+    scenario = scenario,
+    food_score_positive_pct = 100 * mean(d$food > 0),
+    positive_when_npv_positive_pct =
+      100 * mean(d$food[d$npv > 0] > 0),
+    positive_when_npv_nonpositive_pct =
+      100 * mean(d$food[d$npv <= 0] > 0)
+  )
+}
+
+rbind(
+  summarize_scenario("farmstand_food_env_score", "decision_farmstand", "FarmStand"),
+  summarize_scenario("connect_food_env_score", "decision_connectFarm", "ConnectFarm")
+)
+```
+
 # Code and data availability
 
 All model code, input data, and analysis scripts are archived at:
 
 <https://github.com/sau140288/nifam_favri_companies>
 
-The model is implemented in R using the `decisionSupport` package. Monte Carlo simulation, PLS sensitivity analysis, and EVPI are all fully reproducible from the code above with `set.seed(84)`.
+The model is implemented in R using the `decisionSupport` package. Monte
+Carlo simulation, PLS sensitivity analysis, and EVPI are all fully
+reproducible from the code above with `set.seed(84)`.
 
-**Reference:** Luedeling E, Goehring L, Schiffers K, Whitney C, Fernandez E (2021). *decisionSupport: Quantitative Support of Decision Making under Uncertainty*. R package version 1.111. <https://CRAN.R-project.org/package=decisionSupport>
+**Reference:** Luedeling E, Goehring L, Schiffers K, Whitney C,
+Fernandez E (2021). *decisionSupport: Quantitative Support of Decision
+Making under Uncertainty*. R package version 1.111.
+<https://CRAN.R-project.org/package=decisionSupport>
 
-Whitney C, Luu TTG, Kopton J, Luedeling E. A decision-analysis framework for school garden investments in Vietnam: evaluating trade-offs for nutrition, biodiversity, and economic outcomes. Humanit Soc Sci Commun. 2026;13(1):580. <https://doi.org/10.1057/s41599-026-07204-0>
-
+Whitney C, Luu TTG, Kopton J, Luedeling E. A decision-analysis framework
+for school garden investments in Vietnam: evaluating trade-offs for
+nutrition, biodiversity, and economic outcomes. Humanit Soc Sci Commun.
+2026;13(1):580. <https://doi.org/10.1057/s41599-026-07204-0>
 
 ```{r, child='sections/Intervention_Identification.Rmd'}
 ```
