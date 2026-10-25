@@ -11,6 +11,11 @@ Audit of argument units against decisionSupport conventions:
    The old values were read by `vv()` as a 0.1–0.4% CV, so year-to-year variation was near zero.
    Effect (seed 84, 10,000 runs): mean NPVs unchanged; spread a bit wider;
    P(NPV>0) FarmStand 0.52 → 0.52, ConnectFarm 0.81 → 0.77.
+3. Input descriptions (`data/company_input.csv`, shown in Table 1): 29 `tnorm_0_1` rows relabelled
+   from "(%)" to "(probability 0-1)" (chances) or "(proportion 0-1)" (reductions, fractions, scalers);
+   "percentage of reduction" → "proportional reduction". Text only — results identical.
+   Also fixed: `chance_vegetable_quality` description said "diversity"; "low low" typo;
+   `prob_increased_farmer_reputation` described as a multiplier (it is used as `1 + x`, not a chance).
 
 ## Checked, no change needed
 - `discount_rate` 3–15 (percent) ✔
