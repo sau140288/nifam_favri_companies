@@ -380,12 +380,12 @@ mcSimulation_table <- mcSimulation_table %>%
 ```{r evpi-general_calc, echo=TRUE}
 source("functions/multi_EVPI.R")
 
-# evpi <- multi_EVPI(mc = mcSimulation_table,
-#                    first_out_var = "decision_farmstand",
-#                    n_cores  = parallel::detectCores() - 1,
-#                    mc_samples = 3000)   # subsampled for speed; EVPI stable at n = 3000
+evpi <- multi_EVPI(mc = mcSimulation_table,
+                   first_out_var = "decision_farmstand",
+                   n_cores  = parallel::detectCores() - 1,
+                   mc_samples = 3000)   # subsampled for speed; EVPI stable at n = 3000
 # save(evpi, file = "data/data_evpi.Rda")
-load("data/data_evpi.Rda")
+# load("data/data_evpi.Rda")
 ```
 
 ```{r plot_evpi, fig.cap="Figure: EVPI for FarmStand (top) and ConnectFarm (bottom). Only variables above the EVPI threshold are shown. Values represent the maximum investment (million VND) justified to obtain perfect information about each variable."}
