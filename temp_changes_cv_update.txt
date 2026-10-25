@@ -11,8 +11,11 @@ WHAT I CHANGED
 1. CV_value set to 10 to 40 (posnorm).
 2. Input table labels: 0 to 1 inputs now say "probability 0-1" or "proportion 0-1" instead of "%".
    Also fixed one copy-paste error and one typo in descriptions. No effect on results.
-3. Removed an old unused copy of the model (company_function.R).
-4. Re-ran the model (seed 84, 10,000 runs), EVPI and all figures.
+3. Renamed prob_increased_farmer_reputation to farmer_reputation_revenue_uplift.
+   It is a multiplier (1 + x), not a probability. No effect on results.
+4. Removed an old unused copy of the model (company_function.R) and an outdated
+   results file (results/company_simulation_results.csv, from July 2025).
+5. Re-ran the model (seed 84, 10,000 runs), EVPI and all figures.
 
 WHAT IS DIFFERENT
 The decision does not change. Means are unchanged; the spread is slightly wider.

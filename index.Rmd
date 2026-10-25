@@ -137,7 +137,7 @@ param_table <- input_raw %>%
       str_starts(variable, "benefit_") | str_starts(variable, "base_") |
         variable == "benefit_worker_time_savings" |
         variable == "benefit_farmer_revenue" |
-        variable %in% c("prob_increased_farmer_reputation",
+        variable %in% c("farmer_reputation_revenue_uplift",
                           "health_response_to_food_env") ~
         "Benefit parameters (million VND/yr)",
       variable %in% c("conflicting_business_interests",
