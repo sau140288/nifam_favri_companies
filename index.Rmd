@@ -137,7 +137,7 @@ param_table <- input_raw %>%
       str_starts(variable, "benefit_") | str_starts(variable, "base_") |
         variable == "benefit_worker_time_savings" |
         variable == "benefit_farmer_revenue" |
-        variable %in% c("prob_increased_farmer_reputation",
+        variable %in% c("farmer_reputation_revenue_uplift",
                           "health_response_to_food_env") ~
         "Benefit parameters (million VND/yr)",
       variable %in% c("conflicting_business_interests",
@@ -378,14 +378,17 @@ mcSimulation_table <- mcSimulation_table %>%
 ```
 
 ```{r evpi-general_calc, echo=TRUE}
-# source("functions/multi_EVPI.R")
-# 
-# evpi <- multi_EVPI(mc = mcSimulation_table,
-#                    first_out_var = "decision_farmstand",
-#                    n_cores  = parallel::detectCores() - 1,
-#                    mc_samples = 3000)   # subsampled for speed; EVPI stable at n = 3000
+source("functions/multi_EVPI.R")
+
+evpi <- multi_EVPI(mc = mcSimulation_table,
+                   first_out_var = "decision_farmstand",
+                   n_cores  = parallel::detectCores() - 1,
+                   mc_samples = 3000)   # subsampled for speed; EVPI stable at n = 3000
+
+## Optional store and save step
+# not necessary with the new n_cores option in multi_EVPI
 # save(evpi, file = "data/data_evpi.Rda")
-load("data/data_evpi.Rda")
+# load("data/data_evpi.Rda")
 ```
 
 ```{r plot_evpi, fig.cap="Figure: EVPI for FarmStand (top) and ConnectFarm (bottom). Only variables above the EVPI threshold are shown. Values represent the maximum investment (million VND) justified to obtain perfect information about each variable."}
