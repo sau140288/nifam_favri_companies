@@ -378,8 +378,8 @@ mcSimulation_table <- mcSimulation_table %>%
 ```
 
 ```{r evpi-general_calc, echo=TRUE}
-# source("functions/multi_EVPI.R")
-# 
+source("functions/multi_EVPI.R")
+
 # evpi <- multi_EVPI(mc = mcSimulation_table,
 #                    first_out_var = "decision_farmstand",
 #                    n_cores  = parallel::detectCores() - 1,
