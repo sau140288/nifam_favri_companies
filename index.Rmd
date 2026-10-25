@@ -384,6 +384,8 @@ evpi <- multi_EVPI(mc = mcSimulation_table,
                    first_out_var = "decision_farmstand",
                    n_cores  = parallel::detectCores() - 1,
                    mc_samples = 3000)   # subsampled for speed; EVPI stable at n = 3000
+## Optional store and save step
+# not necessary with the new n_cores option in multi_EVPI
 # save(evpi, file = "data/data_evpi.Rda")
 # load("data/data_evpi.Rda")
 ```
