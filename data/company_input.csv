@@ -1,7 +1,7 @@
 variable,lower,median,upper,distribution,,label,description
 number_of_years,5,,5,const,,Simulation period (years),Number of years for model simulation
 discount_rate,3,,15,posnorm,,Discount rate (%),Discounting factor
-CV_value,0.1,,0.4,tnorm_0_1,,Coefficient of variation,Coefficient of variation for company intervention (%)
+CV_value,10,,40,posnorm,,Coefficient of variation (%),Coefficient of variation for annual cash flows (%; vv() expects percent: 10 = 10%)
 inflation_rate,3,,7,posnorm,,Inflation rate (%),Inflation rate (%)
 chance_benefit_farmer_revenue,0.4,,0.8,tnorm_0_1,,Prob. farmer revenue sharing,chance of farmers sharing revenue from vegetable sales with company (%)
 ,,,,,,,
