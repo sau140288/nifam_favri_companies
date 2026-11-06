@@ -200,13 +200,9 @@ company_model <- function(x, varnames){
                value_if = 
   (benefit_work_efficiency +
     factory_reputation_revenue +  # additive reputation revenue (million VND/year)
-    # NOTE: prob_increased_farmer_reputation (0.001–0.01) is applied here as a
-    # continuous scaler rather than a probabilistic event (cf. chance_event()).
-    # This consistently adds 0.1–1% to farmer revenue share rather than
-    # modelling it as an uncertain event. The practical effect on NPV is
-    # negligible given the range, but future iterations should use chance_event()
-    # for consistency with the rest of the model.
-    benefit_farmer_revenue * (1 + prob_increased_farmer_reputation)), 
+    # farmer_reputation_revenue_uplift (proportion, 0.001-0.01) scales the shared
+    # farmer revenue up by 0.1-1% due to the farmer's improved reputation.
+    benefit_farmer_revenue * (1 + farmer_reputation_revenue_uplift)), 
   value_if_not =  (benefit_work_efficiency +
       factory_reputation_revenue))
   
